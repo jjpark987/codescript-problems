@@ -1,1 +1,2 @@
-azure-storage-blob==12.20.0
+# Python
+python-dotenv>=1.0.1
