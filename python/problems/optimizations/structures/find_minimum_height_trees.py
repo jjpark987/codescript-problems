@@ -38,7 +38,7 @@ print(Solution().findMinHeightTrees(n=6, edges=[[0,1],[0,2],[0,3],[3,4],[4,5]]))
 
 """
 category: optimizations
-subcategory: graphs
+subcategory: structures
 difficulty: medium
 image_url_e1: /python/images/find_min_height_trees_e1.jpg
 image_url_e2: /python/images/find_min_height_trees_e2.jpg

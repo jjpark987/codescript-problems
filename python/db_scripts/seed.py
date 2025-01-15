@@ -83,7 +83,7 @@ def parse_file(file_path) -> Dict[str, str]:
         return json_data
     
     except Exception as e:
-        print(f"Error occurred: {e}")
+        print(f'Error occurred: {e}')
 
 # Function to store this in database CRUD
 
@@ -93,5 +93,3 @@ if __name__ == '__main__':
     data = parse_file(file_path)
     if data:
         print(data)
-
-# To run script on root, `python python/db_scripts/parse_and_post.py`

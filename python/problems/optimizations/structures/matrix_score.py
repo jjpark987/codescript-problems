@@ -28,7 +28,7 @@ print('Expected: 39')
 
 """
 category: optimizations
-subcategory: graphs
+subcategory: structures
 difficulty: medium
 image_url_e1: /python/images/matrix_score_e1.jpg
 image_url_e2: None

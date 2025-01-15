@@ -80,7 +80,7 @@ print('Expected: "L"')
 
 """
 category: optimizations
-subcategory: graphs
+subcategory: structures
 difficulty: medium
 image_url_e1: /python/images/get_directions_e1.png
 image_url_e2: /python/images/get_directions_e2.png

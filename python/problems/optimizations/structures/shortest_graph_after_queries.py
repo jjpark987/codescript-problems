@@ -33,7 +33,7 @@ class Solution:
 
 """
 category: optimizations
-subcategory: graphs
+subcategory: structures
 difficulty: medium
 image_url_e1: none
 image_url_e2: none

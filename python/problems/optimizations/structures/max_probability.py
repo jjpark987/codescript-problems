@@ -31,7 +31,7 @@ print('0.00000')
 
 """
 category: optimizations
-subcategory: graphs
+subcategory: structures
 difficulty: medium
 image_url_e1: /python/images/max_probability_e1.png
 image_url_e2: /python/images/max_probability_e2.png

@@ -21,7 +21,7 @@ class Solution:
 
 """
 category: optimizations
-subcategory: graphs
+subcategory: structures
 difficulty: medium
 image_url_e1: /python/images/find_champion_e1.png
 image_url_e2: /python/images/find_champion_e2.png
