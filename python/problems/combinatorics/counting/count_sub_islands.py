@@ -19,7 +19,7 @@ difficulty: medium
 image_url_e1: /python/images/count_sub_islands_e1.png
 image_url_e2: /python/images/count_sub_islands_e2.png
 image_url_e3: none
-title: Path with Maximum Probability
+title: Count Sub Islands
 
 description:
 You are given two m x n binary matrices grid1 and grid2 containing only 0's (representing water) and 1's (representing land). An island is a group of 1's connected 4-directionally (horizontal or vertical). Any cells outside of the grid are considered water cells.

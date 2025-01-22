@@ -50,14 +50,12 @@ Return the minimum number of operations needed to go back to the main folder aft
  
 
 Example 1:
-/python/images/min_operations_e1.png
 
 
 Input: logs = ["d1/","d2/","../","d21/","./"]
 Output: 2
 Explanation: Use this change folder operation "../" 2 times and go back to the main folder.
 Example 2:
-/python/images/min_operations_e2.png
 
 
 Input: logs = ["d1/","d2/","./","d3/","../","d31/"]

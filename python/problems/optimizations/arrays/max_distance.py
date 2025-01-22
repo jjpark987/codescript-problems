@@ -61,7 +61,6 @@ Given the integer array position and the integer m. Return the required force.
  
 
 Example 1:
-/python/images/max_distance_e1.jpg
 
 Input: position = [1,2,3,4,7], m = 3
 Output: 3

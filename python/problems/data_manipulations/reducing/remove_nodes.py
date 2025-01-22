@@ -57,7 +57,6 @@ Return the head of the modified linked list.
  
 
 Example 1:
-/python/images/remove_nodes_e1.png
 
 Input: head = [5,2,13,3,8]
 Output: [13,8]

@@ -92,7 +92,6 @@ Note that once you delete a leaf node with value target, if its parent node beco
  
 
 Example 1:
-/python/images/remove_leaf_nodes_e1.png
 
 
 Input: root = [1,2,3,2,null,2,4], target = 2
@@ -100,7 +99,6 @@ Output: [1,null,3,null,4]
 Explanation: Leaf nodes in green with value (target = 2) are removed (Picture in left). 
 After removing, new nodes become leaf nodes with value (target = 2) (Picture in center).
 Example 2:
-/python/images/remove_leaf_nodes_e2.png
 
 
 Input: root = [1,3,3,3,2], target = 3

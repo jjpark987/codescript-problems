@@ -77,7 +77,7 @@ subcategory: reformatting
 difficulty: medium
 image_url_e1: None
 image_url_e2: None
-title: Longest Palindrome
+title: Replace Words
 
 description:
 In English, we have a concept called root, which can be followed by some other word to form another longer word - let's call this word derivative. For example, when the root "help" is followed by the word "ful", we can form a derivative "helpful".

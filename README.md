@@ -39,8 +39,8 @@ pip install -r requirements.txt
 
 1. Make sure MySQL database is set up and migrated with the latest migration
 
-2. Seed database
+2. To parse and post all problems
 
 ```zsh
-python python/db_scripts/seed.py
+python python/db_scripts/parse_and_post.py
 ```

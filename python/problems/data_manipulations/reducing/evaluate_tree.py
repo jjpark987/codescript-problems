@@ -74,7 +74,6 @@ A leaf node is a node that has zero children.
  
 
 Example 1:
-/python/images/evaluate_tree_e1.png
 
 Input: root = [2,1,3,None,None,0,1]
 Output: true

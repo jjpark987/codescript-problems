@@ -37,7 +37,6 @@ You are given a 2D integer array edges where each edges[i] = [ui, vi] indicates 
  
 
 Example 1:
-/python/images/find_center_e1.png
 
 Input: edges = [[1,2],[2,3],[4,2]]
 Output: 2

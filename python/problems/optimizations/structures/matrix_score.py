@@ -30,7 +30,7 @@ print('Expected: 39')
 category: optimizations
 subcategory: structures
 difficulty: medium
-image_url_e1: /python/images/matrix_score_e1.jpg
+image_url_e1: matrix_score_e1.jpg
 image_url_e2: None
 title: Score After Flipping Matrix
 
@@ -46,7 +46,6 @@ Return the highest possible score after making any number of moves (including ze
  
 
 Example 1:
-/python/images/matrix_score_e1.jpg
 
 Input: grid = [[0,0,1,1],[1,0,1,0],[1,1,0,0]]
 Output: 39

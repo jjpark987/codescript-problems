@@ -1,0 +1,148 @@
+import asyncio
+import glob
+import httpx
+import os
+import re
+from dotenv import load_dotenv
+from typing import List, Dict
+
+load_dotenv()
+
+# Function to find all Python problem files in the subcategories
+def find_problem_files() -> List[str]:
+    ROOT_DIR = 'python/problems/'
+    CATEGORIES = ['data_manipulations', 'combinatorics', 'optimizations']
+    problem_files = []
+
+    for category in CATEGORIES:
+        category_path = os.path.join(ROOT_DIR, category)
+        files = glob.glob(os.path.join(category_path, '**', '*.py'), recursive=True)
+        problem_files.extend(files)
+
+    return problem_files
+
+# Function to parse file into json data
+def parse_file(file_path: str) -> Dict[str, str]:
+    try:
+        with open(file_path, 'r') as file:
+            content = file.read()
+
+        comment_block = re.search(r'(""".*?""")', content, re.DOTALL)        
+        if not comment_block:
+            raise ValueError('No comment block found')
+        comment = comment_block.group()[3:-3].strip()
+
+        patterns = {
+            'subcategory': r'subcategory:\s*(.*?)\n',
+            'difficulty': r'difficulty:\s*(.*?)\n',
+            'image_url_e1': r'image_url_e1:\s*(.*?)\n',
+            'image_url_e2': r'image_url_e2:\s*(.*?)\n',
+            'image_url_e3': r'image_url_e3:\s*(.*?)\n',
+            'title': r'title:\s*(.*?)\n',
+            'description': r'description:\s*((?:.|\n)+?)\n\nExample',
+            'constraints': r'Constraints:\s*((?:.|\n)+?)$'
+        }
+
+        SUBCATEGORY_MAP = {
+            "reformatting": 1,
+            "reducing": 2,
+            "counting": 3,
+            "generating": 4,
+            "strings": 5,
+            "arrays": 6,
+            "structures": 7,
+            "heaps": 8,
+            "processes": 9
+        }
+
+        DIFFICULTY_MAP = {
+            'easy': 1, 
+            'medium': 2, 
+            'hard': 3
+        }
+
+        BASE_IMAGE_URL = 'https://storage.googleapis.com/code-problem-images/'
+
+        parsed_data = {'examples': [], 'image_urls': []}
+
+        # Extract information using regex patterns and update image_urls
+        for field, pattern in patterns.items():
+            match = re.search(pattern, comment, re.DOTALL)
+            if match:
+                value = match.group(1).strip()
+
+                if field.startswith('image_url'):
+                    if value.lower() != 'none':
+                        parsed_data['image_urls'].append(f'{BASE_IMAGE_URL}{value.split("/")[-1]}')
+                elif field == 'difficulty':
+                    parsed_data[field] = DIFFICULTY_MAP.get(value.lower(), None)
+                else:
+                    parsed_data[field] = value
+            else:
+                parsed_data[field] = None
+
+        # Convert subcategory to subcategory_id
+        if parsed_data.get('subcategory'):
+            parsed_data['subcategory_id'] = SUBCATEGORY_MAP.get(parsed_data.pop('subcategory'), None)
+
+        # Extract and structure examples
+        example_pattern = re.findall(
+            r'Example \d+:\s*Input:\s*(.*?)\s*Output:\s*(.*?)(?:\s*Explanation:\s*((?:.|\n)+?))?(?=Example \d+:|Constraints:|$)',
+            comment, re.DOTALL
+        )
+
+        parsed_data['examples'] = [
+            {
+                'input': ex[0].strip(), 
+                'output': ex[1].strip(), 
+                'explanation': ex[2].strip() if ex[2] else ""
+            }
+            for ex in example_pattern
+        ]
+
+        return parsed_data
+    
+    except Exception as e:
+        print(f'🚨 Error parsing {file_path}: {e}')
+
+# Function to store this in database CRUD
+async def post_problem(json_data: Dict[str, str]) -> None:
+    API_BASE_URL = os.getenv('API_BASE_URL')
+
+    if not API_BASE_URL:
+        print('❌ API_BASE_URL is not set. Check your environment variables.')
+        return
+    
+    API_URL = f'{API_BASE_URL}/problems'
+    HEADERS = {'Content-Type': 'application/json'}
+
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(API_URL, json=json_data, headers=HEADERS)
+        
+        if response.status_code == 201:
+            print(f'✅ Successfully added problem: {json_data["title"]}')
+            print('Response:', response.json())  
+        else:
+            print(f'❌ Failed to add problem: {response.status_code}')
+            print('Response:', response.text)  
+
+    except httpx.RequestError as e:
+        print(f'🚨 Error sending request: {e}')
+
+# Main function
+async def main() -> None:
+    problem_files = find_problem_files()
+
+    for file_path in problem_files:
+        print(f'Processing {file_path}...')
+        
+        data = parse_file(file_path)
+        if data:
+            await post_problem(data)
+        else:
+            print(f'❌ No valid problem data extracted from: {file_path}')
+
+# Test script
+if __name__ == '__main__':
+    asyncio.run(main())

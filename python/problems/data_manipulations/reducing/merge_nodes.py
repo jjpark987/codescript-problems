@@ -86,7 +86,6 @@ Return the head of the modified linked list.
  
 
 Example 1:
-/python/images/merge_nodes_e1.png
 
 Input: head = [0,3,1,0,4,5,2,0]
 Output: [4,11]
@@ -95,7 +94,6 @@ The above figure represents the given linked list. The modified list contains
 - The sum of the nodes marked in green: 3 + 1 = 4.
 - The sum of the nodes marked in red: 4 + 5 + 2 = 11.
 Example 2:
-/python/images/merge_nodes_e2.png
 
 Input: head = [0,1,0,3,0,2,2,0]
 Output: [1,3,4]
