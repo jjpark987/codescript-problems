@@ -22,17 +22,46 @@ jobs:
           - 3306:3306
 
     steps:
-      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           repository: jjpark987/codescript-backend
           path: ./codescript-backend
           ref: fastapi
-      # Debug
-      - name: Debug - Check which files triggered this
+
+      - name: Detect Changed Files
         run: |
-          echo "Modified files: ${{ toJson(github.event.head_commit.modified) }}"
+          echo "Fetching changed files..."
+          git fetch --depth=1 origin ${{ github.event.before }}
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          # Check for changes in problems/
+          if echo "$CHANGED_FILES" | grep -q "^python/problems/"; then
+            echo "PROBLEM_FILES_CHANGED=true" >> $GITHUB_ENV
+          fi
+
+          # Check for changes in images/
+          if echo "$CHANGED_FILES" | grep -q "^python/images/"; then
+            echo "IMAGE_FILES_CHANGED=true" >> $GITHUB_ENV
+          fi
+
+      # - name: Run codescript-problems (Problem Seeder Script)
+      #   if: env.PROBLEM_FILES_CHANGED == 'true'
+      #   run: |
+      #     # Loop through all changed problem files
+      #     for FILE in $(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep "^python/problems/"); do
+      #       echo "Seeding problem file: $FILE"
+      #       docker-compose -f repo_b/docker-compose.yml run --rm problem_seeder --file $FILE
+      #     done
+
+      # - name: Upload images to Google Cloud Storage
+      #   if: env.IMAGE_FILES_CHANGED == 'true'
+      #   run: |
+      #     echo "Uploading images to Google Cloud Storage..."
+      #     gcloud auth activate-service-account --key-file=${{ secrets.GCP_CREDENTIALS }}
+      #     gsutil -m cp -r python/images/* gs://YOUR_BUCKET_NAME/images/
 
 #       # Set up codescript-fastapi (FastAPI and MySQL)
 #       - name: Set up codescript-fastapi (FastAPI and MySQL)
