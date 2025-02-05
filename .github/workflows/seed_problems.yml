@@ -28,22 +28,15 @@ jobs:
           repository: jjpark987/codescript-backend
           path: ./codescript-backend
           ref: fastapi
-          fetch-depth: 0
+          fetch-depth: 2
 
       - name: Detect Changed Files
         run: |
           echo "Fetching changed files..."
           cd codescript-backend
 
-          # Attempt to fetch, ignore errors if commit is missing
-          git fetch --depth=1 origin ${{ github.event.before }} || true
-
-          # Fallback if the commit is missing (e.g., force-pushed)
-          if git rev-parse ${{ github.event.before }} >/dev/null 2>&1; then
-            CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})
-          else
-            CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
-          fi
+          # Compare the last commit with the one before it
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
 
           echo "Changed files:"
           echo "$CHANGED_FILES"
