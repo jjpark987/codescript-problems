@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "PROBLEM_FILES_PATHS: $PROBLEM_FILES_PATHS"
+
 # Check if PROBLEM_FILES_PATHS has data
 if [ -n "$PROBLEM_FILES_PATHS" ]; then
   # If there are files listed in PROBLEM_FILES_PATHS, pass them as arguments

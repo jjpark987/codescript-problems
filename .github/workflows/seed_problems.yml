@@ -91,7 +91,7 @@ jobs:
           echo "🚀 Deploying codescript-problems..."
           cd codescript-problems
           docker compose up --remove-orphans
-          echo "✅ Problems docker is running!"
+          echo "✅ Problems docker has completed the script!"
 
       - name: Clean up codescript-fastapi
         run: |
