@@ -79,7 +79,7 @@ jobs:
       - name: Run codescript-problems
         run: |
           echo "🚀 Deploying codescript-problems..."
-          docker compose -f docker-compose.yml up --remove-orphans
+          docker compose up --remove-orphans
           echo "✅ Problems docker is running!"
 
       - name: Clean up codescript-fastapi
