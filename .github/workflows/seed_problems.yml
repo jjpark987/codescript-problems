@@ -27,46 +27,46 @@ jobs:
         with:
           fetch-depth: 2
       
-      - name: Detect Changed Files in Current Repo
+      - name: Detect Added Files in Current Repo
         run: |
-          echo "Fetching changed files in the current repository..."
-          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})
+          echo "Fetching added files in the current repository..."
+          ADDED_FILES=$(git diff --name-only --diff-filter=A ${{ github.event.before }} ${{ github.event.after }})
           
-          # Filter only relevant changes
-          PROBLEMS_CHANGED=$(echo "$CHANGED_FILES" | grep "^python/problems/" || true)
-          IMAGES_CHANGED=$(echo "$CHANGED_FILES" | grep "^python/images/" || true)
-
-          # Handle problem file changes
-          if [ -n "$PROBLEMS_CHANGED" ]; then
-            echo "PROBLEM_FILES_CHANGED=true" >> $GITHUB_ENV
-            echo "Changed problem files:"
-            echo "$PROBLEMS_CHANGED"
-
-            PROBLEM_FILES_PATHS=$(echo "$PROBLEMS_CHANGED" | paste -sd "," -)
+          # Filter only relevant additions
+          PROBLEMS_ADDED=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
+          IMAGES_ADDED=$(echo "$ADDED_FILES" | grep "^python/images/" || true)
+      
+          # Handle added problem files
+          if [ -n "$PROBLEMS_ADDED" ]; then
+            echo "PROBLEM_FILES_ADDED=true" >> $GITHUB_ENV
+            echo "Added problem files:"
+            echo "$PROBLEMS_ADDED"
+      
+            PROBLEM_FILES_PATHS=$(echo "$PROBLEMS_ADDED" | paste -sd "," -)
             echo "PROBLEM_FILES_PATHS=$PROBLEM_FILES_PATHS" >> $GITHUB_ENV
           fi
-
-          # Handle image file changes
-          if [ -n "$IMAGES_CHANGED" ]; then
-            echo "IMAGE_FILES_CHANGED=true" >> $GITHUB_ENV
-            echo "Changed image files:"
-            echo "$IMAGES_CHANGED"
-
-            IMAGE_FILES_PATHS=$(echo "$IMAGES_CHANGED" | paste -sd "," -)
-            echo "IMAGE_FILES_PATHS=$IMAGE_FILES_PATHS" >> $GITHUB_ENV
-          fi  
       
+          # Handle added image files
+          if [ -n "$IMAGES_ADDED" ]; then
+            echo "IMAGE_FILES_ADDED=true" >> $GITHUB_ENV
+            echo "Added image files:"
+            echo "$IMAGES_ADDED"
+      
+            IMAGE_FILES_PATHS=$(echo "$IMAGES_ADDED" | paste -sd "," -)
+            echo "IMAGE_FILES_PATHS=$IMAGE_FILES_PATHS" >> $GITHUB_ENV
+          fi
+        
       - name: Run codescript-problems (Problem Seeder Script)
-        if: env.PROBLEM_FILES_CHANGED == 'true'
+        if: env.PROBLEM_FILES_ADDED == 'true'
         run: |
           echo "Seeding problem files..."
-          echo "PROBLEM_FILES_PATHS: $PROBLEM_FILES_PATHS"
-
+          echo $PROBLEM_FILES_PATHS
+      
       - name: Upload images to Google Cloud
-        if: env.IMAGE_FILES_CHANGED == 'true'
+        if: env.IMAGE_FILES_ADDED == 'true'
         run: |
           echo "Uploading images to Google Cloud..."
-          echo "IMAGE_FILES_PATHS: $IMAGE_FILES_PATHS"
+          echo $IMAGE_FILES_PATHS
 
 #       # Set up codescript-fastapi (FastAPI and MySQL)
 #       - name: Set up codescript-fastapi (FastAPI and MySQL)
