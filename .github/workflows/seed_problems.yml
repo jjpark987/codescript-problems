@@ -70,7 +70,7 @@ jobs:
           
           echo "🚀 Deploying codescript-fastapi..."
           cd codescript-fastapi
-          docker compose up -d db app
+          docker compose up -d
 
       - name: Wait for MySQL to be Ready
         run: |
@@ -85,7 +85,7 @@ jobs:
         run: |
           echo "🚀 Deploying codescript-problems"
           cd ..
-          docker compose up --abort-on-container-exit --remove-orphans problem_seeder
+          docker compose up
 
       - name: Clean up codescript-fastapi
         run: |
