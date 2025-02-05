@@ -41,7 +41,10 @@ jobs:
             echo "PROBLEM_FILES_CHANGED=true" >> $GITHUB_ENV
             echo "Changed problem files:"
             echo "$PROBLEM_CHANGED"
-            echo "PROBLEM_FILES_PATHS=$PROBLEM_CHANGED" >> $GITHUB_ENV
+
+            # Join file paths with a comma
+            PROBLEM_FILES_PATHS=$(echo "$PROBLEM_CHANGED" | paste -sd "," -)
+            echo "PROBLEM_FILES_PATHS=$PROBLEM_FILES_PATHS" >> $GITHUB_ENV
           fi
 
           # Handle image file changes
@@ -49,7 +52,10 @@ jobs:
             echo "IMAGE_FILES_CHANGED=true" >> $GITHUB_ENV
             echo "Changed image files:"
             echo "$IMAGE_CHANGED"
-            echo "IMAGE_FILES_PATHS=$IMAGE_CHANGED" >> $GITHUB_ENV
+
+            # Join file paths with a comma
+            IMAGE_FILES_PATHS=$(echo "$IMAGE_CHANGED" | paste -sd "," -)
+            echo "IMAGE_FILES_PATHS=$IMAGE_FILES_PATHS" >> $GITHUB_ENV
           fi
 
       # - name: Run codescript-problems (Problem Seeder Script)
