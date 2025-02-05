@@ -33,46 +33,40 @@ jobs:
           CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})
           
           # Filter only relevant changes
-          PROBLEM_CHANGED=$(echo "$CHANGED_FILES" | grep "^python/problems/" || true)
-          IMAGE_CHANGED=$(echo "$CHANGED_FILES" | grep "^python/images/" || true)
+          PROBLEMS_CHANGED=$(echo "$CHANGED_FILES" | grep "^python/problems/" || true)
+          IMAGES_CHANGED=$(echo "$CHANGED_FILES" | grep "^python/images/" || true)
 
           # Handle problem file changes
-          if [ -n "$PROBLEM_CHANGED" ]; then
+          if [ -n "$PROBLEMS_CHANGED" ]; then
             echo "PROBLEM_FILES_CHANGED=true" >> $GITHUB_ENV
             echo "Changed problem files:"
-            echo "$PROBLEM_CHANGED"
+            echo "$PROBLEMS_CHANGED"
 
-            # Join file paths with a comma
-            PROBLEM_FILES_PATHS=$(echo "$PROBLEM_CHANGED" | paste -sd "," -)
+            PROBLEM_FILES_PATHS=$(echo "$PROBLEMS_CHANGED" | paste -sd "," -)
             echo "PROBLEM_FILES_PATHS=$PROBLEM_FILES_PATHS" >> $GITHUB_ENV
           fi
 
           # Handle image file changes
-          if [ -n "$IMAGE_CHANGED" ]; then
+          if [ -n "$IMAGES_CHANGED" ]; then
             echo "IMAGE_FILES_CHANGED=true" >> $GITHUB_ENV
             echo "Changed image files:"
-            echo "$IMAGE_CHANGED"
+            echo "$IMAGES_CHANGED"
 
-            # Join file paths with a comma
-            IMAGE_FILES_PATHS=$(echo "$IMAGE_CHANGED" | paste -sd "," -)
+            IMAGE_FILES_PATHS=$(echo "$IMAGES_CHANGED" | paste -sd "," -)
             echo "IMAGE_FILES_PATHS=$IMAGE_FILES_PATHS" >> $GITHUB_ENV
-          fi
+          fi  
+      
+      - name: Run codescript-problems (Problem Seeder Script)
+        if: env.PROBLEM_FILES_CHANGED == 'true'
+        run: |
+          echo "Seeding problem files..."
+          echo "PROBLEM_FILES_PATHS: $PROBLEM_FILES_PATHS"
 
-      # - name: Run codescript-problems (Problem Seeder Script)
-      #   if: env.PROBLEM_FILES_CHANGED == 'true'
-      #   run: |
-      #     # Loop through all changed problem files
-      #     for FILE in $(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep "^python/problems/"); do
-      #       echo "Seeding problem file: $FILE"
-      #       docker-compose -f repo_b/docker-compose.yml run --rm problem_seeder --file $FILE
-      #     done
-
-      # - name: Upload images to Google Cloud Storage
-      #   if: env.IMAGE_FILES_CHANGED == 'true'
-      #   run: |
-      #     echo "Uploading images to Google Cloud Storage..."
-      #     gcloud auth activate-service-account --key-file=${{ secrets.GCP_CREDENTIALS }}
-      #     gsutil -m cp -r python/images/* gs://YOUR_BUCKET_NAME/images/
+      - name: Upload images to Google Cloud
+        if: env.IMAGE_FILES_CHANGED == 'true'
+        run: |
+          echo "Uploading images to Google Cloud..."
+          echo "IMAGE_FILES_PATHS: $IMAGE_FILES_PATHS"
 
 #       # Set up codescript-fastapi (FastAPI and MySQL)
 #       - name: Set up codescript-fastapi (FastAPI and MySQL)
