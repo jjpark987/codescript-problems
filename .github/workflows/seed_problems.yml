@@ -35,11 +35,15 @@ jobs:
           echo "Changed files:"
           echo "$CHANGED_FILES"
           
-          if echo "$CHANGED_FILES" | grep -q "^python/problems/"; then
+          # Filter only relevant changes
+          PROBLEM_CHANGED=$(echo "$CHANGED_FILES" | grep "^python/problems/" || true)
+          IMAGE_CHANGED=$(echo "$CHANGED_FILES" | grep "^python/images/" || true)
+          
+          if [ -n "$PROBLEM_CHANGED" ]; then
             echo "PROBLEM_FILES_CHANGED=true" >> $GITHUB_ENV
           fi
           
-          if echo "$CHANGED_FILES" | grep -q "^python/images/"; then
+          if [ -n "$IMAGE_CHANGED" ]; then
             echo "IMAGE_FILES_CHANGED=true" >> $GITHUB_ENV
           fi
 
