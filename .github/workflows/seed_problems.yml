@@ -32,19 +32,24 @@ jobs:
           echo "Fetching changed files in the current repository..."
           CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})
           
-          echo "Changed files:"
-          echo "$CHANGED_FILES"
-          
           # Filter only relevant changes
           PROBLEM_CHANGED=$(echo "$CHANGED_FILES" | grep "^python/problems/" || true)
           IMAGE_CHANGED=$(echo "$CHANGED_FILES" | grep "^python/images/" || true)
-          
+
+          # Handle problem file changes
           if [ -n "$PROBLEM_CHANGED" ]; then
             echo "PROBLEM_FILES_CHANGED=true" >> $GITHUB_ENV
+            echo "Changed problem files:"
+            echo "$PROBLEM_CHANGED"
+            echo "PROBLEM_FILES_PATHS=$PROBLEM_CHANGED" >> $GITHUB_ENV
           fi
-          
+
+          # Handle image file changes
           if [ -n "$IMAGE_CHANGED" ]; then
             echo "IMAGE_FILES_CHANGED=true" >> $GITHUB_ENV
+            echo "Changed image files:"
+            echo "$IMAGE_CHANGED"
+            echo "IMAGE_FILES_PATHS=$IMAGE_CHANGED" >> $GITHUB_ENV
           fi
 
       # - name: Run codescript-problems (Problem Seeder Script)
