@@ -64,6 +64,9 @@ jobs:
           docker network create codescript_network
 
       - name: Run codescript-fastapi
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
         run: |
           echo "📄 Added problem files:"
           echo "${{ needs.detect_changes.outputs.problem_files_paths }}"
