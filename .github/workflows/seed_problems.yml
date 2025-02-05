@@ -30,6 +30,11 @@ jobs:
           path: ./codescript-backend
           ref: fastapi 
 
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
       - name: Set up codescript-fastapi (FastAPI and MySQL)
         run: |
           docker-compose -f codescript-fastapi/docker-compose.yml up -d db app
