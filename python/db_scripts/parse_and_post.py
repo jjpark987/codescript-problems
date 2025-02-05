@@ -13,7 +13,6 @@ load_dotenv()
 parser = argparse.ArgumentParser(description='Parse and post problem files.')
 parser.add_argument('--file', type=str, help='Path to the newly added problem file')
 args = parser.parse_args()
-file_path = args.file
 
 # Function to find all Python problem files in the subcategories
 def find_problem_files() -> List[str]:
@@ -141,13 +140,15 @@ async def post_problem(json_data: Dict[str, str]) -> None:
 
 # Main function
 async def main() -> None:
-    if file_path:
-        print(f'Processing {file_path}...')
-        data = parse_file(file_path)
-        if data:
-            await post_problem(data)
-        else:
-            print(f'❌ No valid problem data extracted from: {file_path}')
+    if args.file:
+        file_paths = args.file.split(',')
+        for path in file_paths:
+            print(f'Processing {path}...')
+            data = parse_file(path)
+            if data:
+                await post_problem(data)
+            else:
+                print(f'❌ No valid problem data extracted from: {path}')
     else:
         print('No arugment passed to parse_and_post.py')
         # problem_files = find_problem_files()

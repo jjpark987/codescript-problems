@@ -58,6 +58,13 @@ jobs:
           path: ./codescript-fastapi
           fetch-depth: 1
 
+      - name: Checkout codescript-problems
+        uses: actions/checkout@v4
+        with:
+          repository: jjpark987/codescript-problems
+          path: ./codescript-problems
+          fetch-depth: 1
+
       - name: Ensure Docker Network Exists
         run: |
           docker network inspect codescript_network >/dev/null 2>&1 || \
