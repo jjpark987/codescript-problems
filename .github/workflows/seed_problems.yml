@@ -2,10 +2,9 @@ name: Seed Problem(s)
 
 on:
   push:
-    # Trigger this workflow on changes to the "python/problems" directory
     paths:
-      - 'python/problems/**'  
-    # Trigger only on pushes to the main branch
+      - 'python/problems/**'
+      - 'python/images/**'
     branches:
       - main  
 
@@ -23,35 +22,56 @@ jobs:
           - 3306:3306
 
     steps:
+      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           repository: jjpark987/codescript-backend
           path: ./codescript-backend
-          ref: fastapi 
-
-      - name: Set up Docker Compose
+          ref: fastapi
+      # Debug
+      - name: Debug - Check which files triggered this
         run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+          echo "Modified files: ${{ toJson(github.event.head_commit.modified) }}"
 
-      - name: Set up codescript-fastapi (FastAPI and MySQL)
-        run: |
-          docker-compose -f codescript-fastapi/docker-compose.yml up -d db app
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+#       # Set up codescript-fastapi (FastAPI and MySQL)
+#       - name: Set up codescript-fastapi (FastAPI and MySQL)
+#         run: |
+#           docker-compose -f codescript-fastapi/docker-compose.yml up -d db app
+#         env:
+#           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+#           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 
-      - name: Wait for MySQL in codescript-fastapi to be ready
-        run: |
-          docker exec -t codescript-db mysqladmin --user=root --password=${{ secrets.MYSQL_ROOT_PASSWORD }} ping --silent
+#       # Wait for MySQL in codescript-fastapi to be ready
+#       - name: Wait for MySQL in codescript-fastapi to be ready
+#         run: |
+#           docker exec -t codescript-db mysqladmin --user=root --password=${{ secrets.MYSQL_ROOT_PASSWORD }} ping --silent
 
-      - name: Run codescript-problems (Problem Seeder Script)
-        run: |
-          FILE_PATH="${{ github.event.head_commit.modified[0] }}"  # Get the path to the changed problem file
-          echo "Problem file path: $FILE_PATH"
-          docker-compose -f repo_b/docker-compose.yml run --rm problem_seeder --file $FILE_PATH
+#       # Run codescript-problems (Problem Seeder Script)
+#       - name: Run codescript-problems (Problem Seeder Script)
+#         run: |
+#           FILE_PATH="${{ github.event.head_commit.modified[0] }}"
+#           echo "Problem file path: $FILE_PATH"
+#           docker-compose -f repo_b/docker-compose.yml run --rm problem_seeder --file $FILE_PATH
 
-      - name: Clean up codescript-fastapi
-        run: |
-          docker-compose -f codescript-fastapi/docker-compose.yml down
+#       # Upload images to Google Cloud if there are changes in the "python/images" folder
+#       - name: Upload images to Google Cloud Storage
+#         if: contains(github.event.head_commit.modified, 'python/images/')
+#         run: |
+#           echo "Uploading images to Google Cloud Storage"
+#           # Install gcloud CLI
+#           curl https://sdk.cloud.google.com | bash
+#           source $HOME/google-cloud-sdk/path.bash.inc
+#           echo ${{ secrets.GCP_CREDENTIALS }} > ${HOME}/gcp-credentials.json
+
+#           # Authenticate with Google Cloud
+#           gcloud auth activate-service-account --key-file=${HOME}/gcp-credentials.json
+#           gcloud config set project ace-coda-436023-v0  # Set your project ID
+          
+#           # Upload images to the Google Cloud Storage bucket
+#           gsutil -m cp -r python/images/* gs://YOUR_BUCKET_NAME/images/
+          
+#       # Clean up codescript-fastapi
+#       - name: Clean up codescript-fastapi
+#         run: |
+#           docker-compose -f repo_a/docker-compose.yml down
