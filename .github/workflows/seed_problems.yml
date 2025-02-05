@@ -28,25 +28,16 @@ jobs:
           repository: jjpark987/codescript-backend
           path: ./codescript-backend
           ref: fastapi
+          fetch-depth: 0
 
       - name: Detect Changed Files
         run: |
           echo "Fetching changed files..."
-          cd codescript-backend  # Move into the checked-out repo directory
-          git fetch --depth=1 origin ${{ github.event.before }}
+          cd codescript-backend
+          git fetch --depth=1 origin ${{ github.event.before }} || true
           CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})
           echo "Changed files:"
           echo "$CHANGED_FILES"
-      
-          # Check for changes in problems/
-          if echo "$CHANGED_FILES" | grep -q "^python/problems/"; then
-            echo "PROBLEM_FILES_CHANGED=true" >> $GITHUB_ENV
-          fi
-      
-          # Check for changes in images/
-          if echo "$CHANGED_FILES" | grep -q "^python/images/"; then
-            echo "IMAGE_FILES_CHANGED=true" >> $GITHUB_ENV
-          fi
 
       # - name: Run codescript-problems (Problem Seeder Script)
       #   if: env.PROBLEM_FILES_CHANGED == 'true'
