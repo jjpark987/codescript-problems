@@ -25,27 +25,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          repository: jjpark987/codescript-backend
-          path: ./codescript-backend
-          ref: fastapi
-          fetch-depth: 2
-
-      - name: Detect Changed Files
+          fetch-depth: 1
+      
+      - name: Detect Changed Files in Current Repo
         run: |
-          echo "Fetching changed files..."
-          cd codescript-backend
-
-          # Compare the last commit with the one before it
-          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
-
+          echo "Fetching changed files in the current repository..."
+          CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r HEAD)
+      
           echo "Changed files:"
           echo "$CHANGED_FILES"
-
+      
           # Check for changes in problems/
           if echo "$CHANGED_FILES" | grep -q "^python/problems/"; then
             echo "PROBLEM_FILES_CHANGED=true" >> $GITHUB_ENV
           fi
-
+      
           # Check for changes in images/
           if echo "$CHANGED_FILES" | grep -q "^python/images/"; then
             echo "IMAGE_FILES_CHANGED=true" >> $GITHUB_ENV
