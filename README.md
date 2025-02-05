@@ -44,3 +44,53 @@ pip install -r requirements.txt
 ```zsh
 python python/db_scripts/parse_and_post.py
 ```
+
+## Docker
+
+- Force build and run containers in the foreground
+
+```zsh
+docker compose up --build
+```
+
+- Build and run containers in the foreground
+
+```zsh
+docker compose up
+```
+
+- Build and run containers in background
+
+```zsh
+docker compose up -d
+```
+
+- Start previously stopped containers
+
+```zsh
+docker compose start
+```
+
+- Stop and remove containers
+
+```zsh
+docker compose down
+```
+
+- Stop containers without removing
+
+```zsh
+docker compose stop
+```
+
+- Restart containers in the background (compose down and up)
+
+```zsh
+docker compose restart
+```
+
+- Check container status
+
+```zsh
+docker ps
+```

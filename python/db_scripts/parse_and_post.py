@@ -1,3 +1,4 @@
+import argparse
 import asyncio
 import glob
 import httpx
@@ -7,6 +8,12 @@ from dotenv import load_dotenv
 from typing import List, Dict
 
 load_dotenv()
+
+# Argument parser to accept file path
+parser = argparse.ArgumentParser(description='Parse and post problem files.')
+parser.add_argument('--file', type=str, help='Path to the newly added problem file')
+args = parser.parse_args()
+file_path = args.file
 
 # Function to find all Python problem files in the subcategories
 def find_problem_files() -> List[str]:
@@ -100,6 +107,7 @@ def parse_file(file_path: str) -> Dict[str, str]:
             for ex in example_pattern
         ]
 
+        print(f'✅ Successfully parsed: {file_path}')
         return parsed_data
     
     except Exception as e:
@@ -117,31 +125,39 @@ async def post_problem(json_data: Dict[str, str]) -> None:
     HEADERS = {'Content-Type': 'application/json'}
 
     try:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=10) as client:
             response = await client.post(API_URL, json=json_data, headers=HEADERS)
         
         if response.status_code == 201:
-            print(f'✅ Successfully added problem: {json_data["title"]}')
+            print(f'✅ Successfully posted problem: {json_data["title"]}')
             print('Response:', response.json())  
         else:
-            print(f'❌ Failed to add problem: {response.status_code}')
+            print(f'❌ Failed to post problem: {response.status_code}')
             print('Response:', response.text)  
 
     except httpx.RequestError as e:
         print(f'🚨 Error sending request: {e}')
+        print(f'🔍 Debug Info - URL: {API_URL}, Headers: {HEADERS}, Data: {json_data}')
 
 # Main function
 async def main() -> None:
-    problem_files = find_problem_files()
-
-    for file_path in problem_files:
+    if file_path:
         print(f'Processing {file_path}...')
-        
         data = parse_file(file_path)
         if data:
             await post_problem(data)
         else:
             print(f'❌ No valid problem data extracted from: {file_path}')
+    else:
+        print('No arugment passed to parse_and_post.py')
+        # problem_files = find_problem_files()
+        # for file_path in problem_files:
+        #     print(f'Processing {file_path}...')
+        #     data = parse_file(file_path)
+        #     if data:
+        #         await post_problem(data)
+        #     else:
+        #         print(f'❌ No valid problem data extracted from: {file_path}')
 
 # Test script
 if __name__ == '__main__':

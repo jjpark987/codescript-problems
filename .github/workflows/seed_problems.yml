@@ -1,0 +1,52 @@
+name: Seed Problem(s)
+
+on:
+  push:
+    # Trigger this workflow on changes to the "python/problems" directory
+    paths:
+      - 'python/problems/**'  
+    # Trigger only on pushes to the main branch
+    branches:
+      - main  
+
+jobs:
+  setup_and_run:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: codescript_db
+        ports:
+          - 3306:3306
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: jjpark987/codescript-backend
+          path: ./codescript-backend
+          ref: fastapi 
+
+      - name: Set up codescript-fastapi (FastAPI and MySQL)
+        run: |
+          docker-compose -f codescript-fastapi/docker-compose.yml up -d db app
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+
+      - name: Wait for MySQL in codescript-fastapi to be ready
+        run: |
+          docker exec -t codescript-db mysqladmin --user=root --password=${{ secrets.MYSQL_ROOT_PASSWORD }} ping --silent
+
+      - name: Run codescript-problems (Problem Seeder Script)
+        run: |
+          FILE_PATH="${{ github.event.head_commit.modified[0] }}"  # Get the path to the changed problem file
+          echo "Problem file path: $FILE_PATH"
+          docker-compose -f repo_b/docker-compose.yml run --rm problem_seeder --file $FILE_PATH
+
+      - name: Clean up codescript-fastapi
+        run: |
+          docker-compose -f codescript-fastapi/docker-compose.yml down

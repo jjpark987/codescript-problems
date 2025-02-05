@@ -1,0 +1,14 @@
+services:
+  problem_seeder:
+    build: .
+    container_name: codescript-problems
+    environment:
+      - API_BASE_URL=${API_BASE_URL}
+    volumes:
+      - .:/app
+    networks:
+      - codescript_network
+
+networks:
+  codescript_network:
+    external: true
