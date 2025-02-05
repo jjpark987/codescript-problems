@@ -27,7 +27,7 @@ jobs:
         id: set-env
         run: |
           echo "📥 Fetching added files in the current repository..."
-          ADDED_FILES=$(git diff --name-only --diff-filter=A ${{ github.event.before }} ${{ github.event.after }})
+          ADDED_FILES=$(git diff --name-only --diff-filter=AM ${{ github.event.before }} ${{ github.event.after }})
           echo "$ADDED_FILES"
 
           # Check for problem files
@@ -57,6 +57,11 @@ jobs:
           ref: fastapi
           path: ./codescript-fastapi
           fetch-depth: 1
+
+      - name: Ensure Docker Network Exists
+        run: |
+          docker network inspect codescript_network >/dev/null 2>&1 || \
+          docker network create codescript_network
 
       - name: Run codescript-fastapi
         run: |
