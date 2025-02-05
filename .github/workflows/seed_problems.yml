@@ -74,19 +74,21 @@ jobs:
           echo "🚀 Deploying codescript-fastapi..."
           cd codescript-fastapi
           docker compose up -d
-          echo "✅ Docker is running!"
+          echo "✅ API docker is running!"
 
       - name: Run codescript-problems
         run: |
-          echo "🚀 Deploying codescript-problems"
+          echo "🚀 Deploying codescript-problems..."
           cd ..
-          docker compose up
+          docker compose up --remove-orphans
+          echo "✅ Problems docker is running!"
 
       - name: Clean up codescript-fastapi
         run: |
           echo "🧹 Cleaning up codescript-fastapi..."
           cd codescript-fastapi
           docker compose down --remove-orphans
+          echo "✅ Completed clean up!"
 
   upload_images:
     needs: detect_changes
