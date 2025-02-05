@@ -26,8 +26,9 @@ jobs:
       - name: Detect Added Files
         id: set-env
         run: |
-          echo "Fetching added files in the current repository..."
+          echo "📥 Fetching added files in the current repository..."
           ADDED_FILES=$(git diff --name-only --diff-filter=A ${{ github.event.before }} ${{ github.event.after }})
+          echo "$ADDED_FILES"
 
           # Check for problem files
           PROBLEM_FILES=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
@@ -49,18 +50,43 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repo A (codescript-backend)
+      - name: Checkout codescript-backend
         uses: actions/checkout@v4
         with:
           repository: jjpark987/codescript-backend
           ref: fastapi
-          path: ./codescript-backend
+          path: ./codescript-fastapi
           fetch-depth: 1
 
-      - name: Run codescript-problems (Problem Seeder Script)
+      - name: Run codescript-fastapi
         run: |
-          echo "Seeding problem files..."
+          echo "📄 Added problem files:"
           echo "${{ needs.detect_changes.outputs.problem_files_paths }}"
+          
+          echo "🚀 Deploying codescript-fastapi..."
+          cd codescript-fastapi
+          docker compose up -d db app
+
+      - name: Wait for MySQL to be Ready
+        run: |
+          echo "⏳ Waiting for MySQL to be ready..."
+          until docker exec -t codescript-db mysqladmin ping -h localhost -u root -p${{ secrets.MYSQL_ROOT_PASSWORD }} --silent; do
+            echo "🔄 Still waiting for MySQL..."
+            sleep 3
+          done
+          echo "✅ MySQL is ready!"
+
+      - name: Run codescript-problems
+        run: |
+          echo "🚀 Deploying codescript-problems"
+          cd ..
+          docker compose up --abort-on-container-exit --remove-orphans problem_seeder
+
+      - name: Clean up codescript-fastapi
+        run: |
+          echo "🧹 Cleaning up codescript-fastapi..."
+          cd codescript-fastapi
+          docker compose down --remove-orphans
 
   upload_images:
     needs: detect_changes
