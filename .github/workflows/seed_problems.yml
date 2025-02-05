@@ -12,14 +12,14 @@ jobs:
   setup_and_run:
     runs-on: ubuntu-latest
 
-    services:
-      db:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-          MYSQL_DATABASE: codescript_db
-        ports:
-          - 3306:3306
+    # services:
+    #   db:
+    #     image: mysql:8.0
+    #     env:
+    #       MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+    #       MYSQL_DATABASE: codescript_db
+    #     ports:
+    #       - 3306:3306
 
     steps:
       - name: Checkout repository
@@ -30,7 +30,7 @@ jobs:
       - name: Detect Changed Files in Current Repo
         run: |
           echo "Fetching changed files in the current repository..."
-          CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r HEAD)
+          CHANGED_FILES=$(git log -m -1 --name-only --pretty="format:")
       
           echo "Changed files:"
           echo "$CHANGED_FILES"
