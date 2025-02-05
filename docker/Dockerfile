@@ -13,5 +13,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code into the container
 COPY . .
 
-# Run the database seeding script
-CMD ["python", "python/db_scripts/parse_and_post.py"]
+# Copy the entrypoint script to the container
+COPY docker/entrypoint.sh /entrypoint.sh
+
+# Make the script executable
+RUN chmod +x /entrypoint.sh
+
+# Set the entrypoint to the entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]

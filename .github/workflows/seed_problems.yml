@@ -84,6 +84,9 @@ jobs:
           echo "✅ API docker is running!"
 
       - name: Run codescript-problems
+        env:
+          PROBLEM_FILES_PATHS: ${{ env.problem_files_paths }}
+          IMAGE_FILES_PATHS: ${{ env.image_files_paths }}
         run: |
           echo "🚀 Deploying codescript-problems..."
           cd codescript-problems
