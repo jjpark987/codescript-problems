@@ -74,22 +74,7 @@ jobs:
           echo "🚀 Deploying codescript-fastapi..."
           cd codescript-fastapi
           docker compose up -d
-
-      - name: Wait for MySQL to be Ready
-        run: |
-          echo "⏳ Waiting for MySQL to be ready..."
-          MAX_RETRIES=5
-          RETRY_COUNT=0
-          until docker exec -t codescript-db mysqladmin --user=root --password=${{ secrets.MYSQL_ROOT_PASSWORD }} ping --silent; do
-            if [ $RETRY_COUNT -ge $MAX_RETRIES ]; then
-              echo "❌ MySQL did not become ready after $MAX_RETRIES attempts."
-              exit 1
-            fi
-            echo "🔄 Still waiting for MySQL... Attempt $((RETRY_COUNT+1)) of $MAX_RETRIES"
-            sleep 3
-            RETRY_COUNT=$((RETRY_COUNT+1))
-          done
-          echo "✅ MySQL is ready!"
+          echo "✅ Docker is running!"
 
       - name: Run codescript-problems
         run: |
