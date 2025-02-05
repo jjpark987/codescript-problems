@@ -34,10 +34,29 @@ jobs:
         run: |
           echo "Fetching changed files..."
           cd codescript-backend
+
+          # Attempt to fetch, ignore errors if commit is missing
           git fetch --depth=1 origin ${{ github.event.before }} || true
-          CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})
+
+          # Fallback if the commit is missing (e.g., force-pushed)
+          if git rev-parse ${{ github.event.before }} >/dev/null 2>&1; then
+            CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }})
+          else
+            CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
+          fi
+
           echo "Changed files:"
           echo "$CHANGED_FILES"
+
+          # Check for changes in problems/
+          if echo "$CHANGED_FILES" | grep -q "^python/problems/"; then
+            echo "PROBLEM_FILES_CHANGED=true" >> $GITHUB_ENV
+          fi
+
+          # Check for changes in images/
+          if echo "$CHANGED_FILES" | grep -q "^python/images/"; then
+            echo "IMAGE_FILES_CHANGED=true" >> $GITHUB_ENV
+          fi
 
       # - name: Run codescript-problems (Problem Seeder Script)
       #   if: env.PROBLEM_FILES_CHANGED == 'true'
