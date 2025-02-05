@@ -1,4 +1,4 @@
-name: Seed Problem(s)
+name: Seed Problem(s) and Upload Images
 
 on:
   push:
@@ -9,17 +9,13 @@ on:
       - main  
 
 jobs:
-  setup_and_run:
+  detect_changes:
     runs-on: ubuntu-latest
-
-    # services:
-    #   db:
-    #     image: mysql:8.0
-    #     env:
-    #       MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-    #       MYSQL_DATABASE: codescript_db
-    #     ports:
-    #       - 3306:3306
+    outputs:
+      problem_files_added: ${{ steps.set-env.outputs.problem_files_added }}
+      image_files_added: ${{ steps.set-env.outputs.image_files_added }}
+      problem_files_paths: ${{ steps.set-env.outputs.problem_files_paths }}
+      image_files_paths: ${{ steps.set-env.outputs.image_files_paths }}
 
     steps:
       - name: Checkout repository
@@ -27,85 +23,66 @@ jobs:
         with:
           fetch-depth: 2
       
-      - name: Detect Added Files in Current Repo
+      - name: Detect Added Files
+        id: set-env
         run: |
           echo "Fetching added files in the current repository..."
           ADDED_FILES=$(git diff --name-only --diff-filter=A ${{ github.event.before }} ${{ github.event.after }})
-          
-          # Filter only relevant additions
-          PROBLEMS_ADDED=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
-          IMAGES_ADDED=$(echo "$ADDED_FILES" | grep "^python/images/" || true)
-      
-          # Handle added problem files
-          if [ -n "$PROBLEMS_ADDED" ]; then
-            echo "PROBLEM_FILES_ADDED=true" >> $GITHUB_ENV
-            echo "Added problem files:"
-            echo "$PROBLEMS_ADDED"
-      
-            PROBLEM_FILES_PATHS=$(echo "$PROBLEMS_ADDED" | paste -sd "," -)
-            echo "PROBLEM_FILES_PATHS=$PROBLEM_FILES_PATHS" >> $GITHUB_ENV
+
+          # Check for problem files
+          PROBLEM_FILES=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
+          if [ -n "$PROBLEM_FILES" ]; then
+            echo "problem_files_added=true" >> $GITHUB_OUTPUT
+            echo "problem_files_paths=$(echo $PROBLEM_FILES | paste -sd "," -)" >> $GITHUB_OUTPUT
           fi
-      
-          # Handle added image files
-          if [ -n "$IMAGES_ADDED" ]; then
-            echo "IMAGE_FILES_ADDED=true" >> $GITHUB_ENV
-            echo "Added image files:"
-            echo "$IMAGES_ADDED"
-      
-            IMAGE_FILES_PATHS=$(echo "$IMAGES_ADDED" | paste -sd "," -)
-            echo "IMAGE_FILES_PATHS=$IMAGE_FILES_PATHS" >> $GITHUB_ENV
+
+          # Check for image files
+          IMAGE_FILES=$(echo "$ADDED_FILES" | grep "^python/images/" || true)
+          if [ -n "$IMAGE_FILES" ]; then
+            echo "image_files_added=true" >> $GITHUB_OUTPUT
+            echo "image_files_paths=$(echo $IMAGE_FILES | paste -sd "," -)" >> $GITHUB_OUTPUT
           fi
-        
+
+  seed_problems:
+    needs: detect_changes
+    if: needs.detect_changes.outputs.problem_files_added == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo A (codescript-backend)
+        uses: actions/checkout@v4
+        with:
+          repository: jjpark987/codescript-backend
+          ref: fastapi
+          path: ./codescript-backend
+          fetch-depth: 1
+
       - name: Run codescript-problems (Problem Seeder Script)
-        if: env.PROBLEM_FILES_ADDED == 'true'
         run: |
           echo "Seeding problem files..."
-          echo $PROBLEM_FILES_PATHS
-      
-      - name: Upload images to Google Cloud
-        if: env.IMAGE_FILES_ADDED == 'true'
+          echo "${{ needs.detect_changes.outputs.problem_files_paths }}"
+
+  upload_images:
+    needs: detect_changes
+    if: needs.detect_changes.outputs.image_files_added == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Upload images to Google Cloud Storage
         run: |
-          echo "Uploading images to Google Cloud..."
-          echo $IMAGE_FILES_PATHS
+          echo "Uploading images to Google Cloud Storage..."
+          echo "${{ needs.detect_changes.outputs.image_files_paths }}"
 
-#       # Set up codescript-fastapi (FastAPI and MySQL)
-#       - name: Set up codescript-fastapi (FastAPI and MySQL)
-#         run: |
-#           docker-compose -f codescript-fastapi/docker-compose.yml up -d db app
-#         env:
-#           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-#           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          # # Install gcloud CLI
+          # sudo apt-get update && sudo apt-get install -y google-cloud-sdk
+          # echo "${{ secrets.GCP_CREDENTIALS }}" > $HOME/gcp-credentials.json
 
-#       # Wait for MySQL in codescript-fastapi to be ready
-#       - name: Wait for MySQL in codescript-fastapi to be ready
-#         run: |
-#           docker exec -t codescript-db mysqladmin --user=root --password=${{ secrets.MYSQL_ROOT_PASSWORD }} ping --silent
+          # # Authenticate with Google Cloud
+          # gcloud auth activate-service-account --key-file=$HOME/gcp-credentials.json
+          # gcloud config set project YOUR_PROJECT_ID
 
-#       # Run codescript-problems (Problem Seeder Script)
-#       - name: Run codescript-problems (Problem Seeder Script)
-#         run: |
-#           FILE_PATH="${{ github.event.head_commit.modified[0] }}"
-#           echo "Problem file path: $FILE_PATH"
-#           docker-compose -f repo_b/docker-compose.yml run --rm problem_seeder --file $FILE_PATH
-
-#       # Upload images to Google Cloud if there are changes in the "python/images" folder
-#       - name: Upload images to Google Cloud Storage
-#         if: contains(github.event.head_commit.modified, 'python/images/')
-#         run: |
-#           echo "Uploading images to Google Cloud Storage"
-#           # Install gcloud CLI
-#           curl https://sdk.cloud.google.com | bash
-#           source $HOME/google-cloud-sdk/path.bash.inc
-#           echo ${{ secrets.GCP_CREDENTIALS }} > ${HOME}/gcp-credentials.json
-
-#           # Authenticate with Google Cloud
-#           gcloud auth activate-service-account --key-file=${HOME}/gcp-credentials.json
-#           gcloud config set project ace-coda-436023-v0  # Set your project ID
-          
-#           # Upload images to the Google Cloud Storage bucket
-#           gsutil -m cp -r python/images/* gs://YOUR_BUCKET_NAME/images/
-          
-#       # Clean up codescript-fastapi
-#       - name: Clean up codescript-fastapi
-#         run: |
-#           docker-compose -f repo_a/docker-compose.yml down
+          # # Upload images
+          # IFS=',' read -ra FILES <<< "${{ needs.detect_changes.outputs.image_files_paths }}"
+          # for file in "${FILES[@]}"; do
+          #   gsutil cp "$file" gs://YOUR_BUCKET_NAME/images/
+          # done
