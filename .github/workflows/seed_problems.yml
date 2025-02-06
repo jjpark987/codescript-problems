@@ -63,6 +63,8 @@ jobs:
       - name: Checkout codescript-problems
         uses: actions/checkout@v4
         with:
+          repository: jjpark987/codescript-problems
+          path: ./codescript-problems
           fetch-depth: 1
 
       - name: Check codescript_network and PROBLEM_FILES_PATHS
@@ -104,6 +106,8 @@ jobs:
       - name: Checkout codescript-problems
         uses: actions/checkout@v4
         with:
+          repository: jjpark987/codescript-problems
+          path: ./codescript-problems
           fetch-depth: 1
 
       - name: Check IMAGE_FILES_PATHS
@@ -119,5 +123,5 @@ jobs:
           GC_BUCKET_NAME: ${{ secrets.GC_BUCKET_NAME }}
         run: |
           echo "🖥️ Running script upload_images.py..."
-          python python/db_scripts/upload_images.py --file "$IMAGE_FILES_PATHS"
+          python ./python/db_scripts/upload_images.py --file "$IMAGE_FILES_PATHS"
           echo "✅ Completed script."
