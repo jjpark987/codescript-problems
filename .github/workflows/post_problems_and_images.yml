@@ -67,16 +67,17 @@ jobs:
           path: ./codescript-problems
           fetch-depth: 1
 
-      - name: Check codescript_network and PROBLEM_FILES_PATHS
+      - name: Check workflow dependencies
         run: |
+          echo "🔍 Checking for codescript_network..."
           docker network inspect codescript_network >/dev/null 2>&1 || docker network create codescript_network
+          echo "✅ codescript_network found!"
           echo "📄 Added problem files:"
           echo "$PROBLEM_FILES_PATHS"
-
+          
       - name: Run codescript-fastapi
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          DOCKER_DATABASE_URL: ${{ env.DOCKER_DATABASE_URL }}
         run: |
           echo "🚀 Deploying codescript-fastapi..."
           cd codescript-fastapi
@@ -85,7 +86,7 @@ jobs:
 
       - name: Run codescript-problems
         env:
-            API_BASE_URL: ${{ secrets.API_BASE_URL }}
+            DOCKER_API_BASE_URL: ${{ env.DOCKER_API_BASE_URL }}
         run: |
           echo "🚀 Deploying codescript-problems..."
           cd codescript-problems
@@ -123,8 +124,8 @@ jobs:
       
       - name: Run upload_images.py
         env:
-          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-          GC_BUCKET_NAME: ${{ secrets.GC_BUCKET_NAME }}
+          GCP_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
+          GC_BUCKET_NAME: ${{ env.GC_BUCKET_NAME }}
         run: |
           echo "🖥️ Running script upload_images.py..."
           cd codescript-problems

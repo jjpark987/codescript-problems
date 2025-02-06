@@ -9,6 +9,44 @@ from typing import List, Dict
 
 load_dotenv()
 
+# Global variables
+ROOT_DIR = 'python/problems/'
+CATEGORIES = ['data_manipulations', 'combinatorics', 'optimizations']
+PATTERNS = {
+    'subcategory': r'subcategory:\s*(.*?)\n',
+    'difficulty': r'difficulty:\s*(.*?)\n',
+    'image_url_e1': r'image_url_e1:\s*(.*?)\n',
+    'image_url_e2': r'image_url_e2:\s*(.*?)\n',
+    'image_url_e3': r'image_url_e3:\s*(.*?)\n',
+    'title': r'title:\s*(.*?)\n',
+    'description': r'description:\s*((?:.|\n)+?)\n\nExample',
+    'constraints': r'Constraints:\s*((?:.|\n)+?)$'
+}
+SUBCATEGORY_MAP = {
+    "reformatting": 1,
+    "reducing": 2,
+    "counting": 3,
+    "generating": 4,
+    "strings": 5,
+    "arrays": 6,
+    "structures": 7,
+    "heaps": 8,
+    "processes": 9
+}
+DIFFICULTY_MAP = {
+    'easy': 1, 
+    'medium': 2, 
+    'hard': 3
+}
+BASE_IMAGE_URL = 'https://storage.googleapis.com/code-problem-images/'
+
+# Function to check if we are inside a docker container
+def is_running_in_docker() -> bool:
+    return os.path.exists('/.dockerenv') or os.path.exists('/run/.containerenv')
+
+API_URL = f"{os.getenv('DOCKER_API_BASE_URL')}/problems" if is_running_in_docker() else f"{os.getenv('API_BASE_URL')}/problems"
+HEADERS = { 'Content-Type': 'application/json' }
+
 # Argument parser to accept file path
 parser = argparse.ArgumentParser(description='Parse and post problem files.')
 parser.add_argument('--all', action='store_true', help='Process all problem files')
@@ -17,8 +55,6 @@ args = parser.parse_args()
 
 # Function to find all Python problem files in the subcategories
 def find_problem_files() -> List[str]:
-    ROOT_DIR = 'python/problems/'
-    CATEGORIES = ['data_manipulations', 'combinatorics', 'optimizations']
     problem_files = []
 
     for category in CATEGORIES:
@@ -39,41 +75,10 @@ def parse_file(file_path: str) -> Dict[str, str]:
             raise ValueError('No comment block found')
         comment = comment_block.group()[3:-3].strip()
 
-        patterns = {
-            'subcategory': r'subcategory:\s*(.*?)\n',
-            'difficulty': r'difficulty:\s*(.*?)\n',
-            'image_url_e1': r'image_url_e1:\s*(.*?)\n',
-            'image_url_e2': r'image_url_e2:\s*(.*?)\n',
-            'image_url_e3': r'image_url_e3:\s*(.*?)\n',
-            'title': r'title:\s*(.*?)\n',
-            'description': r'description:\s*((?:.|\n)+?)\n\nExample',
-            'constraints': r'Constraints:\s*((?:.|\n)+?)$'
-        }
-
-        SUBCATEGORY_MAP = {
-            "reformatting": 1,
-            "reducing": 2,
-            "counting": 3,
-            "generating": 4,
-            "strings": 5,
-            "arrays": 6,
-            "structures": 7,
-            "heaps": 8,
-            "processes": 9
-        }
-
-        DIFFICULTY_MAP = {
-            'easy': 1, 
-            'medium': 2, 
-            'hard': 3
-        }
-
-        BASE_IMAGE_URL = 'https://storage.googleapis.com/code-problem-images/'
-
         parsed_data = {'examples': [], 'image_urls': []}
 
-        # Extract information using regex patterns and update image_urls
-        for field, pattern in patterns.items():
+        # Extract information using regex PATTERNS and update image_urls
+        for field, pattern in PATTERNS.items():
             match = re.search(pattern, comment, re.DOTALL)
             if match:
                 value = match.group(1).strip()
@@ -115,15 +120,6 @@ def parse_file(file_path: str) -> Dict[str, str]:
 
 # Function to store this in database CRUD
 async def post_problem(json_data: Dict[str, str]) -> None:
-    API_BASE_URL = os.getenv('API_BASE_URL')
-
-    if not API_BASE_URL:
-        print('❌ API_BASE_URL is not set. Check your environment variables.')
-        return
-    
-    API_URL = f'{API_BASE_URL}/problems'
-    HEADERS = {'Content-Type': 'application/json'}
-
     try:
         async with httpx.AsyncClient(timeout=10) as client:
             response = await client.post(API_URL, json=json_data, headers=HEADERS)

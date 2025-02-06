@@ -7,6 +7,11 @@ from typing import List
 
 load_dotenv()
 
+# Global variables
+ROOT_DIR = 'python/images/'
+GCP_CREDENTIALS = os.getenv('GCP_CREDENTIALS')
+GC_BUCKET_NAME = os.getenv('GC_BUCKET_NAME')
+
 # Argument parser to accept image paths
 parser = argparse.ArgumentParser(description='Upload images to Google Cloud Storage')
 parser.add_argument('--all', action='store_true', help='Upload all images.')
@@ -15,7 +20,6 @@ args = parser.parse_args()
 
 # Function to find all images
 def find_image_files() -> List[str]:
-    ROOT_DIR = 'python/images/'
     image_files = []
 
     for file in os.listdir(ROOT_DIR):
@@ -26,8 +30,6 @@ def find_image_files() -> List[str]:
 
 # Function to upload a single image to Google Cloud Storage
 async def upload_image(file_path: str) -> None:
-    GCP_CREDENTIALS = os.getenv('GCP_CREDENTIALS')
-
     if not GCP_CREDENTIALS:
         print('❌ GCP_CREDENTIALS is not set. Check your environment variables.')
         return
@@ -39,7 +41,6 @@ async def upload_image(file_path: str) -> None:
 
     client = storage.Client()
 
-    GC_BUCKET_NAME = os.getenv('GC_BUCKET_NAME')
     if not GC_BUCKET_NAME:
         print('❌ GC_BUCKET_NAME is not set. Check your environment variables.')
         return
