@@ -48,6 +48,8 @@ jobs:
     needs: detect_changes
     if: needs.detect_changes.outputs.problem_files_added == 'true'
     runs-on: ubuntu-latest
+    env:
+      PROBLEM_FILES_PATHS: ${{ needs.detect_changes.outputs.problem_files_paths }}
 
     steps:
       - name: Checkout codescript-backend
@@ -65,28 +67,23 @@ jobs:
           path: ./codescript-problems
           fetch-depth: 1
 
-      - name: Ensure Docker Network Exists
+      - name: Check codescript_network and PROBLEM_FILES_PATHS
         run: |
-          docker network inspect codescript_network >/dev/null 2>&1 || \
-          docker network create codescript_network
+          docker network inspect codescript_network >/dev/null 2>&1 || docker network create codescript_network
+          echo "📄 Added problem files:"
+          echo "$PROBLEM_FILES_PATHS"
 
       - name: Run codescript-fastapi
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
         run: |
-          echo "📄 Added problem files:"
-          echo "${{ needs.detect_changes.outputs.problem_files_paths }}"
-          
           echo "🚀 Deploying codescript-fastapi..."
           cd codescript-fastapi
           docker compose up -d
           echo "✅ API docker is running!"
 
       - name: Run codescript-problems
-        env:
-          PROBLEM_FILES_PATHS: ${{ needs.detect_changes.outputs.problem_files_paths }}
-          IMAGE_FILES_PATHS: ${{ needs.detect_changes.outputs.image_files_paths }}
         run: |
           echo "🚀 Deploying codescript-problems..."
           cd codescript-problems
@@ -106,21 +103,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Upload images to Google Cloud Storage
+      - name: Check IMAGE_FILES_PATHS
+        env:
+          IMAGE_FILES_PATHS: ${{ needs.detect_changes.outputs.image_files_paths }}
         run: |
-          echo "Uploading images to Google Cloud Storage..."
-          echo "${{ needs.detect_changes.outputs.image_files_paths }}"
-
-          # # Install gcloud CLI
-          # sudo apt-get update && sudo apt-get install -y google-cloud-sdk
-          # echo "${{ secrets.GCP_CREDENTIALS }}" > $HOME/gcp-credentials.json
-
-          # # Authenticate with Google Cloud
-          # gcloud auth activate-service-account --key-file=$HOME/gcp-credentials.json
-          # gcloud config set project YOUR_PROJECT_ID
-
-          # # Upload images
-          # IFS=',' read -ra FILES <<< "${{ needs.detect_changes.outputs.image_files_paths }}"
-          # for file in "${FILES[@]}"; do
-          #   gsutil cp "$file" gs://YOUR_BUCKET_NAME/images/
-          # done
+          echo "📤 Uploading images to Google Cloud Storage..."
+          echo "$IMAGE_FILES_PATHS"
+      
+      - name: Run upload_images.py
+        env:
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+          GC_BUCKET_NAME: ${{ secrets.GC_BUCKET_NAME }}
+        run: |
+          echo "🖥️ Running script upload_images.py..."
+          python python/db_scripts/upload_images.py --file "$IMAGE_FILES_PATHS"
+          echo "✅ Completed script."

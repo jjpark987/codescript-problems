@@ -140,26 +140,28 @@ async def post_problem(json_data: Dict[str, str]) -> None:
 
 # Main function
 async def main() -> None:
-    if args.file:
-        file_paths = args.file.split(',')
-        for path in file_paths:
+    if args.all:
+        print('▶️ Executing parse and post on all problems.')
+        problem_files = find_problem_files()
+        for path in problem_files:
             print(f'Processing {path}...')
             data = parse_file(path)
-            if data:
-                await post_problem(data)
-            else:
-                print(f'❌ No valid problem data extracted from: {path}')
+            await post_problem(data) if data else print(f'❌ No valid problem data extracted from: {path}')
     else:
-        print('No arugment passed to parse_and_post.py')
-        # problem_files = find_problem_files()
-        # for file_path in problem_files:
-        #     print(f'Processing {file_path}...')
-        #     data = parse_file(file_path)
-        #     if data:
-        #         await post_problem(data)
-        #     else:
-        #         print(f'❌ No valid problem data extracted from: {file_path}')
+        if args.file:
+            print('▶️ Executing parse and post on problem_files_paths.')
+            file_paths = args.file.split(',')
+            for path in file_paths:
+                print(f'Processing {path}...')
+                data = parse_file(path)
+                await post_problem(data) if data else print(f'❌ No valid problem data extracted from: {path}')
+        else:
+            print('▶️ Executing parse and post on main.py.')
+            path = '/python/main.py'
+            print(f'Processing {path}...')
+            data = parse_file(path)
+            await post_problem(data) if data else print(f'❌ No valid problem data extracted from: {path}')
 
-# Test script
+# Run script
 if __name__ == '__main__':
     asyncio.run(main())
