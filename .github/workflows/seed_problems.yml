@@ -107,7 +107,7 @@ jobs:
         env:
           IMAGE_FILES_PATHS: ${{ needs.detect_changes.outputs.image_files_paths }}
         run: |
-          echo "📤 Uploading images to Google Cloud Storage..."
+          echo "📄 Added images:"
           echo "$IMAGE_FILES_PATHS"
       
       - name: Run upload_images.py
@@ -116,5 +116,5 @@ jobs:
           GC_BUCKET_NAME: ${{ secrets.GC_BUCKET_NAME }}
         run: |
           echo "🖥️ Running script upload_images.py..."
-          python python/db_scripts/upload_images.py --file "$IMAGE_FILES_PATHS"
+          python ./python/db_scripts/upload_images.py --file "$IMAGE_FILES_PATHS"
           echo "✅ Completed script."
