@@ -84,11 +84,13 @@ jobs:
           echo "✅ API docker is running!"
 
       - name: Run codescript-problems
+        env:
+            API_BASE_URL: ${{ secrets.API_BASE_URL }}
         run: |
           echo "🚀 Deploying codescript-problems..."
           cd codescript-problems
           docker compose up --remove-orphans
-          echo "✅ Problems docker has completed the script!"
+          echo "✅ Problems docker has completed parse_and_post.py!"
 
       - name: Clean up codescript-fastapi
         run: |
