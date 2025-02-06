@@ -47,6 +47,18 @@ def is_running_in_docker() -> bool:
 API_URL = f"{os.getenv('DOCKER_API_BASE_URL')}/problems" if is_running_in_docker() else f"{os.getenv('API_BASE_URL')}/problems"
 HEADERS = { 'Content-Type': 'application/json' }
 
+
+
+DOCKER_API_BASE_URL = os.getenv('DOCKER_API_BASE_URL')
+API_BASE_URL = os.getenv('API_BASE_URL')
+
+print(f"🔍 Detected Docker: {is_running_in_docker()}")
+print(f"📡 DOCKER_API_BASE_URL: {DOCKER_API_BASE_URL}")
+print(f"📡 API_BASE_URL: {API_BASE_URL}")
+
+API_URL = f"{DOCKER_API_BASE_URL}/problems" if is_running_in_docker() else f"{API_BASE_URL}/problems"
+print(f"📝 Using API_URL: {API_URL}")
+
 # Argument parser to accept file path
 parser = argparse.ArgumentParser(description='Parse and post problem files.')
 parser.add_argument('--all', action='store_true', help='Process all problem files')
