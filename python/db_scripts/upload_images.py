@@ -9,8 +9,8 @@ load_dotenv()
 
 # Argument parser to accept image paths
 parser = argparse.ArgumentParser(description='Upload images to Google Cloud Storage')
-parser.add_argument('--file', type=str, help='Comma-separated list of image paths to upload')
 parser.add_argument('--all', action='store_true', help='Upload all images.')
+parser.add_argument('--file', type=str, help='Comma-separated list of image paths to upload')
 args = parser.parse_args()
 
 # Function to find all images

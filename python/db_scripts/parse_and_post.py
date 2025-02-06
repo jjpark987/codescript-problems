@@ -11,6 +11,7 @@ load_dotenv()
 
 # Argument parser to accept file path
 parser = argparse.ArgumentParser(description='Parse and post problem files.')
+parser.add_argument('--all', action='store_true', help='Process all problem files')
 parser.add_argument('--file', type=str, help='Path to the newly added problem file')
 args = parser.parse_args()
 
