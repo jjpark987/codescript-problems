@@ -110,12 +110,14 @@ jobs:
           path: ./codescript-problems
           fetch-depth: 1
 
-      - name: Check IMAGE_FILES_PATHS
+      - name: Check IMAGE_FILES_PATHS and install dependencies
         env:
           IMAGE_FILES_PATHS: ${{ needs.detect_changes.outputs.image_files_paths }}
         run: |
           echo "📄 Added images:"
           echo "$IMAGE_FILES_PATHS"
+          cd codescript-problems
+          pip install --no-cache-dir -r requirements.txt
       
       - name: Run upload_images.py
         env:
@@ -124,6 +126,5 @@ jobs:
         run: |
           echo "🖥️ Running script upload_images.py..."
           cd codescript-problems
-          pip install --no-cache-dir -r requirements.txt
           python ./python/db_scripts/upload_images.py --file "$IMAGE_FILES_PATHS"
           echo "✅ Completed script."

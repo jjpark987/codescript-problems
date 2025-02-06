@@ -66,6 +66,7 @@ async def main() -> None:
             print(f'Processing {path}...')
             await upload_image(path)
     else:
+        print('args.file : ', args.file)
         if args.file:
             print('▶️ Executing upload images on image_files_paths.')
             file_paths = args.file.split(',')
