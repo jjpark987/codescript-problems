@@ -47,18 +47,6 @@ def is_running_in_docker() -> bool:
 API_URL = f"{os.getenv('DOCKER_API_BASE_URL')}/problems" if is_running_in_docker() else f"{os.getenv('API_BASE_URL')}/problems"
 HEADERS = { 'Content-Type': 'application/json' }
 
-
-
-DOCKER_API_BASE_URL = os.getenv('DOCKER_API_BASE_URL')
-API_BASE_URL = os.getenv('API_BASE_URL')
-
-print(f"🔍 Detected Docker: {is_running_in_docker()}")
-print(f"📡 DOCKER_API_BASE_URL: {DOCKER_API_BASE_URL}")
-print(f"📡 API_BASE_URL: {API_BASE_URL}")
-
-API_URL = f"{DOCKER_API_BASE_URL}/problems" if is_running_in_docker() else f"{API_BASE_URL}/problems"
-print(f"📝 Using API_URL: {API_URL}")
-
 # Argument parser to accept file path
 parser = argparse.ArgumentParser(description='Parse and post problem files.')
 parser.add_argument('--all', action='store_true', help='Process all problem files')
@@ -141,7 +129,25 @@ async def post_problem(json_data: Dict[str, str]) -> None:
             print('Response:', response.json())  
         else:
             print(f'❌ Failed to post problem: {response.status_code}')
-            print('Response:', response.text)  
+            
+            # Log the response text
+            print('Response Text:', response.text)
+            
+            # Log the response headers (might contain debugging info)
+            print('Response Headers:', response.headers)
+
+            # Log the raw JSON response (if available)
+            try:
+                response_json = response.json()
+                print('Response JSON:', response_json)
+            except Exception:
+                print('Response did not return valid JSON.')
+
+            # Log the request details for debugging
+            print('📡 API Request Details:')
+            print(f'🔗 URL: {API_URL}')
+            print(f'📄 Headers: {HEADERS}')
+            print(f'📦 Data Sent: {json_data}')
 
     except httpx.RequestError as e:
         print(f'🚨 Error sending request: {e}')
