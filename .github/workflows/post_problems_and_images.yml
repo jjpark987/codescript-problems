@@ -1,4 +1,4 @@
-name: Seed Problem(s) and Upload Images
+name: Seed Problem(s) and/or Upload Images
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
         id: set-env
         run: |
           echo "📥 Fetching added files in the current repository..."
-          ADDED_FILES=$(git diff --name-only --diff-filter=ACMR ${{ github.event.before }} ${{ github.event.after }})
+          ADDED_FILES=$(git diff --name-only --diff-filter=A ${{ github.event.before }} ${{ github.event.after }})
           echo "$ADDED_FILES"
 
           # Check for problem files
