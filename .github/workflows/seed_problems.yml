@@ -18,10 +18,10 @@ jobs:
       image_files_paths: ${{ steps.set-env.outputs.image_files_paths }}
 
     steps:
-      - name: Checkout repository
+      - name: Checkout codescript-problems
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 1
       
       - name: Detect Added Files
         id: set-env
@@ -58,13 +58,6 @@ jobs:
           repository: jjpark987/codescript-backend
           ref: fastapi
           path: ./codescript-fastapi
-          fetch-depth: 1
-
-      - name: Checkout codescript-problems
-        uses: actions/checkout@v4
-        with:
-          repository: jjpark987/codescript-problems
-          path: ./codescript-problems
           fetch-depth: 1
 
       - name: Check codescript_network and PROBLEM_FILES_PATHS
