@@ -141,7 +141,6 @@ async def post_problem(json_data: Dict[str, str]) -> None:
             print('Response:', response.json())  
         else:
             print(f'❌ Failed to post problem: {response.status_code}')
-            print(API_URL)
             print('Response:', response.text)  
 
     except httpx.RequestError as e:
