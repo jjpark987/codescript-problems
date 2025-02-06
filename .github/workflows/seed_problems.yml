@@ -101,6 +101,8 @@ jobs:
     needs: detect_changes
     if: needs.detect_changes.outputs.image_files_added == 'true'
     runs-on: ubuntu-latest
+    env:
+      IMAGE_FILES_PATHS: ${{ needs.detect_changes.outputs.image_files_paths }}
 
     steps:
       - name: Checkout codescript-problems
@@ -111,8 +113,6 @@ jobs:
           fetch-depth: 1
 
       - name: Check IMAGE_FILES_PATHS and install dependencies
-        env:
-          IMAGE_FILES_PATHS: ${{ needs.detect_changes.outputs.image_files_paths }}
         run: |
           echo "📄 Added images:"
           echo "$IMAGE_FILES_PATHS"
