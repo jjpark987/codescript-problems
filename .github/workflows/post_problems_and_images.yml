@@ -1,12 +1,18 @@
 name: Seed Problem(s) and/or Upload Images
 
 on:
-  push:
-    paths:
-      - 'python/problems/**'
-      - 'python/images/**'
-    branches:
-      - main  
+  workflow_dispatch:
+    inputs:
+      DEBUG_MODE:
+        description: 'Enable debug mode'
+        required: false
+        default: 'false'
+#   push:
+#     paths:
+#       - 'python/problems/**'
+#       - 'python/images/**'
+#     branches:
+#       - main  
 
 jobs:
   detect_changes:
@@ -30,12 +36,17 @@ jobs:
           ADDED_FILES=$(git diff --name-only --diff-filter=A ${{ github.event.before }} ${{ github.event.after }})
           echo "$ADDED_FILES"
 
+          # Manually override PROBLEM_FILES_PATHS
+          echo "🔧 Manually overriding problem file paths"
+          echo "problem_files_added=true" >> $GITHUB_OUTPUT
+          echo "problem_files_paths=python/problems/combinatorics/counting/beautiful_subsets.py" >> $GITHUB_OUTPUT
+
           # Check for problem files
-          PROBLEM_FILES=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
-          if [ -n "$PROBLEM_FILES" ]; then
-            echo "problem_files_added=true" >> $GITHUB_OUTPUT
-            echo "problem_files_paths=$(echo $PROBLEM_FILES | paste -sd "," -)" >> $GITHUB_OUTPUT
-          fi
+          # PROBLEM_FILES=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
+          # if [ -n "$PROBLEM_FILES" ]; then
+          #   echo "problem_files_added=true" >> $GITHUB_OUTPUT
+          #   echo "problem_files_paths=$(echo $PROBLEM_FILES | paste -sd "," -)" >> $GITHUB_OUTPUT
+          # fi
 
           # Check for image files
           IMAGE_FILES=$(echo "$ADDED_FILES" | grep "^python/images/" || true)
