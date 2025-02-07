@@ -61,6 +61,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PROBLEM_FILES_PATHS: ${{ needs.detect_changes.outputs.problem_files_paths }}
+      DOCKER_DATABASE_URL: ${{ secrets.DOCKER_DATABASE_URL }}
+      DOCKER_API_BASE_URL: ${{ secrets.DOCKER_API_BASE_URL }}
+
 
     steps:
       - name: Checkout codescript-backend
@@ -87,17 +90,16 @@ jobs:
           echo "$PROBLEM_FILES_PATHS"
           
       - name: Run codescript-fastapi
-        env:
-          DOCKER_DATABASE_URL: ${{ secrets.DOCKER_DATABASE_URL }}
+
         run: |
           echo "🚀 Deploying codescript-fastapi..."
+          echo "🔍 DOCKER_DATABASE_URL: ${DOCKER_DATABASE_URL}"
+          echo "🔍 DOCKER_API_BASE_URL: ${DOCKER_API_BASE_URL}"
           cd codescript-fastapi
           docker compose up -d
           echo "✅ API docker is running!"
 
       - name: Run codescript-problems
-        env:
-            DOCKER_API_BASE_URL: ${{ secrets.DOCKER_API_BASE_URL }}
         run: |
           echo "🚀 Deploying codescript-problems..."
           cd codescript-problems
