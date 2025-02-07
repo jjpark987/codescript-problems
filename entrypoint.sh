@@ -2,10 +2,6 @@
 
 echo "PROBLEM_FILES_PATHS: $PROBLEM_FILES_PATHS"
 
-echo "🔍 Debugging Environment Variables..."
-echo "DOCKER_API_BASE_URL: $DOCKER_API_BASE_URL"
-echo "PROBLEM_FILES_PATHS: $PROBLEM_FILES_PATHS"
-
 # Install curl if not present
 # if ! command -v curl &> /dev/null
 # then
