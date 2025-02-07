@@ -124,6 +124,9 @@ async def post_problem(json_data: Dict[str, str]) -> None:
         async with httpx.AsyncClient(timeout=10) as client:
             response = await client.post(API_URL, json=json_data, headers=HEADERS)
         
+        print(f'🔍 Response Status Code: {response.status_code}')
+        print(f'📨 Response Text: {response.text}')
+
         if response.status_code == 201:
             print(f'✅ Successfully posted problem: {json_data["title"]}')
             print('Response:', response.json())  
