@@ -95,9 +95,6 @@ jobs:
           docker compose up -d
           echo "✅ API docker is running!"
 
-          # Wait for the container to fully start
-          sleep 5
-
       - name: Run codescript-problems
         env:
             DOCKER_API_BASE_URL: ${{ secrets.DOCKER_API_BASE_URL }}
@@ -107,24 +104,12 @@ jobs:
           docker compose up --remove-orphans
           echo "✅ Problems docker has completed parse_and_post.py!"
 
-          # Wait for the container to fully start
-          sleep 5
-
-
       # ✅ Capture FastAPI logs *AFTER* the problem seeding step
       - name: Fetch FastAPI Logs
         run: |
           echo "📜 Fetching full FastAPI logs..."
           mkdir -p fastapi_logs
           docker logs codescript-fastapi > fastapi_logs/fastapi_logs.txt || echo "❌ No logs found"
-
-      # ✅ Upload FastAPI logs as an artifact for later download
-      - name: Save FastAPI Logs
-        uses: actions/upload-artifact@v4
-        with:
-          name: fastapi-logs
-          path: fastapi_logs/fastapi_logs.txt
-
 
       - name: Clean up codescript-fastapi
         run: |
