@@ -36,17 +36,12 @@ jobs:
           ADDED_FILES=$(git diff --name-only --diff-filter=A ${{ github.event.before }} ${{ github.event.after }})
           echo "$ADDED_FILES"
 
-          # Manually override PROBLEM_FILES_PATHS
-          echo "🔧 Manually overriding problem file paths"
-          echo "problem_files_added=true" >> $GITHUB_OUTPUT
-          echo "problem_files_paths=python/problems/combinatorics/counting/beautiful_subsets.py" >> $GITHUB_OUTPUT
-
           # Check for problem files
-          # PROBLEM_FILES=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
-          # if [ -n "$PROBLEM_FILES" ]; then
-          #   echo "problem_files_added=true" >> $GITHUB_OUTPUT
-          #   echo "problem_files_paths=$(echo $PROBLEM_FILES | paste -sd "," -)" >> $GITHUB_OUTPUT
-          # fi
+          PROBLEM_FILES=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
+          if [ -n "$PROBLEM_FILES" ]; then
+            echo "problem_files_added=true" >> $GITHUB_OUTPUT
+            echo "problem_files_paths=$(echo $PROBLEM_FILES | paste -sd "," -)" >> $GITHUB_OUTPUT
+          fi
 
           # Check for image files
           IMAGE_FILES=$(echo "$ADDED_FILES" | grep "^python/images/" || true)
@@ -100,6 +95,11 @@ jobs:
             DOCKER_API_BASE_URL: ${{ secrets.DOCKER_API_BASE_URL }}
         run: |
           echo "🚀 Deploying codescript-problems..."
+          
+          
+          echo "🔍 DOCKER_API_BASE_URL: $DOCKER_API_BASE_URL"
+
+
           cd codescript-problems
           docker compose up --remove-orphans
           echo "✅ Problems docker has completed parse_and_post.py!"
