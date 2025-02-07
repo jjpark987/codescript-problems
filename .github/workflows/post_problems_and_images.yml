@@ -112,7 +112,7 @@ jobs:
         run: |
           echo "🚀 Deploying codescript-problems..."
           cd codescript-problems
-          docker compose up -v --remove-orphans
+          docker compose up --remove-orphans
           echo "✅ Problems docker has completed parse_and_post.py!"
 
       - name: Clean up codescript-fastapi
