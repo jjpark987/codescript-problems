@@ -44,7 +44,7 @@ BASE_IMAGE_URL = 'https://storage.googleapis.com/code-problem-images/'
 def is_running_in_docker() -> bool:
     return os.path.exists('/.dockerenv') or os.path.exists('/run/.containerenv')
 
-API_URL = f"{os.getenv('DOCKER_API_BASE_URL')}/problems" if is_running_in_docker() else f"{os.getenv('API_BASE_URL')}/problems"
+API_URL = f'{os.getenv("DOCKER_API_BASE_URL")}/problems' if is_running_in_docker() else f'{os.getenv("API_BASE_URL")}/problems'
 HEADERS = { 'Content-Type': 'application/json' }
 
 # Argument parser to accept file path
@@ -127,31 +127,15 @@ async def post_problem(json_data: Dict[str, str]) -> None:
         if response.status_code == 201:
             print(f'✅ Successfully posted problem: {json_data["title"]}')
             print('Response:', response.json())  
+        elif response.status_code == 400:
+            print('❌ Subcategory not found.')
+        elif response.status_code == 409:
+            print(f'⏭️ Skipping over duplicate problem: {json_data["title"]}')
         else:
             print(f'❌ Failed to post problem: {response.status_code}')
-            
-            # Log the response text
-            print('Response Text:', response.text)
-            
-            # Log the response headers (might contain debugging info)
-            print('Response Headers:', response.headers)
-
-            # Log the raw JSON response (if available)
-            try:
-                response_json = response.json()
-                print('Response JSON:', response_json)
-            except Exception:
-                print('Response did not return valid JSON.')
-
-            # Log the request details for debugging
-            print('📡 API Request Details:')
-            print(f'🔗 URL: {API_URL}')
-            print(f'📄 Headers: {HEADERS}')
-            print(f'📦 Data Sent: {json_data}')
 
     except httpx.RequestError as e:
         print(f'🚨 Error sending request: {e}')
-        print(f'🔍 Debug Info - URL: {API_URL}, Headers: {HEADERS}, Data: {json_data}')
 
 # Main function
 async def main() -> None:
