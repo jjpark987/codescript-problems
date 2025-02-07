@@ -118,7 +118,7 @@ def parse_file(file_path: str) -> Dict[str, str]:
     except Exception as e:
         print(f'🚨 Error parsing {file_path}: {e}')
 
-# Function to store this in database CRUD
+# Function to store this in database
 async def post_problem(json_data: Dict[str, str]) -> None:
     print(f"🔍 API_URL: {API_URL}")
     print(f"✅ API_URL is correctly set: {API_URL == 'http://app:80/problems'}")
@@ -153,6 +153,7 @@ async def main() -> None:
         if args.file:
             print('▶️ Executing parse and post on problem_files_paths.')
             file_paths = args.file.split(',')
+            print(file_paths)
             for path in file_paths:
                 print(f'Processing {path}...')
                 data = parse_file(path)
