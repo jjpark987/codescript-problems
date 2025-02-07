@@ -6,6 +6,13 @@ echo "🔍 Debugging Environment Variables..."
 echo "DOCKER_API_BASE_URL: $DOCKER_API_BASE_URL"
 echo "PROBLEM_FILES_PATHS: $PROBLEM_FILES_PATHS"
 
+# Install curl if not present
+if ! command -v curl &> /dev/null
+then
+    echo "📦 Installing curl..."
+    apt update && apt install -y curl
+fi
+
 # Ensure FastAPI (`app:80`) is reachable before proceeding
 echo "🔍 Checking if FastAPI is reachable at app:80..."
 if curl -s -o /dev/null -w "%{http_code}" http://app:80/docs | grep -q "200"; then
