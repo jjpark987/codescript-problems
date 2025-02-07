@@ -122,10 +122,16 @@ def parse_file(file_path: str) -> Dict[str, str]:
 async def post_problem(json_data: Dict[str, str]) -> None:
     print(f"🔍 API_URL: {API_URL}")
     print(f"✅ API_URL is correctly set: {API_URL == 'http://app:80/problems'}")
+    print(f"📨 Request Headers: {HEADERS}")
+    print(f"📦 Request Data: {json_data}")
 
     try:
         async with httpx.AsyncClient(timeout=10) as client:
             response = await client.post(API_URL, json=json_data, headers=HEADERS)
+
+        print(f"🔍 Response Status Code: {response.status_code}")
+        print(f"📨 Response Text: {response.text}")
+        print(f"📜 Response Headers: {response.headers}")
 
         if response.status_code == 201:
             print(f'✅ Successfully posted problem: {json_data["title"]}')
@@ -153,7 +159,6 @@ async def main() -> None:
         if args.file:
             print('▶️ Executing parse and post on problem_files_paths.')
             file_paths = args.file.split(',')
-            print(file_paths)
             for path in file_paths:
                 print(f'Processing {path}...')
                 data = parse_file(path)
