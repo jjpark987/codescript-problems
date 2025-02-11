@@ -1,58 +1,52 @@
 #!/usr/bin/env python3
 
-from typing import List
-
 class Solution:
-    def tupleSameProduct(self, nums: List[int]) -> int:
-        count = 0
-        n = len(nums)
-        product_map = {}
-        for i in range(n):
-            for j in range(i + 1, n):
-                product = nums[i] * nums[j]
-                product_map[product] = product_map.get(product, 0) + 1
-        total = 0
-        for count in product_map.values():
-            if count > 1:
-                total += (count * (count - 1) // 2) * 8
-
-        return total
+    def removeOccurrences(self, s: str, part: str) -> str:
+        pass
 
 """
-category: combinatorics
-subcategory: generating
+category: data manipulations
+subcategory: reducing
 difficulty: medium
 image_url_e1: none
 image_url_e2: none
 image_url_e3: none
-title: Tuple with Same Product
+title: Remove All Occurrences of a Substring
 
 description:
-Given an array nums of distinct positive integers, return the number of tuples (a, b, c, d) such that a * b = c * d where a, b, c, and d are elements of nums, and a != b != c != d.
+Given two strings s and part, perform the following operation on s until all occurrences of the substring part are removed:
+
+Find the leftmost occurrence of the substring part and remove it from s.
+Return s after removing all occurrences of part.
+
+A substring is a contiguous sequence of characters in a string.
 
  
 
 Example 1:
 
-Input: nums = [2,3,4,6]
-Output: 8
-Explanation: There are 8 valid tuples:
-(2,6,3,4) , (2,6,4,3) , (6,2,3,4) , (6,2,4,3)
-(3,4,2,6) , (4,3,2,6) , (3,4,6,2) , (4,3,6,2)
+Input: s = "daabcbaabcbc", part = "abc"
+Output: "dab"
+Explanation: The following operations are done:
+- s = "daabcbaabcbc", remove "abc" starting at index 2, so s = "dabaabcbc".
+- s = "dabaabcbc", remove "abc" starting at index 4, so s = "dababc".
+- s = "dababc", remove "abc" starting at index 3, so s = "dab".
+Now s has no occurrences of "abc".
 Example 2:
 
-Input: nums = [1,2,4,5,10]
-Output: 16
-Explanation: There are 16 valid tuples:
-(1,10,2,5) , (1,10,5,2) , (10,1,2,5) , (10,1,5,2)
-(2,5,1,10) , (2,5,10,1) , (5,2,1,10) , (5,2,10,1)
-(2,10,4,5) , (2,10,5,4) , (10,2,4,5) , (10,2,5,4)
-(4,5,2,10) , (4,5,10,2) , (5,4,2,10) , (5,4,10,2)
+Input: s = "axxxxyyyyb", part = "xy"
+Output: "ab"
+Explanation: The following operations are done:
+- s = "axxxxyyyyb", remove "xy" starting at index 4 so s = "axxxyyyb".
+- s = "axxxyyyb", remove "xy" starting at index 3 so s = "axxyyb".
+- s = "axxyyb", remove "xy" starting at index 2 so s = "axyb".
+- s = "axyb", remove "xy" starting at index 1 so s = "ab".
+Now s has no occurrences of "xy".
  
 
 Constraints:
 
-1 <= nums.length <= 1000
-1 <= nums[i] <= 104
-All elements in nums are distinct.
+1 <= s.length <= 1000
+1 <= part.length <= 1000
+s​​​​​​ and part consists of lowercase English letters.
 """
