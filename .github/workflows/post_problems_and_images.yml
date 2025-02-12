@@ -104,7 +104,7 @@ jobs:
           docker compose up --remove-orphans
           echo "✅ Problems docker has completed parse_and_post.py!"
 
-      # ✅ Capture FastAPI logs after the problem seeding step
+      # Capture FastAPI logs after the problem seeding step
       - name: Fetch FastAPI Logs
         run: |
           echo "📜 Fetching full FastAPI logs..."
