@@ -92,7 +92,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           
           echo "⏳ Starting SSH tunnel..."
-          ssh -v -N -L 3307:localhost:3306 $MAC_SSH_USER@$MAC_IP_ADDRESS
+          ssh -v -o StrictHostKeyChecking=no -N -L 3307:localhost:3306 $MAC_SSH_USER@$MAC_IP_ADDRESS &
           sleep 5
 
           echo "🔍 Checking running SSH processes..."
@@ -100,19 +100,21 @@ jobs:
           
           echo "🔍 Checking if SSH tunnel is running..."
           netstat -an | grep 3307 || echo "❌ Port 3307 is NOT being forwarded!"
-          
-          echo "⏳ Waiting for MySQL to be ready..."
-          for i in {1..5}; do
-            if mysqladmin ping -h 127.0.0.1 -P 3307 -u $MYSQL_USER -p$MYSQL_PASSWORD --silent; then
-              echo "✅ MySQL is reachable!"
-              exit 0
-            fi
-            echo "🔄 Retrying MySQL connection ($i/10)..."
-            sleep 3
-          done
-      
-          echo "❌ MySQL is not reachable! Exiting."
+
           exit 0
+          
+          # echo "⏳ Waiting for MySQL to be ready..."
+          # for i in {1..5}; do
+          #   if mysqladmin ping -h 127.0.0.1 -P 3307 -u $MYSQL_USER -p$MYSQL_PASSWORD --silent; then
+          #     echo "✅ MySQL is reachable!"
+          #     exit 0
+          #   fi
+          #   echo "🔄 Retrying MySQL connection ($i/10)..."
+          #   sleep 3
+          # done
+      
+          # echo "❌ MySQL is not reachable! Exiting."
+          # exit 0
 
       - name: Debug SSH Tunnel Logs
         run: |
