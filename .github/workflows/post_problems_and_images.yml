@@ -78,15 +78,7 @@ jobs:
           path: ./codescript-problems
           fetch-depth: 1
 
-      - name: Check workflow dependencies
-        run: |
-          echo "🔍 Checking for codescript_network..."
-          docker network inspect codescript_network >/dev/null 2>&1 || docker network create codescript_network
-          echo "✅ codescript_network found!"
-          echo "📄 Added problem files:"
-          echo "$PROBLEM_FILES_PATHS"
-          
-      - name: Set up SSH connection to Mac
+      - name: Set up SSH connection to Mac and establish MySQL connection
         env:
           MAC_SSH_PRIVATE_KEY: ${{ secrets.MAC_SSH_PRIVATE_KEY }}
           MAC_SSH_USER: ${{ secrets.MAC_SSH_USER }}
@@ -95,7 +87,28 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.MAC_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh -o StrictHostKeyChecking=no -N -L 3306:localhost:3306 $MAC_SSH_USER@$MAC_IP_ADDRESS
+          ssh -o StrictHostKeyChecking=no -N -L 3306:localhost:3306 $MAC_SSH_USER@$MAC_IP_ADDRESS &
+      
+          echo "⏳ Waiting for MySQL to be ready..."
+          for i in {1..10}; do
+            if mysqladmin ping -h 127.0.0.1 --silent; then
+              echo "✅ MySQL is reachable!"
+              exit 0
+            fi
+            echo "🔄 Retrying MySQL connection ($i/10)..."
+            sleep 3
+          done
+      
+          echo "❌ MySQL is not reachable! Exiting."
+          exit 1
+
+      - name: Check workflow dependencies
+        run: |
+          echo "🔍 Checking for codescript_network..."
+          docker network inspect codescript_network >/dev/null 2>&1 || docker network create codescript_network
+          echo "✅ codescript_network found!"
+          echo "📄 Added problem files:"
+          echo "$PROBLEM_FILES_PATHS"
 
       - name: Run codescript-fastapi
         env:
