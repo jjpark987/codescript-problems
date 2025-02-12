@@ -86,6 +86,17 @@ jobs:
           echo "📄 Added problem files:"
           echo "$PROBLEM_FILES_PATHS"
           
+      - name: Set up SSH connection to Mac
+        env:
+          MAC_SSH_PRIVATE_KEY: ${{ secrets.MAC_SSH_PRIVATE_KEY }}
+          MAC_SSH_USER: ${{ secrets.MAC_SSH_USER }}
+          MAC_IP_ADDRESS: ${{ secrets.MAC_IP_ADDRESS }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.MAC_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no -N -L 3306:localhost:3306 $MAC_SSH_USER@$MAC_IP_ADDRESS
+
       - name: Run codescript-fastapi
         env:
           DOCKER_DATABASE_URL: ${{ secrets.DOCKER_DATABASE_URL }}
