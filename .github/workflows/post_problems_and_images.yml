@@ -87,11 +87,11 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.MAC_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh -v -o StrictHostKeyChecking=no -N -L 3306:localhost:3306 $MAC_SSH_USER@$MAC_IP_ADDRESS &
-      
+          ssh -o StrictHostKeyChecking=no -N -L 3307:localhost:3306 $MAC_SSH_USER@$MAC_IP_ADDRESS &
+          
           echo "⏳ Waiting for MySQL to be ready..."
           for i in {1..10}; do
-            if mysqladmin ping -h 127.0.0.1 --silent; then
+            if mysqladmin ping -h 127.0.0.1 -P 3307 --silent; then
               echo "✅ MySQL is reachable!"
               exit 0
             fi
