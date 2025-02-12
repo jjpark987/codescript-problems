@@ -92,7 +92,8 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           
           echo "⏳ Starting SSH tunnel..."
-          ssh -v -o StrictHostKeyChecking=no -N -L 3307:localhost:3306 $MAC_SSH_USER@$MAC_IP_ADDRESS &
+          nohup ssh -v -o StrictHostKeyChecking=no -N -L 3307:localhost:3306 $MAC_SSH_USER@$MAC_IP_ADDRESS > ssh_tunnel.log 2>&1 &
+          sleep 5
           
           echo "🔍 Checking if SSH tunnel is running..."
           netstat -an | grep 3307 || echo "❌ Port 3307 is NOT being forwarded!"
@@ -110,6 +111,11 @@ jobs:
           echo "❌ MySQL is not reachable! Exiting."
           exit 0
 
+      - name: Debug SSH Tunnel Logs
+        run: |
+          echo "📜 Checking SSH tunnel logs..."
+          cat ssh_tunnel.log || echo "❌ No SSH logs found!"
+        
       - name: Check workflow dependencies
         run: |
           echo "🔍 Checking for codescript_network..."
