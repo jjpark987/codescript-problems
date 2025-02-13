@@ -16,7 +16,7 @@ on:
 
 jobs:
   detect_changes:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       problem_files_added: ${{ steps.set-env.outputs.problem_files_added }}
       image_files_added: ${{ steps.set-env.outputs.image_files_added }}
@@ -58,94 +58,70 @@ jobs:
   seed_problems:
     needs: detect_changes
     if: needs.detect_changes.outputs.problem_files_added == 'true'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       PROBLEM_FILES_PATHS: ${{ needs.detect_changes.outputs.problem_files_paths }}
 
     steps:
-      # - name: Checkout codescript-backend
-      #   uses: actions/checkout@v4
-      #   with:
-      #     repository: jjpark987/codescript-backend
-      #     ref: fastapi
-      #     path: ./codescript-fastapi
-      #     fetch-depth: 1
+      - name: Checkout codescript-backend
+        uses: actions/checkout@v4
+        with:
+          repository: jjpark987/codescript-backend
+          ref: fastapi
+          path: ./codescript-fastapi
+          fetch-depth: 1
 
-      # - name: Checkout codescript-problems
-      #   uses: actions/checkout@v4
-      #   with:
-      #     repository: jjpark987/codescript-problems
-      #     path: ./codescript-problems
-      #     fetch-depth: 1
-
-      - name: Set up SSH connection to Mac and establish MySQL connection
-        env:
-          MAC_SSH_PRIVATE_KEY: ${{ secrets.MAC_SSH_PRIVATE_KEY }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-        run: |
-          echo "🔐 Setting up SSH tunnel..."
-          mkdir -p ~/.ssh
-          echo "${{ secrets.MAC_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          
-          echo "⏳ Waiting for MySQL to be ready..."
-          for i in {1..5}; do
-            if mysqladmin ping -h 127.0.0.1 -P 3307 -u $MYSQL_USER -p$MYSQL_PASSWORD --silent; then
-              echo "✅ MySQL is reachable!"
-              exit 0
-            fi
-            echo "🔄 Retrying MySQL connection ($i/10)..."
-            sleep 3
-          done
-      
-          echo "❌ MySQL is not reachable! Exiting."
-          exit 0
+      - name: Checkout codescript-problems
+        uses: actions/checkout@v4
+        with:
+          repository: jjpark987/codescript-problems
+          path: ./codescript-problems
+          fetch-depth: 1
         
-      # - name: Check workflow dependencies
-      #   run: |
-      #     echo "🔍 Checking for codescript_network..."
-      #     docker network inspect codescript_network >/dev/null 2>&1 || docker network create codescript_network
-      #     echo "✅ codescript_network found!"
-      #     echo "📄 Added problem files:"
-      #     echo "$PROBLEM_FILES_PATHS"
+      - name: Check workflow dependencies
+        run: |
+          echo "🔍 Checking for codescript_network..."
+          docker network inspect codescript_network >/dev/null 2>&1 || docker network create codescript_network
+          echo "✅ codescript_network found!"
+          echo "📄 Added problem files:"
+          echo "$PROBLEM_FILES_PATHS"
 
-      # - name: Run codescript-fastapi
-      #   env:
-      #     DOCKER_DATABASE_URL: ${{ secrets.DOCKER_DATABASE_URL }}
-      #   run: |
-      #     echo "🚀 Deploying codescript-fastapi..."
-      #     cd codescript-fastapi
-      #     docker compose up -d
-      #     echo "✅ API docker is running!"
+      - name: Run codescript-fastapi
+        env:
+          DOCKER_DATABASE_URL: ${{ secrets.DOCKER_DATABASE_URL }}
+        run: |
+          echo "🚀 Deploying codescript-fastapi..."
+          cd codescript-fastapi
+          docker compose up -d
+          echo "✅ API docker is running!"
 
-      # - name: Run codescript-problems
-      #   env:
-      #       DOCKER_API_BASE_URL: ${{ secrets.DOCKER_API_BASE_URL }}
-      #   run: |
-      #     echo "🚀 Deploying codescript-problems..."
-      #     cd codescript-problems
-      #     docker compose up --remove-orphans
-      #     echo "✅ Problems docker has completed parse_and_post.py!"
+      - name: Run codescript-problems
+        env:
+            DOCKER_API_BASE_URL: ${{ secrets.DOCKER_API_BASE_URL }}
+        run: |
+          echo "🚀 Deploying codescript-problems..."
+          cd codescript-problems
+          docker compose up --remove-orphans
+          echo "✅ Problems docker has completed parse_and_post.py!"
 
-      # # Capture FastAPI logs after the problem seeding step
-      # - name: Fetch FastAPI Logs
-      #   run: |
-      #     echo "📜 Fetching full FastAPI logs..."
-      #     mkdir -p fastapi_logs
-      #     docker logs codescript-fastapi > fastapi_logs/fastapi_logs.txt || echo "❌ No logs found"
+      # Capture FastAPI logs after the problem seeding step
+      - name: Fetch FastAPI Logs
+        run: |
+          echo "📜 Fetching full FastAPI logs..."
+          mkdir -p fastapi_logs
+          docker logs codescript-fastapi > fastapi_logs/fastapi_logs.txt || echo "❌ No logs found"
 
-      # - name: Clean up codescript-fastapi
-      #   run: |
-      #     echo "🧹 Cleaning up codescript-fastapi..."
-      #     cd codescript-fastapi
-      #     docker compose down -v --remove-orphans
-      #     echo "✅ Completed clean up!"
+      - name: Clean up codescript-fastapi
+        run: |
+          echo "🧹 Cleaning up codescript-fastapi..."
+          cd codescript-fastapi
+          docker compose down -v --remove-orphans
+          echo "✅ Completed clean up!"
 
   upload_images:
     needs: detect_changes
     if: needs.detect_changes.outputs.image_files_added == 'true'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       IMAGE_FILES_PATHS: ${{ needs.detect_changes.outputs.image_files_paths }}
 
