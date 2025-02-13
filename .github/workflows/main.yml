@@ -110,7 +110,7 @@ jobs:
           cd codescript-problems
           docker compose down --remove-orphans
           echo "🧹 Cleaning up codescript-fastapi..."
-          cd codescript-fastapi
+          cd .. && cd codescript-fastapi
           docker compose down --remove-orphans
           echo "✅ Completed clean up!"
 
