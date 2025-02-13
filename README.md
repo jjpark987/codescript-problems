@@ -73,19 +73,19 @@ python python/db_scripts/upload_images.py --file "python/images/new_image.png"
 
 ## Docker
 
-- Build and run containers in the foreground
+- Build image and create container in the foreground
 
 ```zsh
-docker compose up
+docker compose up --build
 ```
 
-- Stop and remove containers
+- Prune all stopped containers
 
 ```zsh
-docker compose down
+docker container prune -f
 ```
 
-- Check container status
+- Check containers status
 
 ```zsh
 docker ps
