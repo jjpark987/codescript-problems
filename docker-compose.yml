@@ -1,5 +1,5 @@
 services:
-  problem_seeder:
+  codescript-problems:
     build: .
     container_name: codescript-problems
     environment:
