@@ -101,11 +101,6 @@ jobs:
       
           echo "❌ MySQL is not reachable! Exiting."
           exit 0
-
-      - name: Debug SSH Tunnel Logs
-        run: |
-          echo "📜 Checking SSH tunnel logs..."
-          cat ssh_tunnel.log || echo "❌ No SSH logs found!"
         
       # - name: Check workflow dependencies
       #   run: |
