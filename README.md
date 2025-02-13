@@ -85,8 +85,16 @@ docker compose up --build
 docker container prune -f
 ```
 
-- Check containers status
+- Check all containers status
 
 ```zsh
-docker ps
+docker ps -a
+```
+
+## Self-Hosted GitHub Runner
+
+- Run GitHub Runner from /actions-runner
+
+```zsh
+./run.sh
 ```

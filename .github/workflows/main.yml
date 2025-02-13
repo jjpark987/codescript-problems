@@ -106,9 +106,12 @@ jobs:
 
       - name: Clean up codescript-fastapi
         run: |
+          echo "🧹 Cleaning up codescript-problems..."
+          cd codescript-problems
+          docker compose down --remove-orphans
           echo "🧹 Cleaning up codescript-fastapi..."
           cd codescript-fastapi
-          docker compose down -v --remove-orphans
+          docker compose down --remove-orphans
           echo "✅ Completed clean up!"
 
   upload_images:
