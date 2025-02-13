@@ -4,7 +4,7 @@ services:
     container_name: codescript-problems
     environment:
       - DOCKER_API_BASE_URL=${DOCKER_API_BASE_URL}
-      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-"python/problems/combinatorics/counting/beautiful_subsets.py"}
+      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-""}
       - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-""}
     volumes:
       - .:/app
