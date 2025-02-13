@@ -1,4 +1,4 @@
-name: Seed Problem(s) and/or Upload Images
+name: Post Problem and/or Upload Image
 
 on:
   workflow_dispatch:

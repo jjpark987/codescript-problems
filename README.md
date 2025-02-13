@@ -35,21 +35,11 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Seeding Database
+## Manual Posting and Uploading
 
-- Make sure MySQL database is set up and migrated with the latest migration
+### Posting Problems to Database
 
-- To parse and post all problems
-
-```zsh
-python python/db_scripts/parse_and_post.py --all
-```
-
-- To parse and post a specific file path
-
-```zsh
-python python/db_scripts/parse_and_post.py --file "python/problems/combinatorics/counting/new_problem.py"
-```
+- Make sure codescript-fastapi is running
 
 - To parse and post /python/main.py
 
@@ -57,7 +47,25 @@ python python/db_scripts/parse_and_post.py --file "python/problems/combinatorics
 python python/db_scripts/parse_and_post.py
 ```
 
-## Uploading to Google Cloud Storage
+- To parse and post a problem
+
+```zsh
+python python/db_scripts/parse_and_post.py --file "python/problems/combinatorics/counting/new_problem.py"
+```
+
+- To parse and post all problems
+
+```zsh
+python python/db_scripts/parse_and_post.py --all
+```
+
+### Uploading Images to Google Cloud Storage
+
+- To upload an image
+
+```zsh
+python python/db_scripts/upload_images.py --file "python/images/new_image.png"
+```
 
 - To upload all images
 
@@ -65,18 +73,20 @@ python python/db_scripts/parse_and_post.py
 python python/db_scripts/upload_images.py --all
 ```
 
-- To upload a single image
-
-```zsh
-python python/db_scripts/upload_images.py --file "python/images/new_image.png"
-```
-
 ## Docker
+
+### Commands
 
 - Build image and create container in the foreground
 
 ```zsh
 docker compose up --build
+```
+
+- List all containers
+
+```zsh
+docker ps -a
 ```
 
 - Prune all stopped containers
@@ -85,16 +95,16 @@ docker compose up --build
 docker container prune -f
 ```
 
-- Check all containers status
+## GitHub Action
 
-```zsh
-docker ps -a
-```
+### Pre-workflow
 
-## Self-Hosted GitHub Runner
+1. Make sure Docker Desktop is running in the background
 
-- Run GitHub Runner from /actions-runner
+2. Make sure GitHub Runner from ~/actions-runner is running in a terminal
 
 ```zsh
 ./run.sh
 ```
+
+3. Add new files to python/problems/ and images/ to trigger GitHub Action workflow
