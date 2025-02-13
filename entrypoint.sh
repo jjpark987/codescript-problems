@@ -2,11 +2,8 @@
 
 echo "PROBLEM_FILES_PATHS: $PROBLEM_FILES_PATHS"
 
-echo "CHECKING FOR DATABASE URL"
-echo "DOCKER_DATABASE_URL: $DOCKER_DATABASE_URL"
-
 # Check if PROBLEM_FILES_PATHS has data
-if [ -n "$PROBLEM_FILES_PATHS" ]; then
+if [[ -n "$PROBLEM_FILES_PATHS" && "$PROBLEM_FILES_PATHS" != '""' ]]; then
   echo "📥 Processing problem files into parse_and_post.py: $PROBLEM_FILES_PATHS..."
   python python/db_scripts/parse_and_post.py --file "$PROBLEM_FILES_PATHS"
 else

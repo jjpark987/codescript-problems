@@ -121,9 +121,7 @@ def parse_file(file_path: str) -> Dict[str, str]:
 # Function to store this in database
 async def post_problem(json_data: Dict[str, str]) -> None:
     print(f"🔍 API_URL: {API_URL}")
-    print(f"✅ API_URL is correctly set to app:80: {API_URL == 'http://app:80/problems'}")
-    print(f"📨 Request Headers: {HEADERS}")
-    print(f"📦 Request Data: {json_data}")
+    print(f"✅ API_URL is correctly set to codescript-fastapi:80: {API_URL == 'http://codescript-fastapi:80/problems'}")
 
     try:
         async with httpx.AsyncClient(timeout=10) as client:
