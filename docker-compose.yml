@@ -1,5 +1,5 @@
 services:
-  codescript-problems:
+  script:
     build: .
     container_name: codescript-problems
     environment:
