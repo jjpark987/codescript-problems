@@ -21,4 +21,3 @@ RUN chmod +x /entrypoint.sh
 
 # Set the entrypoint to the entrypoint script
 ENTRYPOINT ["/entrypoint.sh"]
-# comment
