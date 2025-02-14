@@ -27,7 +27,7 @@ jobs:
         id: set-env
         run: |
           echo "📥 Fetching added files in the current repository..."
-          ADDED_FILES=$(git diff --name-only --diff-filter=A ${{ github.event.before }} ${{ github.event.after }})
+          ADDED_FILES=$(git diff --name-only --diff-filter=AMR ${{ github.event.before }} ${{ github.event.after }})
           echo "$ADDED_FILES"
 
           PROBLEM_FILES=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
