@@ -31,7 +31,6 @@ jobs:
           echo "🔍 ADDED_FILES:"
           echo "$ADDED_FILES"
       
-          # Extract Problem Files and join into one line (space-separated)
           PROBLEM_FILES=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
           if [ -n "$PROBLEM_FILES" ]; then
               PROBLEM_FILES_LINE=$(echo "$PROBLEM_FILES" | tr '\n' ' ')

@@ -37,24 +37,23 @@ async def upload_image(file_path: str) -> None:
         print('❌ GC_BUCKET_NAME is not set. Check your environment variables.')
         return
 
-    with open('/tmp/gcp_credentials.json', 'w') as cred_file:
-        cred_file.write(GCP_CREDENTIALS)
+    try:
+        with open('/tmp/gcp_credentials.json', 'w') as cred_file:
+            cred_file.write(GCP_CREDENTIALS)
 
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/tmp/gcp_credentials.json'
-    
-    client = storage.Client()
-    bucket = client.get_bucket(GC_BUCKET_NAME)
-    blob = bucket.blob(file_path)
-    
-    if not blob.exists():
-        try:
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/tmp/gcp_credentials.json'
+        
+        client = storage.Client()
+        bucket = client.get_bucket(GC_BUCKET_NAME)
+        blob = bucket.blob(file_path)
+        
+        if not blob.exists():
             blob.upload_from_filename(file_path)
             print(f'✅ Uploaded {file_path} to Google Cloud Storage.')
-        except Exception as e:
-            print(f'❌ Failed to upload {file_path}: {e}')
-    else:
-        print(f'❌ File {file_path} already exists in the bucket. Skipping upload.')
-
+        else:
+            print(f'⏭️ Skipping over duplicate image: {file_path}')
+    except Exception as e:
+        print(f'🚨 Unexpected error while uploading {file_path}: {e}')
 
 async def main() -> None:
     if args.all:
@@ -65,7 +64,7 @@ async def main() -> None:
             await upload_image(path)
     elif args.file:
         print('▶️ Uploading images in IMAGE_FILES_PATHS....')
-        file_paths = [path.strip('"').strip("'") for path in args.file.split(' ')]
+        file_paths = [path.strip() for path in args.file.split() if path.strip()]
         for path in file_paths:
             print(f'Processing {path}...')
             await upload_image(path)
