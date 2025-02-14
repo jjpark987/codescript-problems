@@ -144,7 +144,7 @@ async def main() -> None:
     elif args.file:
         print('▶️ Executing parse and post on PROBLEM_FILES_PATHS...')
         print(args.file)
-        file_paths = [path.strip('"').strip("'") for path in args.file.split(',')]
+        file_paths = [path.strip('"').strip("'") for path in args.file.split(' ')]
         print(file_paths)
         for path in file_paths:
             print(f'Processing {path}...')
