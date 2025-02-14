@@ -6,8 +6,15 @@ import os
 import re
 from dotenv import load_dotenv
 from typing import List, Dict
+from python.scripts.util import is_running_in_docker
 
 load_dotenv()
+
+# Argument parser
+parser = argparse.ArgumentParser(description='Parse and post problem files.')
+parser.add_argument('--all', action='store_true', help='Process all problem files.')
+parser.add_argument('--file', type=str, help='Process specific problem file(s).')
+args = parser.parse_args()
 
 # Global variables
 ROOT_DIR = 'python/problems/'
@@ -39,22 +46,11 @@ DIFFICULTY_MAP = {
     'hard': 3
 }
 BASE_IMAGE_URL = 'https://storage.googleapis.com/code-problem-images/'
-
-# Function to check if we are inside a docker container
-def is_running_in_docker() -> bool:
-    return os.path.exists('/.dockerenv') or os.path.exists('/run/.containerenv')
-
 API_URL = f'{os.getenv("DOCKER_API_BASE_URL")}/problems' if is_running_in_docker() else f'{os.getenv("API_BASE_URL")}/problems'
 HEADERS = { 'Content-Type': 'application/json' }
 
-# Argument parser to accept file path
-parser = argparse.ArgumentParser(description='Parse and post problem files.')
-parser.add_argument('--all', action='store_true', help='Process all problem files')
-parser.add_argument('--file', type=str, help='Path to the newly added problem file')
-args = parser.parse_args()
-
 # Function to find all Python problem files in the subcategories
-def find_problem_files() -> List[str]:
+def find_all_problem_files() -> List[str]:
     problem_files = []
 
     for category in CATEGORIES:
@@ -70,11 +66,12 @@ def parse_file(file_path: str) -> Dict[str, str]:
         with open(file_path, 'r') as file:
             content = file.read()
 
-        comment_block = re.search(r'(""".*?""")', content, re.DOTALL)        
+        comment_block = re.search(r'(""".*?""")', content, re.DOTALL)    
+
         if not comment_block:
             raise ValueError('No comment block found')
+        
         comment = comment_block.group()[3:-3].strip()
-
         parsed_data = {'examples': [], 'image_urls': []}
 
         # Extract information using regex PATTERNS and update image_urls
@@ -118,26 +115,6 @@ def parse_file(file_path: str) -> Dict[str, str]:
     except Exception as e:
         print(f'🚨 Error parsing {file_path}: {e}')
 
-# Function to rename file
-def rename_file_by_title(file_path: str, title: str):
-    sanitized_title = re.sub(r'[^a-zA-Z0-9\s]', '', title)
-    snake_case_title = re.sub(r'\s+', '_', sanitized_title.strip().lower()) + '.py'
-    
-    if snake_case_title != os.path.basename(file_path):
-        print('📝 Renaming incorrect file name...')
-    
-        current_dir = os.path.dirname(file_path)
-        new_file_path = os.path.join(current_dir, snake_case_title)
-
-        try:
-            if not os.path.exists(new_file_path):
-                os.rename(file_path, new_file_path)
-                print(f'✅ Renamed "{file_path}" to "{snake_case_title}"')
-            else:
-                print(f'🚨 File "{snake_case_title}" already exists. Skipping rename.')
-        except Exception as e:
-            print(f'🚨 Error renaming file: {e}')
-
 # Function to store this in database
 async def post_problem(json_data: Dict[str, str]) -> None:
     try:
@@ -156,34 +133,27 @@ async def post_problem(json_data: Dict[str, str]) -> None:
     except httpx.RequestError as e:
         print(f'🚨 Error sending request: {e}')
 
-# Main function
 async def main() -> None:
     if args.all:
-        print('▶️ Executing parse and post on all problems.')
-        problem_files = find_problem_files()
+        print('▶️ Executing parse and post on all problems...')
+        problem_files = find_all_problem_files()
         for path in problem_files:
             print(f'Processing {path}...')
             data = parse_file(path)
-            if data['title']:
-                rename_file_by_title(path, data['title'])
             await post_problem(data) if data else print(f'❌ No valid problem data extracted from: {path}')
-    else:
-        if args.file:
-            print('▶️ Executing parse and post on PROBLEM_FILES_PATHS.')
-            file_paths = [path.strip('"').strip("'") for path in args.file.split(',')]
-            for path in file_paths:
-                print(f'Processing {path}...')
-                data = parse_file(path)
-                if data['title']:
-                    rename_file_by_title(path, data['title'])
-                await post_problem(data) if data else print(f'❌ No valid problem data extracted from: {path}')
-        else:
-            print('▶️ Executing parse and post on main.py.')
-            path = '/python/main.py'
+    elif args.file:
+        print('▶️ Executing parse and post on PROBLEM_FILES_PATHS...')
+        file_paths = [path.strip('"').strip("'") for path in args.file.split(',')]
+        for path in file_paths:
             print(f'Processing {path}...')
             data = parse_file(path)
             await post_problem(data) if data else print(f'❌ No valid problem data extracted from: {path}')
+    else:
+        print('▶️ Executing parse and post on main.py...')
+        path = '/python/main.py'
+        print(f'Processing {path}...')
+        data = parse_file(path)
+        await post_problem(data) if data else print(f'❌ No valid problem data extracted from: {path}')
 
-# Run script
 if __name__ == '__main__':
     asyncio.run(main())

@@ -35,7 +35,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Manual Posting and Uploading
+## Scripts
 
 ### Posting Problems to Database
 
@@ -44,19 +44,19 @@ pip install -r requirements.txt
 - To parse and post /python/main.py
 
 ```zsh
-python python/db_scripts/parse_and_post.py
+python -m python.scripts.db.post_problems
 ```
 
 - To parse and post a problem
 
 ```zsh
-python python/db_scripts/parse_and_post.py --file "python/problems/combinatorics/counting/new_problem.py"
+python -m python.scripts.db.post_problems --file "python/problems/combinatorics/counting/new_problem.py"
 ```
 
-- To parse and post all problems
+- To parse and post all problems in problems/
 
 ```zsh
-python python/db_scripts/parse_and_post.py --all
+python -m python.scripts.db.post_problems --all
 ```
 
 ### Uploading Images to Google Cloud Storage
@@ -64,13 +64,27 @@ python python/db_scripts/parse_and_post.py --all
 - To upload an image
 
 ```zsh
-python python/db_scripts/upload_images.py --file "python/images/new_image.png"
+python -m python.scripts.db.upload_images --file "python/images/new_image.png"
 ```
 
 - To upload all images
 
 ```zsh
-python python/db_scripts/upload_images.py --all
+python -m python.scripts.db.upload_images --all
+```
+
+### Renaming files
+
+- To rename a file
+
+```zsh
+python -m python.scripts.repo.rename_files --file "python/problems/combinatorics/counting/new_problem.py"
+```
+
+- To rename all files in problems/
+
+```zsh
+python -m python.scripts.repo.rename_files --all
 ```
 
 ## Docker

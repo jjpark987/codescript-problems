@@ -132,5 +132,5 @@ jobs:
         run: |
           echo "🖥️ Running script upload_images.py..."
           cd codescript-problems
-          python ./python/db_scripts/upload_images.py --file "$IMAGE_FILES_PATHS"
+          python -m python.scripts.db.upload_images --file "$IMAGE_FILES_PATHS"
           echo "✅ Completed script."
