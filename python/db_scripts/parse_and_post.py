@@ -118,6 +118,26 @@ def parse_file(file_path: str) -> Dict[str, str]:
     except Exception as e:
         print(f'🚨 Error parsing {file_path}: {e}')
 
+# Function to rename file
+def rename_file_by_title(file_path: str, title: str):
+    sanitized_title = re.sub(r'[^a-zA-Z0-9\s]', '', title)
+    snake_case_title = re.sub(r'\s+', '_', sanitized_title.strip().lower()) + '.py'
+    
+    if snake_case_title != os.path.basename(file_path):
+        print('📝 Renaming incorrect file name...')
+    
+        current_dir = os.path.dirname(file_path)
+        new_file_path = os.path.join(current_dir, snake_case_title)
+
+        try:
+            if not os.path.exists(new_file_path):
+                os.rename(file_path, new_file_path)
+                print(f'✅ Renamed "{file_path}" to "{snake_case_title}"')
+            else:
+                print(f'🚨 File "{snake_case_title}" already exists. Skipping rename.')
+        except Exception as e:
+            print(f'🚨 Error renaming file: {e}')
+
 # Function to store this in database
 async def post_problem(json_data: Dict[str, str]) -> None:
     try:
@@ -144,6 +164,8 @@ async def main() -> None:
         for path in problem_files:
             print(f'Processing {path}...')
             data = parse_file(path)
+            if data['title']:
+                rename_file_by_title(path, data['title'])
             await post_problem(data) if data else print(f'❌ No valid problem data extracted from: {path}')
     else:
         if args.file:
@@ -152,6 +174,8 @@ async def main() -> None:
             for path in file_paths:
                 print(f'Processing {path}...')
                 data = parse_file(path)
+                if data['title']:
+                    rename_file_by_title(path, data['title'])
                 await post_problem(data) if data else print(f'❌ No valid problem data extracted from: {path}')
         else:
             print('▶️ Executing parse and post on main.py.')
