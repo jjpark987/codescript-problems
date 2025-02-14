@@ -28,18 +28,25 @@ jobs:
         run: |
           echo "📥 Fetching added files in the current repository..."
           ADDED_FILES=$(git diff --name-only --diff-filter=AMR ${{ github.event.before }} ${{ github.event.after }})
+          echo "🔍 ADDED_FILES:"
           echo "$ADDED_FILES"
-
+      
+          # Extract Problem Files and join into one line (space-separated)
           PROBLEM_FILES=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
           if [ -n "$PROBLEM_FILES" ]; then
-            echo "problem_files_added=true" >> $GITHUB_OUTPUT
-            echo "problem_files_paths=$(echo $PROBLEM_FILES | paste -sd " ")" >> $GITHUB_OUTPUT
+              PROBLEM_FILES_LINE=$(echo "$PROBLEM_FILES" | tr '\n' ' ')
+              echo "📝 PROBLEM_FILES (space-separated): $PROBLEM_FILES_LINE"
+              echo "problem_files_added=true" >> $GITHUB_OUTPUT
+              echo "problem_files_paths=$PROBLEM_FILES_LINE" >> $GITHUB_OUTPUT
           fi
-
+      
+          # Extract Image Files and join into one line (space-separated)
           IMAGE_FILES=$(echo "$ADDED_FILES" | grep "^python/images/" || true)
           if [ -n "$IMAGE_FILES" ]; then
-            echo "image_files_added=true" >> $GITHUB_OUTPUT
-            echo "image_files_paths=$(echo $IMAGE_FILES | paste -sd " ")" >> $GITHUB_OUTPUT
+              IMAGE_FILES_LINE=$(echo "$IMAGE_FILES" | tr '\n' ' ')
+              echo "🖼️ IMAGE_FILES (space-separated): $IMAGE_FILES_LINE"
+              echo "image_files_added=true" >> $GITHUB_OUTPUT
+              echo "image_files_paths=$IMAGE_FILES_LINE" >> $GITHUB_OUTPUT
           fi
 
   post_problems:
