@@ -103,13 +103,13 @@ docker container prune -f
 
 2. Make sure GitHub Runner from ~/actions-runner is running in the background
 
-- Verify runner
+- Verify runner from ~/actions-runner
 
 ```zsh
 ./svc.sh status
 ```
 
-- Start runner, if needed
+- Start runner from ~/actions-runner
 
 ```zsh
 ./svc.sh start
