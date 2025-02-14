@@ -1,4 +1,4 @@
-# CodeScript
+# CodeScript Problems
 
 This repository contains the code problems for CodeScript.
 
