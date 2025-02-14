@@ -101,10 +101,18 @@ docker container prune -f
 
 1. Make sure Docker Desktop is running in the background
 
-2. Make sure GitHub Runner from ~/actions-runner is running in a terminal
+2. Make sure GitHub Runner from ~/actions-runner is running in the background
+
+- Verify runner
 
 ```zsh
-./run.sh
+./svc.sh status
+```
+
+- Start runner, if needed
+
+```zsh
+./svc.sh start
 ```
 
 3. Add new files to python/problems/ and images/ to trigger GitHub Action workflow
