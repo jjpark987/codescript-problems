@@ -1,44 +1,23 @@
 #!/usr/bin/env python3
 
-from typing import List
 from functools import cmp_to_key
+from typing import List
 
-# time: O(n*log(n)), space: O(n)
 class Solution:
     def largestNumber(self, nums: List[int]) -> str:
-        def compare(x, y):
-            # Compare concatenated strings
-            if x + y > y + x:
-                return -1  # x should come before y
-            elif x + y < y + x:
-                return 1   # y should come before x
+        nums = [str(n) for n in nums]
+
+        def higher_num(a, b):
+            if int(a + b) > int(b + a):
+                return -1
+            elif int(b + a) > int(a + b):
+                return 1
             else:
-                return 0   # equal
+                return 0
             
-        # Turn all integers into strings
-        for i in range(len(nums)):
-            nums[i] = str(nums[i])
+        nums.sort(key=cmp_to_key(higher_num))
 
-        # Sort the list using custom function
-        nums.sort(key=cmp_to_key(compare))
-
-        # Concatenate the strings
-        result = ''
-        for n in nums:
-            result += str(n)
-
-        # If all values are 0s, return '0'
-        if result[0] == '0':
-            return '0'
-
-        return result
-
-# print(Solution().largestNumber(nums = [10,2]))
-# print('210')
-# print(Solution().largestNumber(nums = [3,30,34,5,9]))
-# print('9534330')
-print(Solution().largestNumber(nums = [0,0]))
-print('0')
+        return str(int(''.join(nums)))
 
 """
 category: data manipulations

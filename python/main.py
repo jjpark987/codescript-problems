@@ -1,52 +1,52 @@
 #!/usr/bin/env python3
 
+from functools import cmp_to_key
+from typing import List
+
 class Solution:
-    def removeOccurrences(self, s: str, part: str) -> str:
-        pass
+    def largestNumber(self, nums: List[int]) -> str:
+        nums = [str(n) for n in nums]
+
+        def higher_num(a, b):
+            if int(a + b) > int(b + a):
+                return -1
+            elif int(b + a) > int(a + b):
+                return 1
+            else:
+                return 0
+            
+        nums.sort(key=cmp_to_key(higher_num))
+
+        return str(int(''.join(nums)))
 
 """
 category: data manipulations
-subcategory: reducing
+subcategory: reformatting
 difficulty: medium
 image_url_e1: none
 image_url_e2: none
 image_url_e3: none
-title: Remove All Occurrences of a Substring
+title: Largest Number
 
 description:
-Given two strings s and part, perform the following operation on s until all occurrences of the substring part are removed:
+Given a list of non-negative integers nums, arrange them such that they form the largest number and return it.
 
-Find the leftmost occurrence of the substring part and remove it from s.
-Return s after removing all occurrences of part.
-
-A substring is a contiguous sequence of characters in a string.
+Since the result may be very large, so you need to return a string instead of an integer.
 
  
 
 Example 1:
 
-Input: s = "daabcbaabcbc", part = "abc"
-Output: "dab"
-Explanation: The following operations are done:
-- s = "daabcbaabcbc", remove "abc" starting at index 2, so s = "dabaabcbc".
-- s = "dabaabcbc", remove "abc" starting at index 4, so s = "dababc".
-- s = "dababc", remove "abc" starting at index 3, so s = "dab".
-Now s has no occurrences of "abc".
+Input: nums = [10,2]
+Output: "210"
 Example 2:
 
-Input: s = "axxxxyyyyb", part = "xy"
-Output: "ab"
-Explanation: The following operations are done:
-- s = "axxxxyyyyb", remove "xy" starting at index 4 so s = "axxxyyyb".
-- s = "axxxyyyb", remove "xy" starting at index 3 so s = "axxyyb".
-- s = "axxyyb", remove "xy" starting at index 2 so s = "axyb".
-- s = "axyb", remove "xy" starting at index 1 so s = "ab".
-Now s has no occurrences of "xy".
+Input: nums = [3,30,34,5,9]
+Output: "9534330"
  
 
 Constraints:
 
-1 <= s.length <= 1000
-1 <= part.length <= 1000
-s​​​​​​ and part consists of lowercase English letters.
+1 <= nums.length <= 100
+0 <= nums[i] <= 109
 """
