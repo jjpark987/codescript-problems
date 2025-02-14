@@ -7,3 +7,4 @@ if [[ -n "$PROBLEM_FILES_PATHS" && "$PROBLEM_FILES_PATHS" != '""' ]]; then
 else
   echo "❌ No problem files provided. Exiting script."
 fi
+# comment
