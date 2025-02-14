@@ -54,8 +54,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: jjpark987/codescript-backend
-          ref: fastapi
-          path: ./codescript-fastapi
+          path: ./codescript-backend
           fetch-depth: 1
 
       - name: Checkout codescript-problems
@@ -76,12 +75,12 @@ jobs:
           echo "📄 Added problem files:"
           echo "$PROBLEM_FILES_PATHS"
 
-      - name: Run codescript-fastapi
+      - name: Run codescript-backend
         env:
           DOCKER_DATABASE_URL: ${{ secrets.DOCKER_DATABASE_URL }}
         run: |
-          echo "🚀 Deploying codescript-fastapi..."
-          cd codescript-fastapi
+          echo "🚀 Deploying codescript-backend..."
+          cd codescript-backend
           docker compose up -d
           echo "✅ API docker is running!"
 
@@ -94,13 +93,13 @@ jobs:
           docker compose up --remove-orphans
           echo "✅ Problems docker has completed parse_and_post.py!"
 
-      - name: Clean up codescript-fastapi
+      - name: Clean up codescript-backend
         run: |
           echo "🧹 Cleaning up codescript-problems..."
           cd codescript-problems
           docker compose down --remove-orphans
-          echo "🧹 Cleaning up codescript-fastapi..."
-          cd .. && cd codescript-fastapi
+          echo "🧹 Cleaning up codescript-backend..."
+          cd .. && cd codescript-backend
           docker compose down --remove-orphans
           echo "✅ Completed clean up!"
 
