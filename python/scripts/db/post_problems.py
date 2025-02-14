@@ -143,9 +143,7 @@ async def main() -> None:
             await post_problem(data) if data else print(f'❌ No valid problem data extracted from: {path}')
     elif args.file:
         print('▶️ Executing parse and post on PROBLEM_FILES_PATHS...')
-        print(args.file)
         file_paths = [path.strip('"').strip("'") for path in args.file.split(' ')]
-        print(file_paths)
         for path in file_paths:
             print(f'Processing {path}...')
             data = parse_file(path)

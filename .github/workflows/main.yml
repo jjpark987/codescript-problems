@@ -33,13 +33,13 @@ jobs:
           PROBLEM_FILES=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
           if [ -n "$PROBLEM_FILES" ]; then
             echo "problem_files_added=true" >> $GITHUB_OUTPUT
-            echo "problem_files_paths=$(echo $PROBLEM_FILES | paste -sd "," -)" >> $GITHUB_OUTPUT
+            echo "problem_files_paths=$(echo $PROBLEM_FILES | paste -sd " ")" >> $GITHUB_OUTPUT
           fi
 
           IMAGE_FILES=$(echo "$ADDED_FILES" | grep "^python/images/" || true)
           if [ -n "$IMAGE_FILES" ]; then
             echo "image_files_added=true" >> $GITHUB_OUTPUT
-            echo "image_files_paths=$(echo $IMAGE_FILES | paste -sd "," -)" >> $GITHUB_OUTPUT
+            echo "image_files_paths=$(echo $IMAGE_FILES | paste -sd " ")" >> $GITHUB_OUTPUT
           fi
 
   post_problems:

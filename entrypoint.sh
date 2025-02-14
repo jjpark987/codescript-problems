@@ -5,5 +5,5 @@ if [[ -n "$PROBLEM_FILES_PATHS" && "$PROBLEM_FILES_PATHS" != '""' ]]; then
   echo "📥 Processing problem files into post_problems.py: $PROBLEM_FILES_PATHS..."
   python -m python.scripts.db.post_problems --file "$PROBLEM_FILES_PATHS"
 else
-  echo "❌ No problem files provided. Exiting script..."
+  echo "❌ No problem files provided. Exiting script."
 fi

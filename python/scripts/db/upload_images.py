@@ -65,7 +65,7 @@ async def main() -> None:
             await upload_image(path)
     elif args.file:
         print('▶️ Uploading images in IMAGE_FILES_PATHS....')
-        file_paths = [path.strip('"').strip("'") for path in args.file.split(',')]
+        file_paths = [path.strip('"').strip("'") for path in args.file.split(' ')]
         for path in file_paths:
             print(f'Processing {path}...')
             await upload_image(path)
