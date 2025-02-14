@@ -55,7 +55,7 @@ jobs:
             echo "image_files_paths=$(echo $IMAGE_FILES | paste -sd "," -)" >> $GITHUB_OUTPUT
           fi
 
-  seed_problems:
+  post_problems:
     needs: detect_changes
     if: needs.detect_changes.outputs.problem_files_added == 'true'
     runs-on: self-hosted
