@@ -120,17 +120,9 @@ def parse_file(file_path: str) -> Dict[str, str]:
 
 # Function to store this in database
 async def post_problem(json_data: Dict[str, str]) -> None:
-    print(f"🔍 API_URL: {API_URL}")
-    print(f"✅ API_URL is correctly set to codescript-fastapi:80: {API_URL == 'http://codescript-fastapi:80/problems'}")
-
     try:
         async with httpx.AsyncClient(timeout=10) as client:
             response = await client.post(API_URL, json=json_data, headers=HEADERS)
-
-        print(f"🔍 Response Status Code: {response.status_code}")
-        print(f"📨 Response Text: {response.text}")
-        print(f"📜 Response Headers: {response.headers}")
-
         if response.status_code == 201:
             print(f'✅ Successfully posted problem: {json_data["title"]}')
             print('Response:', response.json())  

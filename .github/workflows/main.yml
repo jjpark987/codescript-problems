@@ -1,18 +1,12 @@
 name: Post Problem and/or Upload Image
 
 on:
-  workflow_dispatch:
-    inputs:
-      DEBUG_MODE:
-        description: 'Enable debug mode'
-        required: false
-        default: 'false'
-#   push:
-#     paths:
-#       - 'python/problems/**'
-#       - 'python/images/**'
-#     branches:
-#       - main  
+  push:
+    paths:
+      - 'python/problems/**'
+      - 'python/images/**'
+    branches:
+      - main  
 
 jobs:
   detect_changes:
@@ -36,19 +30,12 @@ jobs:
           ADDED_FILES=$(git diff --name-only --diff-filter=A ${{ github.event.before }} ${{ github.event.after }})
           echo "$ADDED_FILES"
 
-          # Manually override PROBLEM_FILES_PATHS
-          echo "🔧 Manually overriding problem file paths"
-          echo "problem_files_added=true" >> $GITHUB_OUTPUT
-          echo "problem_files_paths=python/problems/combinatorics/counting/beautiful_subsets.py" >> $GITHUB_OUTPUT
+          PROBLEM_FILES=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
+          if [ -n "$PROBLEM_FILES" ]; then
+            echo "problem_files_added=true" >> $GITHUB_OUTPUT
+            echo "problem_files_paths=$(echo $PROBLEM_FILES | paste -sd "," -)" >> $GITHUB_OUTPUT
+          fi
 
-          # Check for problem files
-          # PROBLEM_FILES=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
-          # if [ -n "$PROBLEM_FILES" ]; then
-          #   echo "problem_files_added=true" >> $GITHUB_OUTPUT
-          #   echo "problem_files_paths=$(echo $PROBLEM_FILES | paste -sd "," -)" >> $GITHUB_OUTPUT
-          # fi
-
-          # Check for image files
           IMAGE_FILES=$(echo "$ADDED_FILES" | grep "^python/images/" || true)
           if [ -n "$IMAGE_FILES" ]; then
             echo "image_files_added=true" >> $GITHUB_OUTPUT
@@ -86,7 +73,6 @@ jobs:
           security -v unlock-keychain -p "${{ secrets.MAC_KEYCHAIN_PASSWORD }}" ~/Library/Keychains/login.keychain-db
           echo "🔍 Checking for codescript_network..."
           docker network inspect codescript_network >/dev/null 2>&1 || docker network create codescript_network
-          echo "✅ codescript_network found!"
           echo "📄 Added problem files:"
           echo "$PROBLEM_FILES_PATHS"
 

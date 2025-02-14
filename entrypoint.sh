@@ -7,6 +7,3 @@ if [[ -n "$PROBLEM_FILES_PATHS" && "$PROBLEM_FILES_PATHS" != '""' ]]; then
 else
   echo "❌ No problem files provided. Exiting script..."
 fi
-
-# To keep container running
-# tail -f /dev/null
