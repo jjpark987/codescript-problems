@@ -120,7 +120,7 @@ async def post_problem(json_data: Dict[str, str]) -> None:
     try:
         async with httpx.AsyncClient(timeout=10) as client:
             response = await client.post(API_URL, json=json_data, headers=HEADERS)
-        if response.status_code == 201:
+        if 200 <= response.status_code < 300:
             print(f'✅ Successfully posted problem: {json_data["title"]}')
             print('Response:', response.json())  
         elif response.status_code == 400:
@@ -128,7 +128,7 @@ async def post_problem(json_data: Dict[str, str]) -> None:
         elif response.status_code == 409:
             print(f'⏭️ Skipping over duplicate problem: {json_data["title"]}')
         else:
-            print(f'❌ Failed to post problem: {response.status_code}')
+            print(f'❌ Failed to post problem with status code {response.status_code}')
 
     except httpx.RequestError as e:
         print(f'🚨 Error sending request: {e}')
