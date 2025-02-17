@@ -116,8 +116,9 @@ def parse_file(file_path: str) -> Dict[str, str]:
 
 # Function to store this in database
 async def post_problem(json_data: Dict[str, str]) -> None:
+    print(f'🔍 Sending POST request to {API_URL}...')
     try:
-        async with httpx.AsyncClient(timeout=10) as client:
+        async with httpx.AsyncClient() as client:
             response = await client.post(API_URL, json=json_data, headers=HEADERS)
         if 200 <= response.status_code < 300:
             print(f'✅ Successfully posted problem: {json_data["title"]}')
