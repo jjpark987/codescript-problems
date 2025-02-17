@@ -6,7 +6,6 @@ import os
 import re
 from dotenv import load_dotenv
 from typing import List, Dict
-from python.scripts.util import is_running_in_docker
 
 load_dotenv()
 
@@ -46,7 +45,7 @@ DIFFICULTY_MAP = {
     'hard': 3
 }
 BASE_IMAGE_URL = 'https://storage.googleapis.com/code-problem-images/'
-API_URL = f'{os.getenv("DOCKER_API_BASE_URL")}/problems' if is_running_in_docker() else f'{os.getenv("API_BASE_URL")}/problems'
+API_URL = f'{os.getenv("DOCKER_API_BASE_URL")}/problems' if os.path.exists('/.dockerenv') else f'{os.getenv("API_BASE_URL")}/problems'
 HEADERS = { 'Content-Type': 'application/json' }
 
 # Function to find all Python problem files in the subcategories
