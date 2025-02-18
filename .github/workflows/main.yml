@@ -6,7 +6,7 @@ on:
       - 'python/problems/**'
       - 'python/images/**'
     branches:
-      - main  
+      - master
 
 jobs:
   detect_changes:
