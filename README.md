@@ -78,7 +78,7 @@ python -m python.scripts.db.upload_images --all
 - To rename a file
 
 ```zsh
-python -m python.scripts.repo.rename_files --file "python/problems/combinatorics/counting/new_problem.py"
+python -m python.scripts.repo.rename_files --file "python/main.py"
 ```
 
 - To rename all files in problems/
