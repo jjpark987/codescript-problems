@@ -14,7 +14,9 @@ parser = argparse.ArgumentParser(description='Parse and post problem files.')
 parser.add_argument('--all', action='store_true', help='Process all problem files.')
 parser.add_argument('--file', type=str, help='Process specific problem file(s).')
 args = parser.parse_args()
-
+if args.file:
+    args.all = False
+print(f"args.all: {args.all}, args.file: {args.file}")
 # Global variables
 ROOT_DIR = 'python/problems/'
 CATEGORIES = ['data_manipulations', 'combinatorics', 'optimizations']

@@ -8,6 +8,13 @@ on:
     branches:
       - master
 
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Debug mode'
+        required: false
+        default: 'Manual run'
+
 jobs:
   detect_changes:
     runs-on: self-hosted
