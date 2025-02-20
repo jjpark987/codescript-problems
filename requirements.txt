@@ -4,3 +4,7 @@ python-dotenv>=1.0.1
 
 # GitHub Actions
 google-cloud-storage>=3.0.0
+
+# For solutions
+# requests>=2.32.3
+# beautifulsoup4>=4.13.3
