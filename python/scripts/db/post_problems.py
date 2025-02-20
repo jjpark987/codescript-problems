@@ -6,9 +6,9 @@ import os
 import re
 from dotenv import load_dotenv
 from typing import List, Dict
-
+import sys
 load_dotenv()
-
+print(f"sys.argv: {sys.argv}")
 # Argument parser
 parser = argparse.ArgumentParser(description='Parse and post problem files.')
 parser.add_argument('--all', action='store_true', help='Process all problem files.')
