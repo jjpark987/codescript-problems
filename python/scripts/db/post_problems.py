@@ -65,7 +65,7 @@ def parse_file(file_path: str) -> Dict[str, str]:
         with open(file_path, 'r') as file:
             content = file.read()
 
-        comment_block = re.search(r'(""".*?""")', content, re.DOTALL)    
+        comment_block = re.search(r"('''.*?''')", content, re.DOTALL)    
 
         if not comment_block:
             raise ValueError('No comment block found')
