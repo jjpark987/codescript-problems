@@ -61,6 +61,7 @@ jobs:
     runs-on: self-hosted
     env:
       PROBLEM_FILES_PATHS: ${{ needs.detect_changes.outputs.problem_files_paths }}
+      IMAGE_FILES_PATHS: ${{ needs.detect_changes.outputs.image_files_paths }}
 
     steps:
       - name: Checkout codescript-backend
@@ -115,41 +116,3 @@ jobs:
           cd .. && cd codescript-backend
           docker compose down --remove-orphans
           echo "✅ Completed clean up!"
-
-  upload_images:
-    needs: detect_changes
-    if: needs.detect_changes.outputs.image_files_added == 'true'
-    runs-on: self-hosted
-    env:
-      IMAGE_FILES_PATHS: ${{ needs.detect_changes.outputs.image_files_paths }}
-
-    steps:
-      - name: Checkout codescript-problems
-        uses: actions/checkout@v4
-        with:
-          repository: jjpark987/codescript-problems
-          path: ./codescript-problems
-          fetch-depth: 1
-
-      - name: Install Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.13'
-  
-      - name: Install Dependencies
-        run: |
-          echo "📄 Added images:"
-          echo "$IMAGE_FILES_PATHS"
-          cd codescript-problems
-          python -m pip install --upgrade pip
-          pip install --no-cache-dir -r requirements.txt
-      
-      - name: Run upload_images.py
-        env:
-          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-          GC_BUCKET_NAME: ${{ secrets.GC_BUCKET_NAME }}
-        run: |
-          echo "🖥️ Running script upload_images.py..."
-          cd codescript-problems
-          python -m python.scripts.db.upload_images --file "$IMAGE_FILES_PATHS"
-          echo "✅ Completed script."

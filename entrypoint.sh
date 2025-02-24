@@ -7,3 +7,11 @@ if [[ -n "$PROBLEM_FILES_PATHS" && "$PROBLEM_FILES_PATHS" != '""' ]]; then
 else
   echo "❌ No problem files provided. Exiting script."
 fi
+
+# Check if IMAGE_FILES_PATHS has data
+if [[ -n "$IMAGE_FILES_PATHS" && "$IMAGE_FILES_PATHS" != '""' ]]; then
+  echo "🖼️ Processing images into upload_images.py: $IMAGE_FILES_PATHS..."
+  python -m python.scripts.db.upload_images --file "$IMAGE_FILES_PATHS"
+else
+  echo "✅ No images to upload."
+fi
