@@ -4,8 +4,8 @@ services:
     container_name: codescript-problems
     environment:
       - DOCKER_API_BASE_URL=${DOCKER_API_BASE_URL:-}
-      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-python/problems/optimizations/processes/most_profitable_path_in_a_tree.py}
-      - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-python/images/most_profitable_path_e1.png python/images/most_profitable_path_e2.png}
+      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-}
+      - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-}
     volumes:
       - .:/app
     networks:
