@@ -131,7 +131,12 @@ jobs:
           path: ./codescript-problems
           fetch-depth: 1
 
-      - name: Check IMAGE_FILES_PATHS and install dependencies
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+  
+      - name: Install Dependencies
         run: |
           echo "📄 Added images:"
           echo "$IMAGE_FILES_PATHS"
