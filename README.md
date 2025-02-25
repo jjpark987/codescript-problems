@@ -120,13 +120,13 @@ docker container prune -f
 - Verify runner from ~/actions-runner
 
 ```zsh
-cd ~/actions-runner && ./svc.sh status
+cd ~/Projects/codescript-runner && ./svc.sh status
 ```
 
 - Start runner from ~/actions-runner
 
 ```zsh
-cd ~/actions-runner && ./svc.sh start
+cd ~/Projects/codescript-runner && ./svc.sh start
 ```
 
 3. Add new files to python/problems/ and images/ to trigger GitHub Action workflow
