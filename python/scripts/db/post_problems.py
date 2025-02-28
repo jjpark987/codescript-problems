@@ -129,6 +129,8 @@ async def post_problem(json_data: Dict[str, str]) -> None:
             print(f'⏭️ Skipping over duplicate problem: {json_data["title"]}')
         else:
             print(f'❌ Failed to post problem with status code {response.status_code}')
+            print(f'📤 Request Payload: {json_data}')  
+            print(f'🛠️ Response Headers: {response.headers}')
 
     except httpx.RequestError as e:
         print(f'🚨 Error sending request: {e}')
