@@ -6,7 +6,7 @@ services:
       - .:/app
     environment:
       - DOCKER_API_BASE_URL=${DOCKER_API_BASE_URL:-}
-      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-python/problems/combinatorics/counting/count_sub_islands.py}
+      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-}
       - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-}
     networks:
       - codescript_network
