@@ -2,12 +2,12 @@ services:
   script:
     build: .
     container_name: codescript-problems
+    volumes:
+      - .:/app
     environment:
       - DOCKER_API_BASE_URL=${DOCKER_API_BASE_URL:-}
       - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-}
       - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-}
-    volumes:
-      - .:/app
     networks:
       - codescript_network
     entrypoint: ["/entrypoint.sh"]
