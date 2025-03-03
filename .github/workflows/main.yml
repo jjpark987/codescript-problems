@@ -95,7 +95,7 @@ jobs:
         run: |
           echo "🚀 Deploying codescript-backend..."
           cd codescript-backend
-          docker compose up -d
+          docker compose -f docker-compose.backend.yml up -d
           echo "✅ API docker is running!"
 
       - name: Run codescript-problems

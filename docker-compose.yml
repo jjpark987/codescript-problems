@@ -1,7 +1,7 @@
 services:
   script:
-    build: .
     container_name: codescript-problems
+    build: .
     volumes:
       - .:/app
     environment:
@@ -10,7 +10,6 @@ services:
       - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-}
     networks:
       - codescript_network
-    entrypoint: ["/entrypoint.sh"]
 
 networks:
   codescript_network:
