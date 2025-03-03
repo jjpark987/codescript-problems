@@ -89,24 +89,10 @@ python -m python.scripts.repo.rename_files --all
 
 ## Docker
 
-### Commands
-
 - Build image and create container in the foreground
 
 ```zsh
 docker compose up --build
-```
-
-- List all containers
-
-```zsh
-docker ps -a
-```
-
-- Prune all stopped containers
-
-```zsh
-docker container prune -f
 ```
 
 ## GitHub Action
