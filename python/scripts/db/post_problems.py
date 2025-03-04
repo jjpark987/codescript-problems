@@ -1,16 +1,16 @@
-import argparse
-import asyncio
-import glob
-import httpx
-import os
-import re
+from argparse import ArgumentParser
+from asyncio import run
 from dotenv import load_dotenv
+from glob import glob
+from httpx import AsyncClient, RequestError
+from os import getenv, path
+from re import search, findall, DOTALL
 from typing import List, Dict
 
 load_dotenv()
 
 # Argument parser
-parser = argparse.ArgumentParser(description='Parse and post problem files.')
+parser = ArgumentParser(description='Parse and post problem files.')
 parser.add_argument('--all', action='store_true', help='Process all problem files.')
 parser.add_argument('--file', type=str, help='Process specific problem file(s).')
 args = parser.parse_args()
@@ -45,7 +45,7 @@ DIFFICULTY_MAP = {
     'hard': 3
 }
 BASE_IMAGE_URL = 'https://storage.googleapis.com/code-problem-images/'
-API_URL = f'{os.getenv("DOCKER_API_BASE_URL")}/problems' if os.path.exists('/.dockerenv') else f'{os.getenv("API_BASE_URL")}/problems'
+API_URL = f'{getenv("DOCKER_API_BASE_URL")}/problems' if path.exists('/.dockerenv') else f'{getenv("API_BASE_URL")}/problems'
 HEADERS = { 'Content-Type': 'application/json' }
 
 # Function to find all Python problem files in the subcategories
@@ -53,8 +53,8 @@ def find_all_problem_files() -> List[str]:
     problem_files = []
 
     for category in CATEGORIES:
-        category_path = os.path.join(ROOT_DIR, category)
-        files = glob.glob(os.path.join(category_path, '**', '*.py'), recursive=True)
+        category_path = path.join(ROOT_DIR, category)
+        files = glob(path.join(category_path, '**', '*.py'), recursive=True)
         problem_files.extend(files)
 
     return problem_files
@@ -65,7 +65,7 @@ def parse_file(file_path: str) -> Dict[str, str]:
         with open(file_path, 'r') as file:
             content = file.read()
 
-        comment_block = re.search(r'(?:\'\'\'|""")(.*?)(?:\'\'\'|""")', content, re.DOTALL)
+        comment_block = search(r'(?:\'\'\'|""")(.*?)(?:\'\'\'|""")', content, DOTALL)
 
         if not comment_block:
             raise ValueError('No comment block found')
@@ -75,7 +75,7 @@ def parse_file(file_path: str) -> Dict[str, str]:
 
         # Extract information using regex PATTERNS and update image_urls
         for field, pattern in PATTERNS.items():
-            match = re.search(pattern, comment, re.DOTALL)
+            match = search(pattern, comment, DOTALL)
             if match:
                 value = match.group(1).strip()
 
@@ -94,9 +94,9 @@ def parse_file(file_path: str) -> Dict[str, str]:
             parsed_data['subcategory_id'] = SUBCATEGORY_MAP.get(parsed_data.pop('subcategory'), None)
 
         # Extract and structure examples
-        example_pattern = re.findall(
+        example_pattern = findall(
             r'Example \d+:\s*Input:\s*(.*?)\s*Output:\s*(.*?)(?:\s*Explanation:\s*((?:.|\n)+?))?(?=Example \d+:|Constraints:|$)',
-            comment, re.DOTALL
+            comment, DOTALL
         )
 
         parsed_data['examples'] = [
@@ -118,7 +118,7 @@ def parse_file(file_path: str) -> Dict[str, str]:
 async def post_problem(json_data: Dict[str, str]) -> None:
     print(f'🔍 Sending POST request to {API_URL}...')
     try:
-        async with httpx.AsyncClient() as client:
+        async with AsyncClient() as client:
             response = await client.post(API_URL, json=json_data, headers=HEADERS)
         if 200 <= response.status_code < 300:
             print(f'✅ Successfully posted problem: {json_data["title"]}')
@@ -132,7 +132,7 @@ async def post_problem(json_data: Dict[str, str]) -> None:
             print(f'📤 Request Payload: {json_data}')  
             print(f'🛠️ Response Headers: {response.headers}')
 
-    except httpx.RequestError as e:
+    except RequestError as e:
         print(f'🚨 Error sending request: {e}')
 
 async def main() -> None:
@@ -158,4 +158,4 @@ async def main() -> None:
         await post_problem(data) if data else print(f'❌ No valid problem data extracted from: {path}')
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    run(main())

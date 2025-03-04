@@ -1,30 +1,30 @@
-import argparse
-import asyncio
-import os
+from argparse import ArgumentParser
+from asyncio import run
 from dotenv import load_dotenv
-from google.cloud import storage
+from google.cloud.storage import Client
+from os import getenv, listdir, path, environ
 from typing import List
 
 load_dotenv()
 
 # Argument parser
-parser = argparse.ArgumentParser(description='Upload images to Google Cloud Storage')
+parser = ArgumentParser(description='Upload images to Google Cloud Storage')
 parser.add_argument('--all', action='store_true', help='Upload all images.')
 parser.add_argument('--file', type=str, help='Upload specific image(s).')
 args = parser.parse_args()
 
 # Global variables
 ROOT_DIR = 'python/images/'
-GCP_CREDENTIALS = os.getenv('GCP_CREDENTIALS')
-GC_BUCKET_NAME = os.getenv('GC_BUCKET_NAME')
+GCP_CREDENTIALS = getenv('GCP_CREDENTIALS')
+GC_BUCKET_NAME = getenv('GC_BUCKET_NAME')
 
 # Function to find all images
 def find_image_files() -> List[str]:
     image_files = []
 
-    for file in os.listdir(ROOT_DIR):
+    for file in listdir(ROOT_DIR):
         if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff')):
-            image_files.append(os.path.join(ROOT_DIR, file))
+            image_files.append(path.join(ROOT_DIR, file))
 
     return image_files
 
@@ -41,10 +41,9 @@ async def upload_image(file_path: str) -> None:
         with open('/tmp/gcp_credentials.json', 'w') as cred_file:
             cred_file.write(GCP_CREDENTIALS)
 
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/tmp/gcp_credentials.json'
+        environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/tmp/gcp_credentials.json'
         
-        client = storage.Client()
-        bucket = client.get_bucket(GC_BUCKET_NAME)
+        bucket = Client().get_bucket(GC_BUCKET_NAME)
         blob = bucket.blob(file_path)
         
         if not blob.exists():
@@ -73,4 +72,4 @@ async def main() -> None:
         return
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    run(main())

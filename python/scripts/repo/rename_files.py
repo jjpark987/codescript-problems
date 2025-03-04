@@ -1,11 +1,11 @@
-import asyncio
-import argparse
-import os
-import re
+from argparse import ArgumentParser
+from asyncio import run
+from os import rename, path
+from re import search, sub, IGNORECASE
 from python.scripts.db.post_problems import find_all_problem_files
 
 # Argument parser
-parser = argparse.ArgumentParser(description='Rename files based on their problem title.')
+parser = ArgumentParser(description='Rename files based on their problem title.')
 parser.add_argument('--all', action='store_true', help='Rename all problem files.')
 parser.add_argument('--file', type=str, help='Rename specific problem file(s).')
 args = parser.parse_args()
@@ -15,7 +15,7 @@ async def rename_file_by_title(file_path: str):
     try:
         with open(file_path, 'r') as file:
             content = file.read()
-            match = re.search(r'title:\s*(.*?)\n', content, re.IGNORECASE)
+            match = search(r'title:\s*(.*?)\n', content, IGNORECASE)
 
             if not match:
                 print(f'❌ No title found in "{file_path}". Skipping.')
@@ -23,16 +23,16 @@ async def rename_file_by_title(file_path: str):
             
             title = match.group(1).strip()
 
-        sanitized_title = re.sub(r'[^a-zA-Z0-9\s]', '', title)
-        snake_case_title = re.sub(r'\s+', '_', sanitized_title.strip().lower()) + '.py'
-        old_title = os.path.basename(file_path)
+        sanitized_title = sub(r'[^a-zA-Z0-9\s]', '', title)
+        snake_case_title = sub(r'\s+', '_', sanitized_title.strip().lower()) + '.py'
+        old_title = path.basename(file_path)
 
         if snake_case_title != old_title:
-            current_dir = os.path.dirname(file_path)
-            new_file_path = os.path.join(current_dir, snake_case_title)
+            current_dir = path.dirname(file_path)
+            new_file_path = path.join(current_dir, snake_case_title)
 
-            if not os.path.exists(new_file_path):
-                os.rename(file_path, new_file_path)
+            if not path.exists(new_file_path):
+                rename(file_path, new_file_path)
                 print(f'✅ Renamed "{old_title}" to "{snake_case_title}"')
             else:
                 print(f'🚨 File "{snake_case_title}" already exists. Skipping rename.')
@@ -64,5 +64,5 @@ async def main() -> None:
         return
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    run(main())
     
