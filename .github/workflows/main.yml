@@ -106,7 +106,7 @@ jobs:
         run: |
           echo "🚀 Deploying codescript-problems..."
           cd codescript-problems
-          docker compose up --remove-orphans
+          docker compose up
           echo "✅ Problems docker has posted all problems!"
 
       - name: Clean up codescript-backend
