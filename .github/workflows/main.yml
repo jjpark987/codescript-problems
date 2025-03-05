@@ -101,6 +101,8 @@ jobs:
       - name: Run codescript-problems
         env:
             DOCKER_API_BASE_URL: ${{ secrets.DOCKER_API_BASE_URL }}
+            GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+            GC_BUCKET_NAME: ${{ secrets.DOCKER_API_BASE_URL }}
         run: |
           echo "🚀 Deploying codescript-problems..."
           cd codescript-problems
