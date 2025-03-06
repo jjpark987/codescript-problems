@@ -6,7 +6,7 @@ services:
       - .:/app
     environment:
       - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-}
-      - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-}
+      - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-python/images/count_sub_islands_e1.png python/images/count_sub_islands_e2.png}
       - DOCKER_API_BASE_URL=${DOCKER_API_BASE_URL:-}
       - GCP_CREDENTIALS=${GCP_CREDENTIALS:-}
       - GC_BUCKET_NAME=${GC_BUCKET_NAME:-}
