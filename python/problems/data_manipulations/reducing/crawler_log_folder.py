@@ -29,8 +29,8 @@ print('Expected: 0')
 category: data manipulations
 subcategory: reducing
 difficulty: easy
-image_url_e1: /python/images/min_operations_e1.png
-image_url_e2: /python/images/min_operations_e2.png
+image_url_e1: crawler_log_folder_e1.png
+image_url_e2: crawler_log_folder_e2.png
 title: Crawler Log Folder
 
 description:

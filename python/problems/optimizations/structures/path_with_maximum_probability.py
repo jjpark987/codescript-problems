@@ -33,9 +33,9 @@ print('0.00000')
 category: optimizations
 subcategory: structures
 difficulty: medium
-image_url_e1: /python/images/max_probability_e1.png
-image_url_e2: /python/images/max_probability_e2.png
-image_url_e3: /python/images/max_probability_e3.png
+image_url_e1: path_with_maximum_probability_e1.png
+image_url_e2: path_with_maximum_probability_e2.png
+image_url_e3: path_with_maximum_probability_e3.png
 title: Path with Maximum Probability
 
 description:

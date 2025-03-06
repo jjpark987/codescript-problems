@@ -43,7 +43,7 @@ print('Expected output: [13,8]')
 category: data manipulations
 subcategory: reducing
 difficulty: medium
-image_url_e1: /python/images/remove_nodes_e1.png
+image_url_e1: remove_nodes_from_linked_list_e1.png
 image_url_e2: None
 title: Remove Nodes From Linked List
 

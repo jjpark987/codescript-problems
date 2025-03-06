@@ -46,8 +46,8 @@ print('Expected: [1,2,null,null,3,4]')
 category: data manipulations
 subcategory: reformatting
 difficulty: medium
-image_url_e1: /python/images/create_binary_tree_e1.png
-image_url_e2: /python/images/create_binary_tree_e1.png
+image_url_e1: create_binary_tree_from_descriptions_e1.png
+image_url_e2: create_binary_tree_from_descriptions_e2.png
 title: Create Binary Tree From Descriptions
 
 description:

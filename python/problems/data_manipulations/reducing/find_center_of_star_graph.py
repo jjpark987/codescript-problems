@@ -25,7 +25,7 @@ print('Expected: 1')
 category: data manipulations
 subcategory: reducing
 difficulty: medium
-image_url_e1: /python/images/find_center_e1.png
+image_url_e1: find_center_of_star_graph_e1.png
 image_url_e2: None
 title: Find Center of Star Graph
 

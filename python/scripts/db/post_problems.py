@@ -25,8 +25,7 @@ PATTERNS = {
     'image_url_e2': r'image_url_e2:\s*(.*?)\n',
     'image_url_e3': r'image_url_e3:\s*(.*?)\n',
     'title': r'title:\s*(.*?)\n',
-    'description': r'description:\s*((?:.|\n)+?)\n\nExample',
-    'constraints': r'Constraints:\s*((?:.|\n)+?)$'
+    'description': r'description:\s*((?:.|\n)+?)\n\nExample'
 }
 SUBCATEGORY_MAP = {
     "reformatting": 1,
@@ -93,7 +92,7 @@ def parse_file(file_path: str) -> Dict[str, str]:
         if parsed_data.get('subcategory'):
             parsed_data['subcategory_id'] = SUBCATEGORY_MAP.get(parsed_data.pop('subcategory'), None)
 
-        # Extract and structure examples
+        # Extract examples
         example_pattern = findall(
             r'Example \d+:\s*Input:\s*(.*?)\s*Output:\s*(.*?)(?:\s*Explanation:\s*((?:.|\n)+?))?(?=Example \d+:|Constraints:|$)',
             comment, DOTALL
@@ -103,10 +102,15 @@ def parse_file(file_path: str) -> Dict[str, str]:
             {
                 'input': ex[0].strip(), 
                 'output': ex[1].strip(), 
-                'explanation': ex[2].strip() if ex[2] else ""
+                'explanation': ex[2].strip() if ex[2] else ''
             }
             for ex in example_pattern
         ]
+
+        # Extract constraints
+        constraints_match = search(r'Constraints:\s*((?:.|\n)+)', comment, DOTALL)
+        
+        parsed_data['constraints'] = [line.strip() for line in constraints_match.group(1).split('\n') if line.strip()]
 
         print(f'✅ Successfully parsed: {file_path}')
         return parsed_data

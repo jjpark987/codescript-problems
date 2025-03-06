@@ -100,7 +100,7 @@ print('Expected: [[1,2,4]]')
 category: data manipulations
 subcategory: reducing
 difficulty: medium
-image_url_e1: /python/images/del_nodes_e1.png
+image_url_e1: delete_nodes_and_return_forest_e1.png
 image_url_e2: none
 image_url_e3: none
 title: Delete Nodes And Return Forest

@@ -47,7 +47,7 @@ print('Expected: 999999999')
 category: optimizations
 subcategory: arrays
 difficulty: medium
-image_url_e1: /python/images/max_distance_e1.jpg
+image_url_e1: magnetic_force_between_two_balls_e1.png
 image_url_e2: None
 title: Magnetic Force Between Two Balls
 

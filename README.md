@@ -73,18 +73,30 @@ python -m python.scripts.db.upload_images --file "python/images/new_image.png"
 python -m python.scripts.db.upload_images --all
 ```
 
-### Renaming files
+### Renaming problems or images
 
-- To rename a file
+- To rename a problem
 
 ```zsh
-python -m python.scripts.repo.rename_files --file "python/main.py"
+python -m python.scripts.repo.rename_problems --file "python/main.py"
 ```
 
-- To rename all files in problems/
+- To rename all problems
 
 ```zsh
-python -m python.scripts.repo.rename_files --all
+python -m python.scripts.repo.rename_problems --all
+```
+
+- To rename an image
+
+```zsh
+python -m python.scripts.repo.rename_images --file "python/main.py"
+```
+
+- To rename all iamges
+
+```zsh
+python -m python.scripts.repo.rename_images --all
 ```
 
 ## Docker

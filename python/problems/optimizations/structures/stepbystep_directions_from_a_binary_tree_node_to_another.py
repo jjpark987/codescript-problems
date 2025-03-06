@@ -82,8 +82,8 @@ print('Expected: "L"')
 category: optimizations
 subcategory: structures
 difficulty: medium
-image_url_e1: /python/images/get_directions_e1.png
-image_url_e2: /python/images/get_directions_e2.png
+image_url_e1: stepbystep_directions_from_a_binary_tree_node_to_another_e1.png
+image_url_e2: stepbystep_directions_from_a_binary_tree_node_to_another_e2.png
 title: Step-By-Step Directions From a Binary Tree Node to Another
 
 description:

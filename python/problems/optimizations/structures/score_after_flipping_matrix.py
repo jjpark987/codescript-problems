@@ -30,7 +30,7 @@ print('Expected: 39')
 category: optimizations
 subcategory: structures
 difficulty: medium
-image_url_e1: matrix_score_e1.jpg
+image_url_e1: score_after_flipping_matrix_e1.png
 image_url_e2: None
 title: Score After Flipping Matrix
 

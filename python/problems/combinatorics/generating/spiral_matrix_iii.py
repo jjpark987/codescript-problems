@@ -43,8 +43,8 @@ print('[[1,4],[1,5],[2,5],[2,4],[2,3],[1,3],[0,3],[0,4],[0,5],[3,5],[3,4],[3,3],
 category: data manipulations
 subcategory: generating
 difficulty: medium
-image_url_e1: /python/images/spiral_matrix_iii_e1.png
-image_url_e2: /python/images/spiral_matrix_iii_e1.png
+image_url_e1: spiral_matrix_iii_e2.png
+image_url_e2: spiral_matrix_iii_e2.png
 image_url_e3: none
 title: Spiral Matrix III
 

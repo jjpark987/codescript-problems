@@ -36,8 +36,8 @@ class Solution:
 category: data manipulations
 subcategory: reformatting
 difficulty: medium
-image_url_e1: /python/reverse_odd_levels_e1.png
-image_url_e2: /python/reverse_odd_levels_e2.png
+image_url_e1: reverse_odd_levels_of_binary_tree_e1.png
+image_url_e2: reverse_odd_levels_of_binary_tree_e2.png
 image_url_e3: none
 title: Reverse Odd Levels of Binary Tree
 

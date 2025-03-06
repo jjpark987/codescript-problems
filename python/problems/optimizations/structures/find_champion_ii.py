@@ -23,8 +23,8 @@ class Solution:
 category: optimizations
 subcategory: structures
 difficulty: medium
-image_url_e1: /python/images/find_champion_e1.png
-image_url_e2: /python/images/find_champion_e2.png
+image_url_e1: find_champion_ii_e1.png
+image_url_e2: find_champion_ii_e2.png
 image_url_e3: none
 title: Find Champion II
 

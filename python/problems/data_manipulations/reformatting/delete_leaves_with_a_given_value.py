@@ -80,8 +80,8 @@ print('Expected: [1, None, 3, None, 4]')
 category: data manipulations
 subcategory: reformatting
 difficulty: medium
-image_url_e1: /python/images/remove_leaf_nodes_e1.png
-image_url_e2: /python/images/remove_leaf_nodes_e2.png
+image_url_e1: delete_leaves_with_a_given_value_e1.png
+image_url_e2: delete_leaves_with_a_given_value_e2.png
 title: Delete Leaves With a Given Value
 
 description:

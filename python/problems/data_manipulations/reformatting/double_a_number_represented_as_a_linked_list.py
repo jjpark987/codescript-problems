@@ -76,8 +76,8 @@ print('Expected output: [1, 9, 9, 8]')
 category: data manipulations
 subcategory: reformatting
 difficulty: medium
-image_url_e1: /python/images/double_it_e1.png
-image_url_e2: /python/images/double_it_e2.png
+image_url_e1: double_a_number_represented_as_a_linked_list_e1.png
+image_url_e2: double_a_number_represented_as_a_linked_list_e2.png
 title: Double a Number Represented as a Linked List
 
 description:

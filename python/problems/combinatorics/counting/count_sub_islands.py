@@ -16,8 +16,8 @@ print('2')
 category: combinatorics
 subcategory: counting
 difficulty: medium
-image_url_e1: /python/images/count_sub_islands_e1.png
-image_url_e2: /python/images/count_sub_islands_e2.png
+image_url_e1: count_sub_islands_e1.png
+image_url_e2: count_sub_islands_e2.png
 image_url_e3: none
 title: Count Sub Islands
 

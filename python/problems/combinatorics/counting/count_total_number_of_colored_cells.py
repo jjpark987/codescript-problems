@@ -10,7 +10,7 @@ class Solution:
 category: combinatorics
 subcategory: counting
 difficulty: medium
-image_url_e1: none
+image_url_e1: count_total_number_of_colored_cells_e1.png
 image_url_e2: none
 image_url_e3: none
 title: Count Total Number of Colored Cells

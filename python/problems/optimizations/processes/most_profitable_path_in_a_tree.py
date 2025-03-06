@@ -60,8 +60,8 @@ class Solution:
 category: optimizations
 subcategory: structures
 difficulty: medium
-image_url_e1: none
-image_url_e2: none
+image_url_e1: most_profitable_path_in_a_tree_e1.png
+image_url_e2: most_profitable_path_in_a_tree_e2.png
 image_url_e3: none
 title: Most Profitable Path in a Tree
 

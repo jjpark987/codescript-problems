@@ -16,8 +16,8 @@ print('Expected: 0')
 category: combinatorics
 subcategory: counting
 difficulty: medium
-image_url_e1: /python/images/find_the_city_e1.png
-image_url_e2: /python/images/find_the_city_e2.png
+image_url_e1: find_the_city_with_the_smallest_number_of_neighbors_at_a_threshold_distance_e1.png
+image_url_e2: find_the_city_with_the_smallest_number_of_neighbors_at_a_threshold_distance_e2.png
 image_url_e3: none
 title: Find the City With the Smallest Number of Neighbors at a Threshold Distance
 
