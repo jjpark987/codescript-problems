@@ -5,9 +5,11 @@ services:
     volumes:
       - .:/app
     environment:
-      - DOCKER_API_BASE_URL=${DOCKER_API_BASE_URL:-}
       - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-}
       - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-}
+      - DOCKER_API_BASE_URL=${DOCKER_API_BASE_URL:-}
+      - GCP_CREDENTIALS=${GCP_CREDENTIALS:-}
+      - GC_BUCKET_NAME=${GC_BUCKET_NAME:-}
     networks:
       - codescript_network
 
