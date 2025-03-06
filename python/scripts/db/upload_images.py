@@ -37,32 +37,22 @@ async def upload_image(file_path: str) -> None:
         print('❌ GC_BUCKET_NAME is not set. Check your environment variables.')
         return
 
-    client = Client()
     try:
-        bucket = client.get_bucket(GC_BUCKET_NAME)
-        print(f"✅ Successfully connected to GCS bucket: {GC_BUCKET_NAME}")
-    except Exception as e:
-        print(f"🚨 Failed to connect to bucket: {GC_BUCKET_NAME}, Error: {e}")
+        with open('/tmp/gcp_credentials.json', 'w') as cred_file:
+            cred_file.write(GCP_CREDENTIALS)
 
-    # Debug project ID
-    print(f"🔍 GCP Project ID: {client.project}")
-
-    # try:
-    #     with open('/tmp/gcp_credentials.json', 'w') as cred_file:
-    #         cred_file.write(GCP_CREDENTIALS)
-
-    #     environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/tmp/gcp_credentials.json'
+        environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/tmp/gcp_credentials.json'
         
-    #     bucket = Client().get_bucket(GC_BUCKET_NAME)
-    #     blob = bucket.blob(file_path)
+        bucket = Client().get_bucket(GC_BUCKET_NAME)
+        blob = bucket.blob(file_path)
 
-    #     if not blob.exists():
-    #         blob.upload_from_filename(file_path)
-    #         print(f'✅ Uploaded {file_path} to Google Cloud Storage.')
-    #     else:
-    #         print(f'⏭️ Skipping over duplicate image: {file_path}')
-    # except Exception as e:
-    #     print(f'🚨 Unexpected error while uploading {file_path}: {e}')
+        if not blob.exists():
+            blob.upload_from_filename(file_path)
+            print(f'✅ Uploaded {file_path} to Google Cloud Storage.')
+        else:
+            print(f'⏭️ Skipping over duplicate image: {file_path}')
+    except Exception as e:
+        print(f'🚨 Unexpected error while uploading {file_path}: {e}')
 
 async def main() -> None:
     if args.all:
