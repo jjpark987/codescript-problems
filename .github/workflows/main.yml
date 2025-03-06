@@ -1,4 +1,4 @@
-name: Post Problem and/or Upload Image
+name: Post Problems and Upload Images
 
 on:
   push:
@@ -55,9 +55,9 @@ jobs:
               echo "image_files_paths=$IMAGE_FILES_LINE" >> $GITHUB_OUTPUT
           fi
 
-  post_problems_and_images:
+  post_data:
     needs: detect_changes
-    if: needs.detect_changes.outputs.problem_files_added == 'true' || needs.detect_changes.outputs.image_files_added == 'true'
+    # if: needs.detect_changes.outputs.problem_files_added == 'true' || needs.detect_changes.outputs.image_files_added == 'true'
     runs-on: self-hosted
     env:
       PROBLEM_FILES_PATHS: ${{ needs.detect_changes.outputs.problem_files_paths }}
@@ -68,14 +68,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: jjpark987/codescript-backend
-          path: ./codescript-backend
+          path: codescript-backend
           fetch-depth: 1
 
       - name: Checkout codescript-problems
         uses: actions/checkout@v4
         with:
           repository: jjpark987/codescript-problems
-          path: ./codescript-problems
+          path: codescript-problems
           fetch-depth: 1
         
       - name: Check workflow dependencies
@@ -88,32 +88,34 @@ jobs:
           docker network inspect codescript_network >/dev/null 2>&1 || docker network create codescript_network
           echo "📄 Added problem files: $PROBLEM_FILES_PATHS"
 
-      - name: Run codescript-backend
-        env:
-          DOCKER_DATABASE_URL: ${{ secrets.DOCKER_DATABASE_URL }}
-        run: |
-          echo "🚀 Deploying codescript-backend..."
-          cd codescript-backend
-          docker compose -f docker-compose.backend.yml up -d
-          echo "✅ API docker is running!"
+      # - name: Run codescript-backend
+      #   env:
+      #     DOCKER_DATABASE_URL: ${{ secrets.DOCKER_DATABASE_URL }}
+      #   run: |
+      #     echo "🚀 Deploying codescript-backend..."
+      #     cd codescript-backend
+      #     docker compose -f docker-compose.backend.yml up -d
+      #     echo "✅ API docker is running!"
 
-      - name: Run codescript-problems
+      - name: Run docker compose
         env:
+          BACKEND_PATH: $GITHUB_WORKSPACE/backend
           DOCKER_API_BASE_URL: ${{ secrets.DOCKER_API_BASE_URL }}
+          DOCKER_DATABASE_URL: ${{ secrets.DOCKER_DATABASE_URL }}
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
           GC_BUCKET_NAME: ${{ secrets.GC_BUCKET_NAME }}
         run: |
-          echo "🚀 Deploying codescript-problems..."
+          echo "🚀 Deploying docker-compose..."
           cd codescript-problems
-          docker compose up
+          docker compose up --abort-on-container-exit
           echo "✅ Problems docker has posted all problems!"
 
-      - name: Clean up codescript-backend
-        run: |
-          echo "🧹 Cleaning up codescript-problems..."
-          cd codescript-problems
-          docker compose down --remove-orphans
-          echo "🧹 Cleaning up codescript-backend..."
-          cd .. && cd codescript-backend
-          docker compose down --remove-orphans
-          echo "✅ Completed clean up!"
+      # - name: Clean up codescript-backend
+      #   run: |
+      #     echo "🧹 Cleaning up codescript-problems..."
+      #     cd codescript-problems
+      #     docker compose down --remove-orphans
+      #     echo "🧹 Cleaning up codescript-backend..."
+      #     cd .. && cd codescript-backend
+      #     docker compose down --remove-orphans
+      #     echo "✅ Completed clean up!"

@@ -73,7 +73,7 @@ python -m python.scripts.db.upload_images --file "python/images/new_image.png"
 python -m python.scripts.db.upload_images --all
 ```
 
-### Renaming problems or images
+### Renaming Problems
 
 - To rename a problem
 
@@ -87,13 +87,15 @@ python -m python.scripts.repo.rename_problems --file "python/main.py"
 python -m python.scripts.repo.rename_problems --all
 ```
 
+### Renaming Images
+
 - To rename an image
 
 ```zsh
 python -m python.scripts.repo.rename_images --file "python/main.py"
 ```
 
-- To rename all iamges
+- To rename all images
 
 ```zsh
 python -m python.scripts.repo.rename_images --all
@@ -104,16 +106,14 @@ python -m python.scripts.repo.rename_images --all
 - Build image and create container in the foreground
 
 ```zsh
-docker compose up --build
+docker compose up --build --abort-on-container-exit
 ```
 
 ## GitHub Action
 
-### Pre-workflow
+1. Verify Docker Desktop is running in the background
 
-1. Make sure Docker Desktop is running in the background
-
-2. Make sure GitHub Runner from ~/actions-runner is running in the background
+2. Verify GitHub Runner from ~/actions-runner is running in the background
 
 - Verify runner from ~/actions-runner
 
