@@ -37,6 +37,7 @@ async def upload_image(file_path: str) -> None:
         print('❌ GC_BUCKET_NAME is not set. Check your environment variables.')
         return
 
+    print(GCP_CREDENTIALS, GC_BUCKET_NAME)
     try:
         with open('/tmp/gcp_credentials.json', 'w') as cred_file:
             cred_file.write(GCP_CREDENTIALS)
@@ -45,7 +46,7 @@ async def upload_image(file_path: str) -> None:
         
         bucket = Client().get_bucket(GC_BUCKET_NAME)
         blob = bucket.blob(file_path)
-        print(GCP_CREDENTIALS, GC_BUCKET_NAME)
+        
         if not blob.exists():
             blob.upload_from_filename(file_path)
             print(f'✅ Uploaded {file_path} to Google Cloud Storage.')
