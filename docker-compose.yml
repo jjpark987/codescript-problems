@@ -22,8 +22,8 @@ services:
     volumes:
       - .:/app
     environment:
-      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-python/problems/combinatorics/counting/check_if_array_pairs_are_divisible_by_k.py}
-      - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-python/images/count_sub_islands_e1.png}
+      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-}
+      - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-}
       - DOCKER_API_BASE_URL=${DOCKER_API_BASE_URL:-}
       - GCP_CREDENTIALS=${GCP_CREDENTIALS:-}
       - GC_BUCKET_NAME=${GC_BUCKET_NAME:-}

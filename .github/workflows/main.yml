@@ -57,7 +57,7 @@ jobs:
 
   post_data:
     needs: detect_changes
-    # if: needs.detect_changes.outputs.problem_files_added == 'true' || needs.detect_changes.outputs.image_files_added == 'true'
+    if: needs.detect_changes.outputs.problem_files_added == 'true' || needs.detect_changes.outputs.image_files_added == 'true'
     runs-on: self-hosted
     env:
       PROBLEM_FILES_PATHS: ${{ needs.detect_changes.outputs.problem_files_paths }}
@@ -88,15 +88,6 @@ jobs:
           docker network inspect codescript_network >/dev/null 2>&1 || docker network create codescript_network
           echo "📄 Added problem files: $PROBLEM_FILES_PATHS"
 
-      # - name: Run codescript-backend
-      #   env:
-      #     DOCKER_DATABASE_URL: ${{ secrets.DOCKER_DATABASE_URL }}
-      #   run: |
-      #     echo "🚀 Deploying codescript-backend..."
-      #     cd codescript-backend
-      #     docker compose -f docker-compose.backend.yml up -d
-      #     echo "✅ API docker is running!"
-
       - name: Run docker compose
         env:
           BACKEND_PATH: $GITHUB_WORKSPACE/backend
@@ -109,13 +100,3 @@ jobs:
           cd codescript-problems
           docker compose up --abort-on-container-exit
           echo "✅ Problems docker has posted all problems!"
-
-      # - name: Clean up codescript-backend
-      #   run: |
-      #     echo "🧹 Cleaning up codescript-problems..."
-      #     cd codescript-problems
-      #     docker compose down --remove-orphans
-      #     echo "🧹 Cleaning up codescript-backend..."
-      #     cd .. && cd codescript-backend
-      #     docker compose down --remove-orphans
-      #     echo "✅ Completed clean up!"
