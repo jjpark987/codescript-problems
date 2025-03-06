@@ -65,9 +65,9 @@ print('[7]')
 category: data manipulations
 subcategory: reformatting
 difficulty: medium
-image_url_e1: insert_greatest_common_divisors_in_linked_list_e1.png
-image_url_e2: insert_greatest_common_divisors_in_linked_list_e2.png
-image_url_e3: none
+image_path_e1: insert_greatest_common_divisors_in_linked_list_e1.png
+image_path_e2: insert_greatest_common_divisors_in_linked_list_e2.png
+image_path_e3: none
 title: Insert Greatest Common Divisors in Linked List
 
 description:

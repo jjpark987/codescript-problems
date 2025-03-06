@@ -27,9 +27,9 @@ class Solution:
 category: combinatorics
 subcategory: counting
 difficulty: medium
-image_url_e1: none
-image_url_e2: none
-image_url_e3: none
+image_path_e1: none
+image_path_e2: none
+image_path_e3: none
 title: Check If Array Pairs Are Divisible by k
 
 description:

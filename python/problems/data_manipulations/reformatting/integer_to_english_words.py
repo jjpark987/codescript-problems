@@ -100,9 +100,9 @@ print('Expected: "One Million Two Hundred Thirty Four Thousand Five Hundred Sixt
 category: data manipulations
 subcategory: reformatting
 difficulty: hard
-image_url_e1: none
-image_url_e2: none
-image_url_e3: none
+image_path_e1: none
+image_path_e2: none
+image_path_e3: none
 title: Integer to English Words
 
 description:

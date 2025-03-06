@@ -38,8 +38,8 @@ print('Expected: 1')
 category: optimizations
 subcategory: arrays
 difficulty: medium
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title: Grumpy Bookstore Owner
 
 description:

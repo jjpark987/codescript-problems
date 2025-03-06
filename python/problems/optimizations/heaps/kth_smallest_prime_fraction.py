@@ -42,8 +42,8 @@ print(Solution().kthSmallestPrimeFraction([1,2,3,5], 3))
 category: optimizations
 subcategory: heaps
 difficulty: medium
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title: K-th Smallest Prime Fraction
 
 description:

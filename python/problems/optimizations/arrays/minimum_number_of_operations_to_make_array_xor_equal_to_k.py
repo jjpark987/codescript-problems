@@ -25,8 +25,8 @@ print(Solution().minOperations(nums=[2,1,3,4], k=1))
 category: optimizations
 subcategory: arrays
 difficulty: medium
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title: Minimum Number of Operations to Make Array XOR Equal to K
 
 description:

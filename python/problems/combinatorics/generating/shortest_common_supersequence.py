@@ -65,9 +65,9 @@ class Solution:
 category: combinatorics
 subcategory: generating
 difficulty: hard
-image_url_e1: none
-image_url_e2: none
-image_url_e3: none
+image_path_e1: none
+image_path_e2: none
+image_path_e3: none
 title: Shortest Common Supersequence
 
 description:

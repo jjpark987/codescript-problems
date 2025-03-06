@@ -40,9 +40,9 @@ print('2')
 category: combinatorics
 subcategory: counting
 difficulty: hard
-image_url_e1: none
-image_url_e2: none
-image_url_e3: none
+image_path_e1: none
+image_path_e2: none
+image_path_e3: none
 title: Find K-th Smallest Pair Distance
 
 description:

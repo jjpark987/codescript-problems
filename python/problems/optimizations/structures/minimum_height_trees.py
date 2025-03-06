@@ -40,8 +40,8 @@ print(Solution().findMinHeightTrees(n=6, edges=[[0,1],[0,2],[0,3],[3,4],[4,5]]))
 category: optimizations
 subcategory: structures
 difficulty: medium
-image_url_e1: minimum_height_trees_e1.png
-image_url_e2: minimum_height_trees_e2.png
+image_path_e1: minimum_height_trees_e1.png
+image_path_e2: minimum_height_trees_e2.png
 title: Minimum Height Trees
 
 description:

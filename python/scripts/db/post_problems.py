@@ -21,9 +21,9 @@ CATEGORIES = ['data_manipulations', 'combinatorics', 'optimizations']
 PATTERNS = {
     'subcategory': r'subcategory:\s*(.*?)\n',
     'difficulty': r'difficulty:\s*(.*?)\n',
-    'image_url_e1': r'image_url_e1:\s*(.*?)\n',
-    'image_url_e2': r'image_url_e2:\s*(.*?)\n',
-    'image_url_e3': r'image_url_e3:\s*(.*?)\n',
+    'image_path_e1': r'image_path_e1:\s*(.*?)\n',
+    'image_path_e2': r'image_path_e2:\s*(.*?)\n',
+    'image_path_e3': r'image_path_e3:\s*(.*?)\n',
     'title': r'title:\s*(.*?)\n',
     'description': r'description:\s*((?:.|\n)+?)\n\nExample'
 }
@@ -43,7 +43,6 @@ DIFFICULTY_MAP = {
     'medium': 2, 
     'hard': 3
 }
-BASE_IMAGE_URL = 'https://storage.googleapis.com/code-problem-images/'
 API_URL = f'{getenv("DOCKER_API_BASE_URL")}/problems' if path.exists('/.dockerenv') else f'{getenv("API_BASE_URL")}/problems'
 HEADERS = { 'Content-Type': 'application/json' }
 
@@ -70,17 +69,19 @@ def parse_file(file_path: str) -> Dict[str, str]:
             raise ValueError('No comment block found')
         
         comment = comment_block.group()[3:-3].strip()
-        parsed_data = {'examples': [], 'image_urls': []}
+        parsed_data = {'examples': [], 'image_paths': []}
 
-        # Extract information using regex PATTERNS and update image_urls
+        # Extract information using regex PATTERNS and update image_paths
         for field, pattern in PATTERNS.items():
             match = search(pattern, comment, DOTALL)
             if match:
                 value = match.group(1).strip()
 
-                if field.startswith('image_url'):
+                if field.startswith('image_path'):
                     if value.lower() != 'none':
-                        parsed_data['image_urls'].append(f'{BASE_IMAGE_URL}{value.split("/")[-1]}')
+                        image_filename = value.split('/')[-1] 
+                        image_path = f'python/images/{image_filename}'
+                        parsed_data['image_paths'].append(image_path)  
                 elif field == 'difficulty':
                     parsed_data[field] = DIFFICULTY_MAP.get(value.lower(), None)
                 else:
@@ -97,7 +98,6 @@ def parse_file(file_path: str) -> Dict[str, str]:
             r'Example \d+:\s*Input:\s*(.*?)\s*Output:\s*(.*?)(?:\s*Explanation:\s*((?:.|\n)+?))?(?=Example \d+:|Constraints:|$)',
             comment, DOTALL
         )
-
         parsed_data['examples'] = [
             {
                 'input': ex[0].strip(), 
@@ -109,7 +109,6 @@ def parse_file(file_path: str) -> Dict[str, str]:
 
         # Extract constraints
         constraints_match = search(r'Constraints:\s*((?:.|\n)+)', comment, DOTALL)
-        
         parsed_data['constraints'] = [line.strip() for line in constraints_match.group(1).split('\n') if line.strip()]
 
         print(f'✅ Successfully parsed: {file_path}')

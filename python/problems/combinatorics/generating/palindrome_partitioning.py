@@ -72,8 +72,8 @@ print('Expected: [["a","a","b"],["aa","b"]]')
 category: combinatorics
 subcategory: generating
 difficulty: medium
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title: Palindrome Partitioning
 
 description:

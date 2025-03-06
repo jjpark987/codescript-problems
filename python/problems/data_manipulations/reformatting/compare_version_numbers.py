@@ -33,8 +33,8 @@ print(Solution().compareVersion('1.01', '1.001.00'))
 category: data manipulations
 subcategory: reformatting
 difficulty: medium
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title: Compare Version Numbers
 
 description:

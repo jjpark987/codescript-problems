@@ -30,8 +30,8 @@ print(Solution().wonderfulSubstrings(word='aba'))
 category: combinatorics
 subcategory: counting
 difficulty: medium
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title: Number of Wonderful Substrings
 
 description:

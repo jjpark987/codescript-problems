@@ -37,8 +37,8 @@ print(Solution().reversePrefix(word = 'abcdefd', ch = 'd'))
 category: data manipulations
 subcategory: reformatting
 difficulty: easy
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title: Reverse Prefix of Word
 
 description:

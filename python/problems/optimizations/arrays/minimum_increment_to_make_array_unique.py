@@ -28,8 +28,8 @@ print('Expected: 6')
 category: optimizations
 subcategory: arrays
 difficulty: medium
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title: Minimum Increment to Make Array Unique
 
 description:

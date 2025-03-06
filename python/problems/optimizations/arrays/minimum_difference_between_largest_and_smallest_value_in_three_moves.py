@@ -30,8 +30,8 @@ print('Expected: 0')
 category: optimizations
 subcategory: arrays
 difficulty: medium
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title: Minimum Difference Between Largest and Smallest Value in Three Moves
 
 description:

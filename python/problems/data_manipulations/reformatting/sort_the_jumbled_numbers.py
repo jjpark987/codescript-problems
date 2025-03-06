@@ -32,9 +32,9 @@ print('Expected: [3,3,8,9,19]')
 category: data manipulations
 subcategory: reformatting
 difficulty: medium
-image_url_e1: none
-image_url_e2: none
-image_url_e3: none
+image_path_e1: none
+image_path_e2: none
+image_path_e3: none
 title: Sort the Jumbled Numbers
 
 description:

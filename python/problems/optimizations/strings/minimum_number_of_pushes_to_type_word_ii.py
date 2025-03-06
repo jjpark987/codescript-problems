@@ -42,9 +42,9 @@ print('Expected: 24')
 category: optimization
 subcategory: strings
 difficulty: medium
-image_url_e1: minimum_number_of_pushes_to_type_word_ii_e1.png
-image_url_e2: minimum_number_of_pushes_to_type_word_ii_e2.png
-image_url_e3: minimum_number_of_pushes_to_type_word_ii_e3.png
+image_path_e1: minimum_number_of_pushes_to_type_word_ii_e1.png
+image_path_e2: minimum_number_of_pushes_to_type_word_ii_e2.png
+image_path_e3: minimum_number_of_pushes_to_type_word_ii_e3.png
 title: Minimum Number of Pushes to Type Word II
 
 description:

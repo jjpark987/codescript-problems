@@ -22,9 +22,9 @@ print('Expected: 0')
 category: combinatorics
 subcategory: counting
 difficulty: easy
-image_url_e1: none
-image_url_e2: none
-image_url_e3: none
+image_path_e1: none
+image_path_e2: none
+image_path_e3: none
 title: Number of Senior Citizens
 
 description:

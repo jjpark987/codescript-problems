@@ -75,8 +75,8 @@ print('Expected: "the cat was rat by the bat"')
 category: data manipulations
 subcategory: reformatting
 difficulty: medium
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title: Replace Words
 
 description:

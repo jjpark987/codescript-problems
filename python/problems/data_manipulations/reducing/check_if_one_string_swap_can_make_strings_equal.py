@@ -9,9 +9,9 @@ class Solution:
 category: data manipulations
 subcategory: reducing
 difficulty: easy
-image_url_e1: none
-image_url_e2: none
-image_url_e3: none
+image_path_e1: none
+image_path_e2: none
+image_path_e3: none
 title: Check if One String Swap Can Make Strings Equal
 
 description:

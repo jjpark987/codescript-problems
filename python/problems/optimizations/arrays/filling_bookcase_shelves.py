@@ -31,9 +31,9 @@ print('Expected: 4')
 category: optimization
 subcategory: arrays
 difficulty: medium
-image_url_e1: filling_bookcase_shelves_e1.png
-image_url_e2: none
-image_url_e3: none
+image_path_e1: filling_bookcase_shelves_e1.png
+image_path_e2: none
+image_path_e3: none
 title: Filling Bookcase Shelves
 
 description:

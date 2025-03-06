@@ -25,8 +25,8 @@ print('Expected: 4')
 category: optimizations
 subcategory: arrays
 difficulty: easy
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title: Minimum Number of Moves to Seat Everyone
 
 description:

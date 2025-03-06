@@ -10,9 +10,9 @@ class Solution:
 category: data manipulations
 subcategory: reformatting
 difficulty: medium
-image_url_e1: none
-image_url_e2: none
-image_url_e3: none
+image_path_e1: none
+image_path_e2: none
+image_path_e3: none
 title: The Number of the Smallest Unoccupied Chair
 
 description:

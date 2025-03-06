@@ -24,9 +24,9 @@ print('Expected: [5,-1,4,4,-6,-6,1,1,1]')
 category: data manipulations
 subcategory: reformatting
 difficulty: easy
-image_url_e1: none
-image_url_e2: none
-image_url_e3: none
+image_path_e1: none
+image_path_e2: none
+image_path_e3: none
 title: Sort Array by Increasing Frequency
 
 description:

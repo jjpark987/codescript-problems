@@ -31,8 +31,8 @@ print(Solution().longestIdealString(s="ktdb", k=15))
 category: optimizations
 subcategory: strings
 difficulty: medium
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title: Longest Ideal Subsequence
 
 description:

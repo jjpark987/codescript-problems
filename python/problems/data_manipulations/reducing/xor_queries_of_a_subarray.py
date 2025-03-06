@@ -25,9 +25,9 @@ print('[8,0,4,4]')
 category: data manipulations
 subcategory: reducing
 difficulty: medium
-image_url_e1: none
-image_url_e2: none
-image_url_e3: none
+image_path_e1: none
+image_path_e2: none
+image_path_e3: none
 title: XOR Queries of a Subarray
 
 description:

@@ -27,8 +27,8 @@ print('Expected: 5')
 category: optimizations
 subcategory: strings
 difficulty: medium
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title:  Append Characters to String to Make Subsequence
 
 description:

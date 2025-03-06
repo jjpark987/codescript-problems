@@ -72,8 +72,8 @@ print('Expected: [1,3,4]')
 category: data manipulations
 subcategory: reducing
 difficulty: medium
-image_url_e1: merge_nodes_in_between_zeros_e1.png
-image_url_e2: merge_nodes_in_between_zeros_e2.png
+image_path_e1: merge_nodes_in_between_zeros_e1.png
+image_path_e2: merge_nodes_in_between_zeros_e2.png
 title: Merge Nodes in Between Zeros
 
 description:

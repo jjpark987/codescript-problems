@@ -38,8 +38,8 @@ print(Solution().openLock(deadends=["0201","0101","0102","1212","2002"], target=
 category: combinatorics
 subcategory: counting
 difficulty: medium
-image_url_e1: None
-image_url_e2: None
+image_path_e1: None
+image_path_e2: None
 title: Open the Lock
 
 description:

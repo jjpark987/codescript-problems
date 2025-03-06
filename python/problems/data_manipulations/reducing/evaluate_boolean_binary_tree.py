@@ -52,8 +52,8 @@ print('Expected: False')
 category: data manipulations
 subcategory: reducing
 difficulty: easy
-image_url_e1: evaluate_boolean_binary_tree_e1.png
-image_url_e2: None
+image_path_e1: evaluate_boolean_binary_tree_e1.png
+image_path_e2: None
 title: Evaluate Boolean Binary Tree
 
 description:

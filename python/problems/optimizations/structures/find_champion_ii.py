@@ -23,9 +23,9 @@ class Solution:
 category: optimizations
 subcategory: structures
 difficulty: medium
-image_url_e1: find_champion_ii_e1.png
-image_url_e2: find_champion_ii_e2.png
-image_url_e3: none
+image_path_e1: find_champion_ii_e1.png
+image_path_e2: find_champion_ii_e2.png
+image_path_e3: none
 title: Find Champion II
 
 description:

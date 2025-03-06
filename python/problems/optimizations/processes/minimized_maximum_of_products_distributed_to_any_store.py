@@ -11,9 +11,9 @@ class Solution:
 category: optimizations
 subcategory: processes
 difficulty: medium
-image_url_e1: none
-image_url_e2: none
-image_url_e3: none
+image_path_e1: none
+image_path_e2: none
+image_path_e3: none
 title: Minimized Maximum of Products Distributed to Any Store
 
 description:

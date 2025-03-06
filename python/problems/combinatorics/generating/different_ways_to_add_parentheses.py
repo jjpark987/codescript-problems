@@ -36,9 +36,9 @@ print('[-34,-14,-10,-10,10]')
 category: combinatorics
 subcategory: generating
 difficulty: medium
-image_url_e1: none
-image_url_e2: none
-image_url_e3: none
+image_path_e1: none
+image_path_e2: none
+image_path_e3: none
 title: Different Ways to Add Parentheses
 
 description:
