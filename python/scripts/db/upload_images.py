@@ -45,7 +45,7 @@ async def upload_image(file_path: str) -> None:
         
         bucket = Client().get_bucket(GC_BUCKET_NAME)
         blob = bucket.blob(file_path)
-        
+        print(GCP_CREDENTIALS, GC_BUCKET_NAME)
         if not blob.exists():
             blob.upload_from_filename(file_path)
             print(f'✅ Uploaded {file_path} to Google Cloud Storage.')
