@@ -57,7 +57,7 @@ jobs:
 
   post_problems_and_images:
     needs: detect_changes
-    # if: needs.detect_changes.outputs.problem_files_added == 'true' || needs.detect_changes.outputs.image_files_added == 'true'
+    if: needs.detect_changes.outputs.problem_files_added == 'true' || needs.detect_changes.outputs.image_files_added == 'true'
     runs-on: self-hosted
     env:
       PROBLEM_FILES_PATHS: ${{ needs.detect_changes.outputs.problem_files_paths }}
@@ -81,20 +81,11 @@ jobs:
       - name: Check workflow dependencies
         env:
           MAC_KEYCHAIN_PASSWORD: ${{ secrets.MAC_KEYCHAIN_PASSWORD }}
-          # GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-          # GC_BUCKET_NAME: ${{ secrets.GC_BUCKET_NAME }}
         run: |
           echo "🗝️ Unlocking macOS keychain..."
           security -v unlock-keychain -p "${{ secrets.MAC_KEYCHAIN_PASSWORD }}" ~/Library/Keychains/login.keychain-db
-
           echo "🔍 Checking for codescript_network..."
           docker network inspect codescript_network >/dev/null 2>&1 || docker network create codescript_network
-          
-          # echo "🛠️ Setting up GCP credentials..."
-          # echo "${{ secrets.GCP_CREDENTIALS }}" > /tmp/gcp_credentials.json
-          # export GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcp_credentials.json
-          # gcloud auth activate-service-account --key-file=/tmp/gcp_credentials.json
-          
           echo "📄 Added problem files: $PROBLEM_FILES_PATHS"
 
       - name: Run codescript-backend
