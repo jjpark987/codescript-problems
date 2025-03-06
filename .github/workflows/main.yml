@@ -89,6 +89,18 @@ jobs:
           echo "📄 Added problem files:"
           echo "$PROBLEM_FILES_PATHS"
 
+
+          
+      - name: Debug GCP Variables
+        run: |
+          echo "GC_BUCKET_NAME=${GC_BUCKET_NAME}"
+          echo "GCP_CREDENTIALS length: ${#GCP_CREDENTIALS}"
+        env:
+          GC_BUCKET_NAME: ${{ secrets.GC_BUCKET_NAME }}
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+
+
+
       - name: Run codescript-backend
         env:
           DOCKER_DATABASE_URL: ${{ secrets.DOCKER_DATABASE_URL }}
