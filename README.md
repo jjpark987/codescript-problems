@@ -103,7 +103,7 @@ python -m python.scripts.repo.rename_images --all
 
 ## Docker
 
-- Build image and create container in the foreground
+- Build image, create container, and activate in the foreground
 
 ```zsh
 docker compose up --build --abort-on-container-exit
