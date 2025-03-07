@@ -84,8 +84,6 @@ jobs:
         run: |
           echo "🗝️ Unlocking macOS keychain..."
           security -v unlock-keychain -p "${{ secrets.MAC_KEYCHAIN_PASSWORD }}" ~/Library/Keychains/login.keychain-db
-          echo "🔍 Checking for codescript_network..."
-          docker network inspect codescript_network >/dev/null 2>&1 || docker network create codescript_network
           echo "📄 Added problem files: $PROBLEM_FILES_PATHS"
 
       - name: Run docker compose
