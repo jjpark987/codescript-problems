@@ -121,13 +121,13 @@ docker compose up --build --abort-on-container-exit
 - Verify runner from ~/actions-runner
 
 ```zsh
-cd ~/Projects/codescript/codescript-runner && ./svc.sh status
+cd ~/Projects/codescript/actions-runner && ./svc.sh status
 ```
 
 - Start runner from ~/actions-runner
 
 ```zsh
-cd ~/Projects/codescript/codescript-runner && ./svc.sh start
+cd ~/Projects/codescript/actions-runner && ./svc.sh start
 ```
 
 3. Add new files to python/problems/ and images/ to trigger GitHub Action workflow
