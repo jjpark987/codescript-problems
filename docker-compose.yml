@@ -22,7 +22,7 @@ services:
     volumes:
       - .:/app
     environment:
-      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-}
+      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-python/problems/data_manipulations/reducing/closest_prime_numbers_in_range.py}
       - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-}
       - DOCKER_API_BASE_URL=${DOCKER_API_BASE_URL:-}
       - GCP_CREDENTIALS=${GCP_CREDENTIALS:-}
