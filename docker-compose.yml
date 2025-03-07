@@ -22,7 +22,7 @@ services:
     volumes:
       - .:/app
     environment:
-      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-python/problems/combinatorics/counting/check_if_array_pairs_are_divisible_by_k.py}
+      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-}
       - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-}
       - DOCKER_API_BASE_URL=${DOCKER_API_BASE_URL:-}
       - GCP_CREDENTIALS=${GCP_CREDENTIALS:-}
