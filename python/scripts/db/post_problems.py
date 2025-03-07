@@ -5,6 +5,7 @@ from glob import glob
 from httpx import AsyncClient, RequestError
 from os import getenv, path
 from re import search, findall, DOTALL
+from traceback import format_exc
 from typing import List, Dict
 
 load_dotenv()
@@ -114,7 +115,7 @@ def parse_file(file_path: str) -> Dict[str, str]:
         print(f'🚨 Error parsing {file_path}: {e}')
 
 async def post_problem(json_data: Dict[str, str]) -> None:
-    print(f'🔍 Sending POST request to {API_URL}...')
+    print(f'🔍 Sending POST request...')
     try:
         async with AsyncClient() as client:
             response = await client.post(API_URL, json=json_data, headers=HEADERS)
@@ -132,6 +133,7 @@ async def post_problem(json_data: Dict[str, str]) -> None:
 
     except RequestError as e:
         print(f'🚨 Error sending request: {e}')
+        print(format_exc())
 
 async def main() -> None:
     if args.all:
