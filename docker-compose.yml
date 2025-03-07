@@ -1,6 +1,6 @@
 services:
   api:
-    container_name: codescript-backend
+    container_name: codescript-problems-api
     build:
       context: ${BACKEND_PATH:-../codescript-backend}
     volumes:
@@ -17,7 +17,7 @@ services:
       timeout: 3s
 
   script:
-    container_name: codescript-problems
+    container_name: codescript-problems-script
     build: .
     volumes:
       - .:/app

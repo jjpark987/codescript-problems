@@ -9,13 +9,11 @@ from typing import List, Dict
 
 load_dotenv()
 
-# Argument parser
 parser = ArgumentParser(description='Parse and post problem files.')
 parser.add_argument('--all', action='store_true', help='Process all problem files.')
 parser.add_argument('--file', type=str, help='Process specific problem file(s).')
 args = parser.parse_args()
 
-# Global variables
 ROOT_DIR = 'python/problems/'
 CATEGORIES = ['data_manipulations', 'combinatorics', 'optimizations']
 PATTERNS = {
@@ -46,7 +44,6 @@ DIFFICULTY_MAP = {
 API_URL = f'{getenv("DOCKER_API_BASE_URL")}/problems' if path.exists('/.dockerenv') else f'{getenv("API_BASE_URL")}/problems'
 HEADERS = { 'Content-Type': 'application/json' }
 
-# Function to find all Python problem files in the subcategories
 def find_all_problem_files() -> List[str]:
     problem_files = []
 
@@ -57,7 +54,6 @@ def find_all_problem_files() -> List[str]:
 
     return problem_files
 
-# Function to parse file into json data
 def parse_file(file_path: str) -> Dict[str, str]:
     try:
         with open(file_path, 'r') as file:
@@ -71,7 +67,7 @@ def parse_file(file_path: str) -> Dict[str, str]:
         comment = comment_block.group()[3:-3].strip()
         parsed_data = {'examples': [], 'image_paths': []}
 
-        # Extract information using regex PATTERNS and update image_paths
+        # extract values from patterns
         for field, pattern in PATTERNS.items():
             match = search(pattern, comment, DOTALL)
             if match:
@@ -89,11 +85,11 @@ def parse_file(file_path: str) -> Dict[str, str]:
             else:
                 parsed_data[field] = None
 
-        # Convert subcategory to subcategory_id
+        # convert subcategory to subcategory_id
         if parsed_data.get('subcategory'):
             parsed_data['subcategory_id'] = SUBCATEGORY_MAP.get(parsed_data.pop('subcategory'), None)
 
-        # Extract examples
+        # extract examples
         example_pattern = findall(
             r'Example \d+:\s*Input:\s*(.*?)\s*Output:\s*(.*?)(?:\s*Explanation:\s*((?:.|\n)+?))?(?=Example \d+:|Constraints:|$)',
             comment, DOTALL
@@ -107,7 +103,7 @@ def parse_file(file_path: str) -> Dict[str, str]:
             for ex in example_pattern
         ]
 
-        # Extract constraints
+        # extract constraints
         constraints_match = search(r'Constraints:\s*((?:.|\n)+)', comment, DOTALL)
         parsed_data['constraints'] = [line.strip() for line in constraints_match.group(1).split('\n') if line.strip()]
 
@@ -117,7 +113,6 @@ def parse_file(file_path: str) -> Dict[str, str]:
     except Exception as e:
         print(f'🚨 Error parsing {file_path}: {e}')
 
-# Function to store this in database
 async def post_problem(json_data: Dict[str, str]) -> None:
     print(f'🔍 Sending POST request to {API_URL}...')
     try:

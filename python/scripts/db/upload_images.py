@@ -7,18 +7,15 @@ from typing import List
 
 load_dotenv()
 
-# Argument parser
 parser = ArgumentParser(description='Upload images to Google Cloud Storage')
 parser.add_argument('--all', action='store_true', help='Upload all images.')
 parser.add_argument('--file', type=str, help='Upload specific image(s).')
 args = parser.parse_args()
 
-# Global variables
 ROOT_DIR = 'python/images/'
 GCP_CREDENTIALS = getenv('GCP_CREDENTIALS')
 GC_BUCKET_NAME = getenv('GC_BUCKET_NAME')
 
-# Function to find all images
 def find_image_files() -> List[str]:
     image_files = []
 
@@ -28,7 +25,6 @@ def find_image_files() -> List[str]:
 
     return image_files
 
-# Function to upload a single image to Google Cloud Storage
 async def upload_image(file_path: str) -> None:
     if not GCP_CREDENTIALS:
         print('❌ GCP_CREDENTIALS is not set. Check your environment variables.')

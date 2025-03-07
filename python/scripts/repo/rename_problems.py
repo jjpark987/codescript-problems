@@ -4,13 +4,11 @@ from os import rename, path
 from re import search, sub, IGNORECASE
 from python.scripts.db.post_problems import find_all_problem_files
 
-# Argument parser
 parser = ArgumentParser(description='Rename problems based on their title.')
 parser.add_argument('--all', action='store_true', help='Rename all problem files.')
 parser.add_argument('--file', type=str, help='Rename specific problem file(s).')
 args = parser.parse_args()
 
-# Function to rename file based on title
 async def rename_problem_by_title(file_path: str):
     try:
         with open(file_path, 'r') as file:
