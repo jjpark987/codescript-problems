@@ -17,7 +17,7 @@ on:
 
 jobs:
   detect_changes:
-    runs-on: codescript-runner
+    runs-on: self-hosted
     outputs:
       problem_files_added: ${{ steps.set-env.outputs.problem_files_added }}
       image_files_added: ${{ steps.set-env.outputs.image_files_added }}
@@ -58,7 +58,7 @@ jobs:
   post_data:
     needs: detect_changes
     # if: needs.detect_changes.outputs.problem_files_added == 'true' || needs.detect_changes.outputs.image_files_added == 'true'
-    runs-on: codescript-runner
+    runs-on: self-hosted
     env:
       PROBLEM_FILES_PATHS: ${{ needs.detect_changes.outputs.problem_files_paths }}
       IMAGE_FILES_PATHS: ${{ needs.detect_changes.outputs.image_files_paths }}
