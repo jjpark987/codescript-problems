@@ -22,7 +22,7 @@ services:
     volumes:
       - .:/app
     environment:
-      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-}
+      - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-python/problems/combinatorics/counting/count_of_substrings_containing_every_vowel_and_k_consonants_ii.py }
       - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-}
       - DOCKER_API_BASE_URL=${DOCKER_API_BASE_URL:-}
       - GCP_CREDENTIALS=${GCP_CREDENTIALS:-}
@@ -32,6 +32,7 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+    restart: on-failure
 
 networks:
   codescript_network:

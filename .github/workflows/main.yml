@@ -35,8 +35,6 @@ jobs:
         run: |
           echo "📥 Fetching added files in the current repository..."
           ADDED_FILES=$(git diff --name-only --diff-filter=AMR ${{ github.event.before }} ${{ github.event.after }})
-          echo "🔍 ADDED_FILES:"
-          echo "$ADDED_FILES"
       
           PROBLEM_FILES=$(echo "$ADDED_FILES" | grep "^python/problems/" || true)
           if [ -n "$PROBLEM_FILES" ]; then
@@ -57,7 +55,7 @@ jobs:
 
   post_data:
     needs: detect_changes
-    if: needs.detect_changes.outputs.problem_files_added == 'true' || needs.detect_changes.outputs.image_files_added == 'true'
+    # if: needs.detect_changes.outputs.problem_files_added == 'true' || needs.detect_changes.outputs.image_files_added == 'true'
     runs-on: self-hosted
     env:
       PROBLEM_FILES_PATHS: ${{ needs.detect_changes.outputs.problem_files_paths }}
