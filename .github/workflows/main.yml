@@ -88,7 +88,7 @@ jobs:
 
       - name: Run docker compose
         env:
-          BACKEND_PATH: $GITHUB_WORKSPACE/backend
+          BACKEND_PATH: ${{ github.workspace }}/codescript-backend
           DOCKER_API_BASE_URL: ${{ secrets.DOCKER_API_BASE_URL }}
           DOCKER_DATABASE_URL: ${{ secrets.DOCKER_DATABASE_URL }}
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
