@@ -32,7 +32,6 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-    restart: on-failure
 
 networks:
   codescript_network:
