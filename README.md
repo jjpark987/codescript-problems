@@ -40,7 +40,9 @@ pip install -r requirements.txt
 
 ## Scripts
 
-### Posting Problems to Database
+### Database
+
+#### Posting Problems to Database
 
 - Make sure codescript-fastapi is running
 
@@ -62,7 +64,7 @@ python -m python.scripts.db.post_problems --file "python/problems/combinatorics/
 python -m python.scripts.db.post_problems --all
 ```
 
-### Uploading Images to Google Cloud Storage
+#### Uploading Images to Google Cloud Storage
 
 - To upload an image
 
@@ -76,7 +78,9 @@ python -m python.scripts.db.upload_images --file "python/images/new_image.png"
 python -m python.scripts.db.upload_images --all
 ```
 
-### Renaming Problems
+### Repository
+
+#### Renaming Problems
 
 - To rename a problem
 
@@ -90,7 +94,7 @@ python -m python.scripts.repo.rename_problems --file "python/main.py"
 python -m python.scripts.repo.rename_problems --all
 ```
 
-### Renaming Images
+#### Renaming Images
 
 - To rename an image
 
@@ -102,6 +106,14 @@ python -m python.scripts.repo.rename_images --file "python/main.py"
 
 ```zsh
 python -m python.scripts.repo.rename_images --all
+```
+
+#### Copy/Paste/Rename app/main.py
+
+- To copy and paste main.py into the subcategory directory and rename it to the problem title
+
+```zsh
+python -m python.scripts.repo.copy_main
 ```
 
 ## Docker
