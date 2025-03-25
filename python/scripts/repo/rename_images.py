@@ -21,9 +21,9 @@ async def rename_image_by_title(file_path: str):
                 print(f'❌ No title found in "{file_path}". Skipping.')
                 return
             
-            image_matches = findall(r'image_url_(e\d+):\s*(?:.*/)?([^/\s]+)', content, IGNORECASE) 
+            image_matches = findall(r'image_path_(e\d+):\s*(?:.*/)?([^/\s]+)', content, IGNORECASE) 
 
-            if image_matches and image_matches[0][1].lower() == 'none':
+            if not image_matches or image_matches and image_matches[0][1].lower() == 'none':
                 print(f'ℹ️ No images found in "{file_path}". Skipping.')
                 return
 
@@ -46,7 +46,7 @@ async def rename_image_by_title(file_path: str):
             new_filename = rename_map.get(old_filename, old_filename)  
             return f'{key}: {new_filename}' 
 
-        updated_content = sub(r'(image_url_e\d+):\s*(?:.*/)?([^/\s]+)', replace_match, content)
+        updated_content = sub(r'(image_path_e\d+):\s*(?:.*/)?([^/\s]+)', replace_match, content)
         
         with open(file_path, 'w') as file:
             file.write(updated_content)
