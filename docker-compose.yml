@@ -7,8 +7,6 @@ services:
       - ../codescript-backend:/app
     environment:
       - DOCKER_DATABASE_URL=${DOCKER_DATABASE_URL:-}
-    networks:
-      - codescript_network
     ports:
       - "8000:8000"
     healthcheck:
@@ -27,12 +25,6 @@ services:
       - DOCKER_API_BASE_URL=${DOCKER_API_BASE_URL:-}
       - GCP_CREDENTIALS=${GCP_CREDENTIALS:-}
       - GC_BUCKET_NAME=${GC_BUCKET_NAME:-}
-    networks:
-      - codescript_network
     depends_on:
       backend:
         condition: service_healthy
-
-networks:
-  codescript_network:
-    external: true
