@@ -5,8 +5,8 @@ services:
       context: ${BACKEND_PATH:-../codescript-backend}
     volumes:
       - ../codescript-backend:/app
-    environment:
-      - DOCKER_DATABASE_URL=${DOCKER_DATABASE_URL:-}
+    env_file:
+      - ../codescript-backend/.env
     ports:
       - "8000:8000"
     healthcheck:
@@ -19,12 +19,11 @@ services:
     build: .
     volumes:
       - .:/app
+    env_file:
+      - .env
     environment:
       - PROBLEM_FILES_PATHS=${PROBLEM_FILES_PATHS:-}
       - IMAGE_FILES_PATHS=${IMAGE_FILES_PATHS:-}
-      - DOCKER_API_BASE_URL=${DOCKER_API_BASE_URL:-}
-      - GCP_CREDENTIALS=${GCP_CREDENTIALS:-}
-      - GC_BUCKET_NAME=${GC_BUCKET_NAME:-}
     depends_on:
       backend:
         condition: service_healthy
