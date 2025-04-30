@@ -65,7 +65,7 @@ def parse_file(file_path: str) -> Dict[str, str]:
         if not comment_block:
             raise ValueError('No comment block found')
         
-        comment = comment_block.group()[3:-3].strip()
+        comment = comment_block.group(1).strip()        
         parsed_data = {'examples': [], 'image_paths': []}
 
         # extract values from patterns
