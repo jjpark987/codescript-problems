@@ -62,5 +62,13 @@ Example 3:
 Input: differences = [4,-7,2], lower = 3, upper = 6
 Output: 0
 Explanation: There are no possible hidden sequences. Thus, we return 0.
+ 
+
+Constraints:
+
+n == differences.length
+1 <= n <= 105
+-105 <= differences[i] <= 105
+-105 <= lower <= upper <= 105
 
 '''
