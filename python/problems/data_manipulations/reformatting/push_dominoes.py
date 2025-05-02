@@ -43,10 +43,10 @@ class Solution:
 category: data manipulations
 subcategory: reformatting
 difficulty: medium
-image_path_e1: maximum_number_of_tasks_you_can_assign_e1.png
+image_path_e1: push_dominoes_e1.png
 image_path_e2: none
 image_path_e3: none
-title: Maximum Number of Tasks You Can Assign
+title: Push Dominoes
 
 description:
 There are n dominoes in a line, and we place each domino vertically upright. In the beginning, we simultaneously push some of the dominoes either to the left or to the right.
