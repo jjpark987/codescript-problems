@@ -14,6 +14,7 @@ class Solution:
                 parent[x] = find(parent[x]) 
             return parent[x]
 
+        # group two letters together based on smallest lexicographic char by updating parent
         def union(x, y):
             px = find(x)
             py = find(y)
@@ -24,9 +25,11 @@ class Solution:
             else:
                 parent[px] = py
 
+        # apply union for each letter pair in s1 and s2
         for a, b in zip(s1, s2):
             union(ord(a) - ord('a'), ord(b) - ord('a'))
 
+        # use parent to create result
         res = ''
         for c in baseStr:
             root = find(ord(c) - ord('a'))
