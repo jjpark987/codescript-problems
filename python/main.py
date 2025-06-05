@@ -6,7 +6,34 @@ from heapq import heapify, heappush, heappop
 
 class Solution:
     def smallestEquivalentString(self, s1: str, s2: str, baseStr: str) -> str:
-        pass  
+        parent = list(range(26))
+
+        # return a leader of the group for letter x
+        def find(x):
+            if parent[x] != x:
+                parent[x] = find(parent[x]) 
+            return parent[x]
+
+        def union(x, y):
+            px = find(x)
+            py = find(y)
+            if px == py:
+                return
+            if px < py:
+                parent[py] = px
+            else:
+                parent[px] = py
+
+        for a, b in zip(s1, s2):
+            union(ord(a) - ord('a'), ord(b) - ord('a'))
+
+        res = ''
+        for c in baseStr:
+            root = find(ord(c) - ord('a'))
+            res += chr(root + ord('a'))
+
+        return res
+
 '''
 category: data manipulations
 subcategory: reformatting
