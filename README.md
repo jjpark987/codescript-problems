@@ -1,6 +1,6 @@
 # CodeScript Problems
 
-This repository contains the code problems for CodeScript.
+This repository contains the code problems and the github actions workflow for CodeScript.
 
 - [codescript-backend](https://github.com/jjpark987/codescript-backend)
 - [codescript-frontend](https://github.com/jjpark987/codescript-frontend)
